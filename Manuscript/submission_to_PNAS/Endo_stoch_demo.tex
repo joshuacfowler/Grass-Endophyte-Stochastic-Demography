@@ -186,31 +186,31 @@ These key ingredients, and thus the potential for symbiont-mediated variance buf
 
 \matmethods{
 \subsection*{Study site and species}
-This study was conducted at Indiana University's Lilly-Dickey Woods (39.238533, -86.218150) in Brown County, Indiana, USA. 
+This study was conducted at Indiana University's Lilly-Dickey Woods Research and Teaching Preserve (39.238533, -86.218150) in Brown County, Indiana, USA. 
 This site is part of the Eastern broadleaf forests of southern Indiana, where the ranges of many understory cool-season grass species overlap. 
 The experiment focused on seven of these grasses which host \emph{Epichlo\"e} endophytes (\emph{Agrostis perennans}, \emph{Elymus villosus}, \emph{Elymus virginicus}, \emph{Festuca subverticillata}, \emph{Lolium arundinaceum}, \emph{Poa alsodes}, and \emph{Poa sylvestris}) (Table S1). 
 
 \subsection*{Endophyte removal, plant propagation, and field set-up}
-Seeds from naturally symbiotic populations of the seven focal host species were collected during summer-fall 2006 from Lilly-Dickey Woods in Brown County, Indiana, USA, and the nearby Bayles Road Teaching and Research Preserve (39.220167, -86.542683). 
-To generate symbiotic (S+) and symbiont-free (S-) plants from the same genetic lineages, seeds from each species were disinfected with a heat treatment described in Table S1 or left untreated. 
+Seeds from naturally symbiotic populations of the seven focal host species were collected during summer-fall 2006 from Lilly-Dickey Woods and the nearby Bayles Road Teaching and Research Preserve (39.220167, -86.542683). 
+To generate symbiotic (S+) and symbiont-free (S-) plants from the same genetic lineages, seeds from each species were disinfected with a heat treatment described in Table S1 or left untreated. \footnote{In the main text you did not really use S+ and S- after defining this, so I cut it. Do the same here if you don't consistently use it in the methods.}
 The heat treatment created symbiont-free plants by warming seeds to temperatures at which the fungus becomes inviable but the host seeds can still germinate.
 Both heat-treated and untreated seeds were surface sterilized with bleach to remove epiphyllous microbes, cold stratified for up to 4 weeks, then germinated in a growth chamber before transfer to the greenhouse at Indiana University where they grew for $\sim$ 8 weeks. 
 We confirmed endophyte status by staining thin sections of inner leaf sheath with aniline blue and examining tissue for fungal hyphae at 200X magnification \cite{bacon2018stains}. 
-We established the field plots with vegetatively propagated clones of similar sizes. 
+We established experimental populations with vegetatively propagated clones of similar sizes. 
 By starting the experiment with plants of similar sizes and the same number of unique genotypes, we aimed to limit any potential effects of heat treatments on initial plant growth \cite{rudgers2009benefits}.
 
 During the fall of 2007 and spring of 2008, we established 10 3x3 m. plots for \emph{A. perennans}, \emph{E. villosus}, \emph{E. virginicus}, \emph{F. subverticillata}, and \emph{L. arundinaceum}  and 18 plots for \emph{P. alsodes} and \emph{P. sylvestris}.
-Half of the plots were randomly assigned to be planted with either symbiotic (S+) or with symbiont-free (S-) plants, and initiated with 20 evenly spaced S+ or S- individuals labeled with aluminum tags.
+Half of the plots were randomly assigned to be planted with either symbiotic or with symbiont-free plants, and initiated with 20 evenly spaced individuals labeled with aluminum tags.
 In spring 2008, we placed plastic deer net fencing around each plot to limit deer herbivory and disturbance; damaged fences were regularly replaced.
 
 \subsection*{Long-term demographic data collection}
-Each summer starting in 2008 through 2021, we censused all individuals in each plot for survival, growth and reproduction,  adding new recruits to the census.
+Each summer starting in 2008 through 2021, we censused all individuals in each plot for survival, growth and reproduction, adding new recruits to the census.
 We censused each species during its peak fruiting stage (May: \emph{Poa alsodes}, \emph{Poa sylvestris}; June: \emph{Festuca subverticillata}; July: \emph{Elymus villosus}, \emph{Elymus virginicus}, \emph{Lolium arundinaceum}; September: \emph{Agrostis perennans}), such that the censuses were pre-breeding and new recruits came from the previous years' seed production.
 Leaf litter was cleared out of each plot prior to the census, to aid in locating plants.
-For each plant remaining from the previous year, we determined survival, measured its size as a count of the number of tillers, and collected reproductive data as counts of the number of reproductive tillers and counts of the number of seed-bearing spikelets on all reproductive tillers to a maximum of three. 
+For each plant remaining from the previous year, we determined survival, measured its size as a count of tillers, and collected reproductive data as counts of reproductive tillers and seed-bearing spikelets on all reproductive tillers to a maximum of three. 
 We also tagged all unmarked individuals that were recruits from the previous years' seed production and collected the same demographic data.
 New recruits typically had one tiller and were non-reproductive. 
-In 2008 and 2009, we took additional counts of seeds per inflorescence for all reproducing individuals in the plots to ground-truth our subsample estimates. 
+In 2008 and 2009, we took additional counts of seeds per inflorescence for all reproducing individuals in the plots to ground-truth our sub-sample estimates. 
 For \emph{Agrostis perennans}, we also collected seed counts in 2010.
 In 2018, we stopped collecting data for the \emph{Lolium arundinaceum} plots, which had very high survival and low recruitment, and consequently very low variation across years.
 For each individual in the experiment, our data record their transitions in size and reproduction from one year to the next. 
@@ -228,7 +228,7 @@ These stromata observations occurred irregularly across years; in most years the
 \subsection*{Vital rate modeling}
 Equipped with these demographic data, we fit statistical models for survival, growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production (Fig. S1 - S10).  
 We fit these vital rates as generalized linear mixed models in a hierarchical Bayesian framework using RStan \cite{rstan2022}. 
-All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance (Fig. S11 - S18).
+All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance (Fig. S11 - S18). 
 These variance components and other predictors as described below were given vague priors \cite{gabry2019visualization}.
 We ran each vital rate model for 2500 warm-up and 2500 MCMC sampling iterations with three chains. 
 We assessed model convergence with trace plots of posterior chains and checked for $\hat{R}$ values less than 1.01, indicating low within- and between-chain variation \cite{brooks1998general,gelman2006data}. 
@@ -266,7 +266,7 @@ We additionally modeled the growth of newly recruited seedlings separately with 
 \emph{Spikelets per Inflorescence} - Spikelet production ($K$) was recorded as integer counts on up to three inflorescences per reproducing plant.
 We modeled these data with a negative binomial distribution, with the same linear predictor for the mean as described above. 
 
-\emph{Seed Production per Spikelet} - For individuals with recorded counts of seeds production, we calculated the number of seeds per spikelet from our counts of seeds and spikelets per inflorescence, and then modeled seeds per spikelet ($D$) as normally distributed averages for each species and endophyte status. 
+\emph{Seed Production per Spikelet} - For individuals with recorded counts of seed production, we calculated the number of seeds per spikelet from our counts of seeds and spikelets per inflorescence, and then modeled seeds per spikelet ($D$) as means of a Gaussian distribution for each species and endophyte status. 
 Because we had less detailed data across years and plants for seed production than for other reproductive vital rates, we omitted both plot and year random effects. 
 
 \emph{Seedling Recruitment} - We used a binomial distribution to model the recruitment of new seedlings ($R$) into the plots from seeds produced in the preceding year, assuming no long-lived seed bank. 
@@ -277,7 +277,7 @@ We rounded this value to get the estimated seed production for each individual, 
 
 \subsection*{Stochastic population model}
 Using the fitted vital rate models, we parameterized stochastic matrix projection models including two state variables: $r_{t}$ (the number of newly recruited individuals in year $t$), and $\textbf{n}_{t}$ (a vector including all non-seedling individuals of sizes $x\in\{1,2,...U\} $, ranging from one to the maximum number of tillers $U$. 
-We used the same model structure for each species and endophyte status (not shown in model notation). 
+We used the same model structure for each species and endophyte status (not shown in model notation, to make it more readable). 
 The total number of recruits in year $t+1$ is given by:
 
 \begin{equation} 
@@ -296,7 +296,7 @@ The number of $y$-sized plants in year $t+1$ is given by:
 	\label{eq:MPM_T}
 	\begin{aligned}
 		n^y_{t+1} = Z(y; \pmb{\tau}_{Z})B(\pmb{\tau}_{B})r_{t}  + 
-		\sum_{x=0}^{U} S(x; \pmb{\tau}_{S})G(x,y; \pmb{\tau}_{G}) n^x_{t}\\
+		\sum_{x=1}^{U} S(x; \pmb{\tau}_{S})G(x,y; \pmb{\tau}_{G}) n^x_{t}\\
 	\end{aligned}
 \end{equation}
 
@@ -304,6 +304,7 @@ where $n^y_{t+1}$ is the $y$\textsuperscript{th} element of vector \textbf{$n_{t
 The first term on the right hand side of Eqn. \ref{eq:MPM_T} represents growth ($Z$) and survival ($B$) of seedling recruits. 
 The second term includes the survival of $x$-sized plants and the growth of survivors from size $x$ to $y$, summed over all $x$. 
 To avoid predictions of unrealistic growth outside of the observed size distribution, we set a ceiling on the growth function for plants at the 97.5\textsuperscript{th} percentile in the observed size distribution \cite{williams2012avoiding}.
+
 Each of the functions in Eqns. \ref{eq:MPM_F} and \ref{eq:MPM_T} have separate intercepts and year random effects for symbiotic and symbiont-free populations, allowing us to calculate the effect of endophyte symbiosis on the mean and variance of $\lambda$, the dominant eigenvalue of the projection matrix. 
 Analysis of climate-explicit population models followed the same logic as for the climate-implicit models presented here with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the Supporting Information Text.
 
@@ -311,7 +312,7 @@ Analysis of climate-explicit population models followed the same logic as for th
 
 We collected metrics describing each host species' life history to test the relationship between pace of life and variance buffering (Table S1). 
 Using the Rage package \cite{jones2022rcompadre}, we calculated $R_0$, longevity, and generation time from our estimated transition matrices using the S- mean matrix as the reference condition.
-We recorded seed length measurements as the average lemma length from the Flora of North America \cite{FloraNAonline}. 
+We recorded seed size as the average lemma length from the Flora of North America \cite{FloraNAonline}. 
 We also calculated and the 99th percentile of maximum observed age for each species from their S- populations.
 Next, we fit Bayesian phylogenetic mixed-effects models using the 'brms' package \cite{Burkner2017brms} to test the relationship between each life history trait and the estimated effect of symbiosis on the coefficient of variation from the population model while controlling for phylogenetic non-independence in the hosts (Fig. 26) and the symbiont (Fig. S27).
 We pruned larger species-level phylogenies of plants\cite{zanne2014three} and \emph{Epichlo\"{e}} fungi \cite{leuchtmann2014nomenclatural} to include the focal species.
@@ -353,7 +354,7 @@ We decomposed the total endophyte effect on $\lambda_s$ into contributions from 
 Specifically, we repeated the calculation of $\lambda_s$ for two additional ``treatments'': (1) endophyte effects on mean vital rates only, with inter-annual variances shared between S+ and S- at the S- reference level for all vital rates, and (2) endophyte effects on vital rate variances only, with vital rate means shared between S+ and S- at the S- reference level. 
 The combination of all four $\lambda_s$ treatments (S+ vital rate means and variances, S- means and variances, S+ means with S- variances, S- means with S+ variances) allowed us to quantify to what extent the overall effect of symbiosis derives from changes in vital rates means, variances, and their interaction. 
 The interaction occurs because the variance penalty to stochastic growth is proportional to the mean value of annual growth rates (see Eq. 1) such that variance is more detrimental for populations with low average growth rates. 
-For each contribution element (variance buffering, mean effects, and their interaction), we calculated a cross species mean to assess the overall contributions (Fig. 4).
+For each contribution element (variance buffering, mean effects, and their interaction), we calculated a cross-species mean to assess the overall contributions (Fig. 4).
 
 \subsection*{Simulation experiment}
 To create scenarios of increased variance relative to that observed during the study period, we repeated the stochastic growth rate estimation and decomposition, but sampling only a subset of the 13 observed annual transition matrices. 
@@ -366,8 +367,8 @@ We performed the same mean-variance decomposition for these scenarios as for the
 
 \acknow{
 	We thank Mark Sheehan, Ali Campbell, Kyle Dickens, Blaise Willis, and Sar Lindner for contributions to field data collection. 
-	We also thank Volker Rudolf, Daniel Kowal, Lydia Beaudrot and Judie Bronstein for helpful comments on and discussion of this project. 
-	This research was supported by the National Science Foundation (Grants 1754468 and 2208857). }
+	We also thank Volker Rudolf, Daniel Kowal, Lydia Beaudrot and Judie Bronstein for helpful discussion of this project and manuscript. 
+	This research was supported by the National Science Foundation Division of Environmental Biology awards 1754468 and 2208857. }
 
 \showacknow{} % Display the acknowledgments section
 
