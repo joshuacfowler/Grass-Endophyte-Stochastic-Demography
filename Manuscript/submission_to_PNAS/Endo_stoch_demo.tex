@@ -10,7 +10,7 @@
 \begin{document}
 
 
-\title{Microbial symbionts buffer hosts from the consequences of environmental stochasticity}
+\title{Microbial symbionts buffer host-plants from the demographic costs of environmental stochasticity}
 
 % Use letters for affiliations, numbers to show equal authorship (if applicable) and to indicate the corresponding author
 \author[a,b,1]{Joshua C. Fowler}
@@ -28,7 +28,7 @@
 
 % Please add a significance statement to explain the relevance of your work
 \significancestatement{
-	\textbf{limit = 120 out of 120 words}
+	\textbf{limit = 116 out of 120 words}
     Many symbiotic microbes benefit hosts under environmental stress, which is becoming more frequent in an increasingly variable climate.
     Using long-term field experiments with a plant-fungal endophyte model system, we show that, by limiting host exposure to environmental extremes, microbial symbionts reduce their hosts' demographic variance.
     Because such variance has negative fitness consequences, our results identify variance buffering a novel pathway of host-symbiont mutualism.
@@ -53,14 +53,14 @@
 
 
 \begin{abstract}
-	\textbf{limit = 188 out of 250 words}
-	Species' persistence in increasingly variable future climates will depend on endurance of the detrimental effects of environmental stochasticity, which tends to reduce fitness in fluctuating environments.
+	\textbf{limit = 223 out of 250 words}
+	Species' persistence in increasingly variable future climates will depend on resilience against environmental stochasticity, which tends to reduce fitness in fluctuating environments.
 	Most organisms host microbiota that shield against stressful conditions, but deciphering how microbial symbioses buffer against the fitness costs of stochasticity requires experiments encompassing long-term environmental fluctuations. 
 	Using cool-season grasses and \emph{Epichloë} fungal endophytes as a model system, we conducted a 14-year symbiont-removal experiment with seven host species and used experimental data to parameterize stochastic demographic models that predict the mean and variance of host fitness. 
 	We show that fungal endophytes reduce variance in the fitness of their grass hosts by \>10\% on average across species and that reductions of up to \footnote{50\%}{In the text you say max variance reduction is 170\%. As you know, I don't really like percentages because they are easy to fudge.} occur for some hosts.
 	Hosts with ``fast'' life history traits that lack longevity as an intrinsic buffer experienced the greatest benefits. 
-	Overall contributions to host-symbiont mutualism from variance buffering were modest compared to symbiont benefits to mean fitness under the current climate regime.
-	However, simulations of increased environmental stochasticity amplified the value of variance buffering, which surpassed symbionts' mean effects that have dominated most prior research.
+	Under the current climate regime, contributions to host-symbiont mutualism from variance buffering were modest compared to symbiont benefits to mean fitness.
+	However, simulations of increased environmental stochasticity amplified the benefits of variance buffering, which surpassed symbionts' mean effects that have dominated most prior research.
 	These results establish microbial-mediated variance buffering as an important yet cryptic mechanism of resilience to increasing stochasticity under global change.
 \end{abstract}
 
@@ -85,7 +85,8 @@
 \dropcap{G}lobal climate change involves increases in environmental variability, including changes to precipitation patterns and the frequency of extreme weather events \cite{seneviratne2012changes, ipcc_2021}.
 Yet, the ecological consequences of increased variability are less well understood than those of changing climate means, such as long-term warming or drying. 
 Incorporating environmental variability into forecasts of population dynamics can improve predictions of the future.
-Classic theory predicts that long-term population growth rates (equivalently, population mean fitness) will decline under increased environmental variability because the costs of bad years outweigh the benefits of good years -- a consequence of nonlinear averaging \cite{lewontin_population_1969,tuljapurkar_population_1982}.
+
+Classic theory predicts that long-term population growth rates (equivalently, population mean fitness) will decline under increased environmental stochasticity because the costs of bad years outweigh the benefits of good years -- a consequence of nonlinear averaging \cite{lewontin_population_1969,tuljapurkar_population_1982}.
 For example, in unstructured populations, the long-term stochastic growth rate in a fluctuating environment ($\lambda_s$) will always be lower than the average growth rate ($\overline{\lambda}$) by an amount proportional to the environmental variance ($\sigma^2$): 
 \begin{equation}
 	log(\lambda_s)  \approx log(\overline{\lambda}) - \frac{\sigma^2}{2\overline{\lambda}^2}
@@ -102,30 +103,33 @@ Most multicellular organisms host symbiotic microbes that affect growth and perf
 This process of vertical transmission links the fitness of hosts and symbionts in a feedback loop that selects for mutual benefits \cite{fine1975vectors}.
 Many vertically-transmitted microbes are mutualistic and protect hosts from stressful environmental conditions including drought, extreme temperatures, or natural enemies \cite{russell2006costs, kivlin2013fungal}. 
 Some of the best studied examples include bacterial symbionts of aphids and other insects that provide their hosts with thermal tolerance through the production of heat-shock proteins \cite{dunbar2007aphid}, and plant-fungal symbionts that produce anti-herbivore toxins \cite{reyna2012detection,saikkonen2013chemical,neyaz2022localization}.
-However, these diverse protective symbioses are context-dependent: the magnitude of benefits depends on environmental or biotic conditions \cite{chamberlain2014context} and thus will vary temporally in a stochastic environment \cite{jordano1994spatial}.
-We hypothesized that context-dependent benefits from symbionts may buffer hosts against variability through strong benefits during harsh periods, and neutral or even costly outcomes during benign periods, reducing the impacts of host exposure to extremes and dampening inter-annual variance relative to non-symbiotic hosts.
-Variance buffering is a previously unexplored mechanism by which symbionts may benefit their hosts in addition to elevating average fitness, the focus of most previous research. 
+However, these diverse protective symbioses are context-dependent: the magnitude of benefits depends on environmental conditions \cite{chamberlain2014context} and thus will vary temporally in a stochastic environment \cite{jordano1994spatial}.
+We hypothesized that context-dependent benefits from symbionts may buffer hosts against variability through strong benefits during harsh periods and neutral or even costly outcomes during benign periods, reducing the impacts of host exposure to extremes and dampening inter-annual variance relative to non-symbiotic hosts.
+Variance buffering is a previously unexplored mechanism by which symbionts may benefit their hosts instead of or in addition to elevating average fitness, the focus of most previous research. 
 
-
-We tested the hypothesis that context-dependent benefits of symbiosis buffer hosts from the fitness costs of environmental variability using data from taxonomically replicated, long-term symbiont-removal experiments. 
-We  (i) quantified the effects of symbiosis on the mean and variance of host vital rates (survival, growth and reproduction), (ii) investigated the relationship between host life history traits and the magnitude of symbiont-mediated variance buffering, (iii) evaluated the relative contribution of mean and variance effects to long-term population growth rates ($\lambda_s$), and (iv) projected the consequences of symbiont-mediated variance buffering under increased environmental variability.
-
-\section*{Results and Discussion}
-Our experiment began in 2007 with seven grass species that host \emph{Epichlo\"{e}} fungal endophytes. 
-Located in south-central Indiana, USA, the experiment consisted of annually censused populations founded with either naturally symbiotic plants (S+) or those that had their symbionts experimentally removed via a heat treatment (S-) (See Materials and Methods for a full list of species and experimental methods).
+We tested the hypothesis that context-dependent benefits of symbiosis buffer hosts from the fitness costs of environmental stochasticity.
+We used cool-season grasses and \emph{Epichlo\"{e}} fungal endophytes as a tractable experimental model in which non-symbiotic plants can be derived from naturally symbiotic plants through heat treatment, providing a contrast of symbiont effects that controls for the confounding influence of host genetic background. 
 \emph{Epichlo\"{e}} endophytes are specialized symbionts growing intercellularly in the aboveground tissue of  $\sim30$\% of cool-season ($C_{3}$) grass species \cite{leuchtmann1992systematics}.
 These fungi are primarily transmitted vertically from maternal plants through seeds \cite{cheplick2009ecology}.
 They produce a variety of alkaloids that can protect host plants from herbivory \cite{brem2001epichloe} and drought stress \cite{decunta2021systematic}.
 
+Over 14 years (2007--2021), we collected annual demographic data on the survival, growth, reproduction, and recruitment of all plants within replicated endophyte-symbiotic and endophyte-free populations at our southern Indiana field site. 
+Through taxonomic replication (seven host-symbiont species pairs) we aimed to understand whether host life history traits could explain inter-specific variation in the magnitude of demographic buffering through symbiosis. 
+We used the long-term demographic data to parameterize stochastic population projection models in a hierarchical Bayesian framework. 
+Specifically, we  (i) quantified the effects of symbiosis on the mean and variance of host vital rates (survival, growth and reproduction) and fitness, (ii) investigated the relationship between host life history traits and the magnitude of symbiont-mediated variance buffering, (iii) evaluated the relative contribution of mean and variance effects to the overall fitness benefits of symbiosis, and (iv) projected the consequences of symbiont-mediated variance buffering under increased environmental variability.
+
+\section*{Results and Discussion}
+\footnote{I would remove this paragraph here. I've moved some overview elements to the end of the Intro and other bits can be moved to the methods. I think you should get straight into results.}Our experiment began in 2007 with seven grass species that host \emph{Epichlo\"{e}} fungal endophytes. 
+Located in south-central Indiana, USA, the experiment consisted of annually censused populations founded with either naturally symbiotic plants (S+) or those that had their symbionts experimentally removed via a heat treatment (S-) (See Materials and Methods for a full list of species and experimental methods).
 The unique data from this long-term experiment are distinctly suitable for detecting fitness benefits of microbial symbiosis that arise through variance buffering. 
-We collected annual demographic data on the survival, growth, reproduction, and recruitment of all plants within replicated S+ and S- plots, which on average had 13.3 individuals/$m^2$ over the course of the experiment. 
+ which on average had 13.3 individuals/$m^2$ over the course of the experiment. 
 Each census year was a sample of inter-annual climatic variation (n = 14 years; comprising 13 demographic transition years).
 We fit hierarchical Bayesian generalized linear mixed models to the vital rate data using RStan \cite{rstan2022}, which allowed us to isolate endophyte effects on vital rate means and variances, borrow strength across species for some variance components, and propagate uncertainty from the individual-level vital rates to population projection models \cite{elderd2016quantifying}. 
 The projection models were stochastic matrix population models parameterized for each host species from the vital rate regressions to quantify endophyte effects on stochastic population growth rates ($\lambda_s$) and decompose the overall effect of the symbiosis into contributions through mean vital rates, variance in vital rates, and their interaction (Methods section describes the statistical methods in full).
 
 
 \subsection*{Quantifying symbiont mediated variance buffering}
-Across seven host species, eight vital rates, 14 years, and 16,789 individual plants, our analysis provides the first empirical support for the hypothesis of symbiont mediated variance buffering. 
+Across seven host species, eight vital rates, 14 years, and 16,789 individual plants, our analysis provides the first empirical evidence of symbiont-mediated variance buffering. 
 Endophytes reduced inter-annual variance for 66\% ($37$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate standard deviation: $-0.15$) (Fig 1A). 
 Endophytes also increased mean vital rates for the majority ($36$/$56$) of host species-vital rate combos (average Cohen's D for effects on vital rate mean: $0.15$), and benefits were particularly strong for host survival, plant growth and germination (Fig. 1A).
 The relative magnitude of symbiont effects on means versus variances differed among host species and their vital rates.
@@ -135,15 +139,15 @@ Symbiotic individuals of \emph{A. perennans} grew larger than those without endo
 Similarly, endophyte symbiosis increased variance in seedling growth for \emph{Elymus villosus} and \emph{Festuca subvertcillata} (Fig. 1A).
 
 
-Because not all vital rates contribute equally to fitness, we used stochastic matrix models to integrate the diverse effects on vital rates described above into comprehensive measures for the mean and variance of fitness. 
-On average across host species, endophyte-symbiotic populations had greater mean fitness ($>92$\% confidence that endophytes increased $\overline{\lambda}$) and lower inter-annual variability in fitness ($>86$\% confidence that endophytes decreased the coefficient of variation of $\lambda$) than endophyte-free populations (Fig. 2).
-For some host species, the CV of $\lambda$ was reduced by as much as $170$\% (\emph{P. alsodes}, \emph{F. subverticillata}), while for others, endophyte effects on variance were substantially smaller ($6$\% lower for \emph{E. villosus}, $16$\% lower for \emph{A. perennans}), or even positive ($27$\% increase for \emph{E. virginicus}).
+Because not all vital rates contribute equally to fitness, we used stochastic matrix models to integrate the diverse effects on vital rates described above into comprehensive measures for the mean and variance of year-to-year fitness ($\lambda_{t}$) and the long-run fitness that integrates both mean and variance ($\lambda_{S}$). 
+On average across host species, endophyte-symbiotic populations had greater mean fitness ($>92$\% confidence that endophytes increased $\overline{\lambda}$) and lower inter-annual variability in fitness ($>86$\% confidence that endophytes decreased the coefficient of variation of $\lambda_{t}$) than endophyte-free populations (Fig. 2).
+For some host species, the CV of $\lambda_{t}$ was reduced by as much as $170$\% (\emph{P. alsodes}, \emph{F. subverticillata}), while for others, endophyte effects on variance were substantially smaller ($6$\% lower for \emph{E. villosus}, $16$\% lower for \emph{A. perennans}), or even positive ($27$\% increase for \emph{E. virginicus}).
 When mean and variance effects of symbionts were considered together, none of the host-symbiont pairings were antagonistic (i.e., with endophytes that both decreased mean fitness and increased variance) (Fig. 2C), suggesting that variation across host species and vital rates in mean and variance effects may reflect alternative strategies that yield similar benefits of endophyte symbiosis.
 
 Reduced sensitivity to drought, as has been reported for some \emph{Epichlo\"{e}} symbioses \cite{decunta2021systematic}, is a candidate mechanism that could generate a signature of variance buffering.
-Accordingly, analysis of climate-explicit population models indicated that for five of seven taxa, symbiotic populations were less sensitive to annual or growing season drought (12-month or 3- month drought index; Standardized Precipitation-Evapotranspiration Index \cite{vicente2010multiscalar}) than symbiont-free populations (Supporting Information Text; Fig. S24-S25; Table S3).
-However, we did not find a strong relationship between the magnitude of variance buffering and relative drought sensitivities, suggesting that other climatic factors or other aspects of the abiotic or biotic environment may elicit benefits of endophyte symbiosis, including documented resistance to herbivory for six of the taxa \cite{rudgers2008invasive,crawford2010fungal}.
-Identifying the potentially complex relationships between vital rates and environmental drivers remains a key challenge for accurate forecasts of the ecological impacts of environmental stochasticity \cite{ehrlen2015predicting}.
+Accordingly, analysis of climate-explicit matrix models indicated that for five of seven taxa, symbiotic populations were less sensitive to annual or growing season drought (12-month or 3- month drought index; Standardized Precipitation-Evapotranspiration Index \cite{vicente2010multiscalar}) than symbiont-free populations (Supporting Information Text; Fig. S24-S25; Table S3).
+However, we did not find a strong relationship between the magnitude of variance buffering and relative drought sensitivities, suggesting that other climatic factors or other temporally-varying aspects of the environment may elicit benefits of endophyte symbiosis, including documented resistance to herbivory for six host taxa \cite{rudgers2008invasive,crawford2010fungal}.
+Identifying the potentially complex relationships between vital rates and environmental drivers remains a key challenge for accurate forecasts of the ecological impacts of environmental stochasticity \cite{ehrlen2015predicting}.\footnote{Could cut this sentence, it's not really saying a lot.}
 
 
 \subsection*{Life history analysis}
@@ -154,37 +158,30 @@ Bayesian phylogenetic mixed-effects models, controlling for species' relatedness
 Other life history traits similarly had positive but weaker support for the prediction that faster life history traits would correlate with stronger variance buffering (Fig. S26-S28).
 Additionally, the three host species for which the overall mutualism was weakest (\emph{Elymus villosus}, \emph{Elymus virginicus}, and \emph{Poa sylvestris}) (Fig. 2C) were the only hosts for which we observed fungal stromata, fruiting bodies capable of horizontal (contagious) transmission (Table S2), in line with theoretical expectations for strict vertical transmission driving the evolution of strong host-symbiont mutualisms \cite{fine1975vectors, afkhami2008symbiosis}.
 Conclusions about life histories are somewhat constrained by the narrow range of trait values among these closely related species in the grass sub-family Pooidae. 
-Our understanding of how life history variation modulates the fitness consequences of microbial symbiosis would profit from tests across a wide span of taxonomic groups \cite{jeschke2009roles}.
+Our understanding of how life history variation modulates the fitness consequences of microbial symbiosis would profit from tests across a wider span of taxonomic groups \cite{jeschke2009roles}.
 
 
 \subsection*{Relative contributions of mean and variance effects}
-To evaluate the relative importance of mean fitness benefits and variance buffering as alternative pathways of mutualism, we decomposed  the overall effect of the symbiosis on $\lambda_s$ using stochastic simulations of four versions of population models that included both mean and variance buffering effects, mean effects alone, variance effects alone, or neither mean nor variance effects. 
-Overall, the full effect of symbiosis on $\lambda_s$, averaged across host species, provided strong evidence of grass-endophyte mutualism (100\% certainty of a positive total effect on $\lambda_s$) (Fig. 4; see Fig. S21 for individual host species).
+To evaluate the relative importance of mean fitness benefits and variance buffering as alternative pathways of mutualism, we decomposed  the overall effect of the symbiosis on the stochastic growth rate $\lambda_{S}$ using simulations of four versions of population models that included both mean and variance buffering effects, mean effects alone, variance effects alone, or neither mean nor variance effects. 
+Overall, the full effect of symbiosis on $\lambda_{S}$, averaged across host species, provided strong evidence of grass-endophyte mutualism (100\% certainty of a positive total effect on $\lambda_s$) (Fig. 4; see Fig. S21 for individual host species).\footnote{It would be nice if we could briefly summarize here our certainty in the total effect by species. e.g. All host species experience positive effects on $\lambda_{S}$ through endophyte symbiosis and our statistical certainty of host-symbiont mutualism ranged from XX to XX\%. Or something like that.}
 Contributions to this total effect derived from both mean and variance buffering effects, as well as a slightly negative interaction (i.e., the combined influence of mean and variance effects was lower than the sum of their individual effects). 
-Endophytes' contributions to the stochastic growth rate ($\lambda_s$) from mean effects were four times greater, averaged across species, than contributions from variance buffering (Fig. 4), suggesting that, under the regime of environmental variability represented by our 14-year study, dampened fluctuation in fitness is a far less important element of the benefits of symbiosis than elevated mean fitness. 
+Endophytes' contributions to  $\lambda_{S}$ from mean effects were four times greater, averaged across species, than contributions from variance buffering (Fig. 4), suggesting that, under the regime of environmental variability represented by our 14-year study, dampened fluctuation in fitness is a far less important element of the benefits of symbiosis than elevated mean fitness. 
 
 \subsection*{Consequences of variance buffering under increased environmental variability} Simulations of increased environmental variability, a key prediction of climate change forecasts \cite{ipcc_2021}, indicated that mutualism with microbial symbionts, and their variance buffering effects in particular, will take on increased importance for grasses in a more variable future climate.
-To simulate increased variability, we repeated the decomposition of $\lambda_s$ under two additional scenarios, randomly sampling transition matrices from either the six or two most extreme years experienced by each species, subsets of the thirteen transition matrices across the study period. 
-The six- and two-years scenarios increased the standard deviation of yearly growth rates by $1.3$ and $2.1$ times, respectively, relative to the ambient scenario without changing mean growth rates ($<2.3$\% difference between simulation treatments)(See SM; Fig. S21-22).
+To simulate increased variability, we repeated the decomposition of $\lambda_{S}$ under two additional scenarios, randomly sampling transition matrices from either the six or two most extreme years experienced by each species, subsets of the thirteen transition matrices across the study period. 
+The six- and two-years scenarios increased the standard deviation of yearly growth rates by $1.3$ and $2.1$ times, respectively, without changing mean growth rates ($<2.3$\% difference in $\overline{\lambda}$ between simulation treatments)(See SM; Fig. S21-22).
 Increased variability elicited stronger mutualistic benefits of endophyte symbiosis (Fig. 3) than ambient variability (overall effect of the symbiosis increased by $>130 $\%).
 This increase was driven by increased contributions from the variance buffering mechanism (from a $24$\% contribution in the ambient scenario to a $66$\% contribution in the most variable scenario).
 In the most variable scenario, the relative importance of mean and variance effects reverses, with variance buffering contributions that are 1.5 times greater than contributions from mean benefits, averaged across species (Fig. 4). 
-Thus, variance buffering -- a cryptic microbial influence that manifests over long temporal scales -- is poised to become the dominant way in which grasses benefit from symbiosis with fungal endophytes in future climates. 
-
+Thus, variance buffering -- a cryptic microbial influence that manifests over long temporal scales -- is poised to become the dominant way in which grasses benefit from symbiosis with fungal endophytes in more variable future climates. 
 
 Ecologists increasingly recognize the importance of symbiotic microbes for host organisms and the populations, communities, and ecosystems in which their hosts reside \cite{afkhami2016native,smith2017symbiont,dallas2022captivity,wu2022reduction}.
 Despite awareness of these ubiquitous interactions, long-term studies of microbial symbiosis are very rare. 
-Our analysis of replicated 14-year field experiments manipulating the presence/absence of fungal symbionts in plants demonstrated for the first time that heritable microbes can commonly benefit hosts not only through improved mean fitness -- the focus of most previous research -- but also via buffering against environmental variance. 
-Our results provide an important advance to improve forecasts of the responses of populations (and symbiota) to increasing environmental stochasticity under global change, suggesting that, for some species, microbial symbiosis may compensate for the lack of intrinsic tolerance of variability conferred by ``slow'' life history traits. 
+Our analysis of taxonomically-replicated, long-term field experiments manipulating the presence/absence of fungal symbionts in plants demonstrates for the first time that heritable microbes can commonly benefit hosts not only through improved mean fitness -- the focus of most previous research -- but also via buffering against environmental variance. 
+Our results provide an important advance to improve forecasts of the responses of populations (and symbiota) to increasing environmental stochasticity under global change, suggesting that, for some host species, microbial symbiosis may compensate for the lack of intrinsic tolerance of variability conferred by ``slow'' life history traits. 
 We found that symbiont-mediated variance buffering made relatively weak contributions to host-symbiont mutualism under the current regime of environmental variability, but is likely to become the dominant benefit that fungal endophytes confer to grass hosts in more variable future environments.
 This result emerges from the context-dependent nature of grass-endophyte interactions, combined with the observation that environmental stochasticity generates fluctuation in context. 
 These key ingredients, and thus the potential for symbiont-mediated variance buffering, similarly apply to the diverse host-microbe symbioses across the tree of life. 
-
-
-
-
-
-
 
 
 \matmethods{
