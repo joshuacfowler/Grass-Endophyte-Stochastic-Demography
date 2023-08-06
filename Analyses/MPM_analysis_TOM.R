@@ -413,6 +413,15 @@ LTREB_full %>%
   ylab("Mean Survival")+
   xlab("Mean Growth")
 
+#some summary stats for manuscript
+lambda_sd_summary <- lambda_sd_df %>% 
+  filter(sampling == "obs") %>% 
+  group_by(species, Species) %>% 
+  summarize(mean_e1 = mean(e1),
+         mean_e2 = mean(e2),
+         lambda_diff = mean_e2-mean_e1,
+         perc_diff = (lambda_diff/mean_e1)*100)
+  
 
 # decomposition analysis --------------------------------------------------
 ## stochastic simulation of lambda_S, with mean/var effects on/off in combination
@@ -1001,6 +1010,21 @@ for(s in 1:8){
 # calculating the certainty of a total effect above zero
 dim(lambdaS_obs)
 sum(lambdaS_obs[1,8,]>0)/500*100
+
+post_contrib <- array(NA, dim = c(4,8,500))
+prob_pos <- array(NA, dim = c(8))
+
+for(s in 1:8){
+  for(i in 1:n_draws){
+  post_contrib[1,s,i] <-  lambdaS_obs[4,s,i] - lambdaS_obs[1,s,i] # eplus-eminus
+  post_contrib[2,s,i] <-  lambdaS_obs[2,s,i] - lambdaS_obs[1,s,i] # eplus mean only -eminus
+  post_contrib[3,s,i] <-  lambdaS_obs[3,s,i] - lambdaS_obs[1,s,i] # eplus var only-eminus
+  post_contrib[4,s,i] <-  post_contrib[1,s,i] - post_contrib[2,s,i] - post_contrib[3,s,i] # mean-variance interaction
+  
+  prob_pos[s] <- sum(post_contrib[1,s,]>0)/500*100
+  
+}
+}
 ################################################################
 ##### Plot of stochastic lambda contributions
 ################################################################
@@ -1135,7 +1159,7 @@ ggsave(mean_contributions_obs_plot, filename = "mean_contributions_obs_plot.png"
 
 # some calculations for manuscript
 meanspecies_calcs <- lambdaS_obs_diff_df %>% 
-  filter(Scenario == "All Years" | Scenario == "2 Extr. Years") %>%
+  filter(Scenario == "Ambient variability" | Scenario == "Most variability (2 best and worst years)") %>%
   select(Species,Scenario,Contribution,Sampling,mean) %>% 
   pivot_wider(names_from = Contribution, values_from = mean) %>% 
   mutate(fullminusintx = `Full Effect` - `Interaction`,
