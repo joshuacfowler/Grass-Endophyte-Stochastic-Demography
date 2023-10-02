@@ -197,6 +197,7 @@ lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/la
 lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
 
 
+
 #Calculationg endophyte effect on sd and variance
 lambda_sds <- matrix(NA,8,2)
 lambda_vars <- matrix(NA,8,2)
@@ -231,6 +232,9 @@ for(s in 1:8){
 
 # calcualating the percent different in standard deviation
 lambda_sds_percentdiff <- 100 - (lambda_sds[,1]/lambda_sds[,2])*100
+# calcualating the percent different in variance
+lambda_vars_percentdiff <- 100 - (lambda_vars[,1]/lambda_vars[,2])*100
+lambda_cvs_percentdiff <- 100 - (lambda_cvs[,1]/lambda_cvs[,2])*100
 
 # Making plots of yearly lambdas
 yearly_lambda <- array(dim = c(13,7,2))
@@ -1486,7 +1490,7 @@ summary_lambda_sd <- lambda_var_df %>%
             draws = n())
 
 summary_lambda_cv <- lambda_cv_df  %>% 
-  # filter(sampling == "obs") %>% 
+  filter(sampling == "obs") %>%
   group_by(species, Species) %>% 
   summarize(cv_lambda_diff = mean(lambda_diff),
             percent_endo_comparison = 100-(mean(e1)/mean(e2))*100,
