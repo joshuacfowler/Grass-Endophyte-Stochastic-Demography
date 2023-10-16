@@ -1,0 +1,339 @@
+%Version 2.1 April 2023
+% See section 11 of the User Manual for version history
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
+
+%%=======================================================%%
+%% to print line numbers in the margin use lineno option %%
+%%=======================================================%%
+
+\documentclass[lineno,Numbered]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%======================================================%%
+%% to compile with pdflatex/xelatex use pdflatex option %%
+%%======================================================%%
+
+%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+
+%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis. 
+%%The option is available for: sn-basic.bst, sn-vancouver.bst, sn-chicago.bst, sn-mathphys.bst. %  
+%% \documentclass[sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+%%\documentclass[sn-mathphys,Numbered]{sn-jnl}% Math and Physical Sciences Reference Style
+%%\documentclass[sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
+%%\documentclass[sn-vancouver,Numbered]{sn-jnl}% Vancouver Reference Style
+%%\documentclass[sn-apa]{sn-jnl}% APA Reference Style 
+%%\documentclass[sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
+%%\documentclass[default]{sn-jnl}% Default
+%%\documentclass[default,iicol]{sn-jnl}% Default with double column layout
+
+%%%% Standard Packages
+%%<additional latex packages if required can be included here>
+
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{natbib}
+
+
+
+%%%%
+
+%%%%%=============================================================================%%%%
+%%%%  Remarks: This template is provided to aid authors with the preparation
+%%%%  of original research articles intended for submission to journals published 
+%%%%  by Springer Nature. The guidance has been prepared in partnership with 
+%%%%  production teams to conform to Springer Nature technical requirements. 
+%%%%  Editorial and presentation requirements differ among journal portfolios and 
+%%%%  research disciplines. You may find sections in this template are irrelevant 
+%%%%  to your work and are empowered to omit any such section if allowed by the 
+%%%%  journal you intend to submit to. The submission guidelines and policies 
+%%%%  of the journal take precedence. A detailed User Manual is available in the 
+%%%%  template package for technical guidance.
+%%%%%=============================================================================%%%%
+
+%\jyear{2021}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+
+%%=====================================================%%
+%% redefining the title page to include author contributions
+\makeatletter
+\newcommand\@contrib{}%
+\newcommand\@availab{}%
+
+
+\def\statementsheadfont{\reset@font\fontsize{7bp}{9.5bp}\bfseries\selectfont\titraggedcenter}%
+\def\statementssubheadfont{\reset@font\fontsize{7bp}{9.5bp}\bfseries\selectfont}%
+\def\statementsfont{\reset@font\fontsize{7bp}{9.5bp}\selectfont\leftskip=24pt\rightskip=24pt\parfillskip=0pt plus 1fil}%
+
+
+
+
+\newcommand\contribhead{\@startsection {section}{1}{\z@}{-22pt \@plus0ex \@minus0ex}{3pt}{\statementsheadfont}}%
+\newcommand\contribsubhead{\@startsection{subsection}{2}{\z@}{3pt \@plus0ex \@minus0ex}{-.5em}{\statementssubheadfont}}
+
+\newcommand\availabhead{\@startsection {section}{1}{\z@}{-22pt \@plus0ex \@minus0ex}{3pt}{\statementsheadfont}}%
+\newcommand\availabsubhead{\@startsection{subsection}{2}{\z@}{3pt \@plus0ex \@minus0ex}{-.5em}{\statementssubheadfont}}
+
+
+\newcommand\contribname{Author Contributions}%
+
+\newcommand\availabname{Data and Code Accessibility}%
+
+
+\long\def\contrib#1{\def\@contrib{%
+		\let\paragraph\contribsubhead%
+		\statementsfont%
+		\contribhead*{\contribname}%
+		#1\par}}%
+	
+\def\printcontrib{\ifx\@contrib\empty\else\@contrib\fi\par}%
+
+
+\long\def\availab#1{\def\@availab{%
+		\let\paragraph\availabsubhead%
+		\statementsfont%
+		\availabhead*{\availabname}%
+		#1\par}}%
+
+\def\printavailab{\ifx\@availab\empty\else\@availab\fi\par}%
+
+\def\printarttype{\ifx\@arttype\empty\else\@arttype\fi\par}%
+
+%
+%%Article type
+\def\arttypename{Article Type}%
+\def\arttype#1{\ifx#1\empty\else\def\@arttype{\par\addvspace{10pt}{\keywordfont{\bfseries\arttypename:} #1\par}}\fi}%
+\def\@arttype{}%
+
+
+\def\printrunning{\ifx\@running\empty\else\@running\fi\par}%
+
+%
+%% Running title
+\def\runningname{Running Title}%
+\def\running#1{\ifx#1\empty\else\def\@running{\par\addvspace{10pt}{\keywordfont{\bfseries\runningname:} #1\par}}\fi}%
+\def\@running{}%
+
+
+\def\printfilecounts{\ifx\@filecounts\empty\else\@filecounts\fi\par}%
+
+%
+%% File Counts
+\def\filecountsname{This file contains}%
+\def\filecounts#1{\ifx#1\empty\else\def\@filecounts{\par\addvspace{10pt}{\keywordfont{\bfseries\filecountsname:} #1\par}}\fi}%
+\def\@filecounts{}%
+
+
+\renewcommand{\@maketitle}{\newpage\null%
+	\if@remarkboxon\vbox to 0pt{\vspace*{-78pt}\hspace*{-10pt}\FMremark}\else\vskip21pt\fi%%\par%
+	\hsize\textwidth\parindent0pt%%%\vskip7pt%
+	%% Aritle Type
+	{\hbox to \textwidth{{\Artcatfont\ArtType\hfill}\par}}
+	%% Aritle Title
+	\ifx\@title\empty\else%
+	\removelastskip\vskip20pt\nointerlineskip%
+	{\Titlefont\@title\par}
+	%\addcontentsline{toc}{chapter}{\@title}% for bookmarks
+	\fi%
+	%% Aritle SubTitle
+	\ifx\@subtitle\empty\else%
+	\vskip9pt%
+	{{\SubTitlefont\@subtitle\par}}
+	\fi%
+	%% Aritle Authors, Address and Correspondings
+	\ifnum\aucount>0
+	\global\punctcount\aucount%
+	\vskip20pt%
+	\artauthors\par%%     authors and emails
+	{\vskip7pt\addressfont\auaddress\par%%      corresponding adress
+		\removelastskip\vskip24pt%
+		\ifnum\emailcnt>0\relax%
+		\ifx\corrauthemail\@empty\else{\ifnum\aucount>1*\fi}%
+		Corresponding author(s). E-mail(s): \corrauthemail\ \par\fi%
+		\ifx\authemail\@empty\else Contributing authors:\ \authemail\fi%
+		\\Phone: 719-359-2960
+		\fi%
+		\ifequalcont{\par$^{\dagger}$\@equalconttext\par}\fi%
+		\removelastskip\vskip24pt%
+		\ifpresentaddress{\par\@presentaddresstext\par}\fi%
+	}
+	\fi%
+	\vspace{-20pt}
+	{\printcontrib\par}%
+	\vspace{-10pt}
+	{\printavailab\par}%
+	\vspace{40pt}
+	{\printarttype\par}%
+	{\printrunning\par}%
+	{\printkeywords\par}%
+	{\printfilecounts\par}%
+	\newpage
+	{\printabstract\par}%
+	\newpage
+	\ifx\@pacs\empty\else%
+	\loop\ifnum\PacsCount>0%
+	\csname\romannumeral\PacsTmpCnt StorePacsTxt\endcsname\par%
+	\StepDownCounter{\PacsCount}%
+	\StepUpCounter{\PacsTmpCnt}%
+	\repeat%
+	\fi%
+	%%{\printhistory\par}%
+	%%{\ifx\@motto\empty\else\@motto\fi}%
+	\removelastskip\vskip36pt\vskip0pt}%
+
+\makeatother
+
+
+
+
+
+
+\begin{document}
+	
+	\title[Microbial symbionts buffer hosts from the demographic costs of environmental stochasticity]{Microbial symbionts buffer hosts from the demographic costs of environmental stochasticity}
+	
+	\running{Symbiont-mediated demographic buffering}
+	\arttype{Letter}
+	%%=============================================================%%
+	%% Prefix	-> \pfx{Dr}
+	%% GivenName	-> \fnm{Joergen W.}
+	%% Particle	-> \spfx{van der} -> surname prefix
+	%% FamilyName	-> \sur{Ploeg}
+	%% Suffix	-> \sfx{IV}
+	%% NatureName	-> \tanm{Poet Laureate} -> Title after name
+	%% Degrees	-> \dgr{MSc, PhD}
+	%% \author*[1,2]{\pfx{Dr} \fnm{Joergen W.} \spfx{van der} \sur{Ploeg} \sfx{IV} \tanm{Poet Laureate} 
+		%%                 \dgr{MSc, PhD}}\email{iauthor@gmail.com}
+	%%=============================================================%%
+	
+	\author*[1,2]{\fnm{Joshua C.} \sur{Fowler}}\email{jcf221@miami.edu}
+	
+	\author[3]{\fnm{Shaun} \sur{Ziegler}}\email{shaun.ziegler@gmail.com}
+	
+	
+	\author[3]{\fnm{Kenneth D.} \sur{Whitney}}\email{whitneyk@unm.edu}
+	
+	\author[3]{\fnm{Jennifer A.} \sur{Rudgers}}\email{jrudgers@unm.edu}
+	
+	\author[1]{\fnm{Tom E.X.} \sur{Miller}}\email{tom.miller@rice.edu}
+	
+	
+	
+	\affil*[1]{\orgdiv{Department of BioSciences}, \orgname{Rice University}, \orgaddress{\city{Houston}, \postcode{77005}, \state{TX}, \country{USA}}}
+	
+	
+	\affil[2]{\orgdiv{Department of Biology}, \orgname{University of Miami}, \orgaddress{ \city{Miami}, \postcode{33146}, \state{FL}, \country{USA}}}
+	
+	\affil[3]{\orgdiv{Department of Biology}, \orgname{University of New Mexico}, \orgaddress{\city{Albuquerque}, \postcode{87131}, \state{NM}, \country{USA}}}
+	
+	%%==================================%%
+	%% Author contributions  %%
+	%%==================================%%
+	\contrib{J.C.F. contributed to data collection, data analysis, and led manuscript drafting.
+		S.Z. contributed to data collection and manuscript revisions.
+		K.D.W. contributed to research conception, data collection, and manuscript revisions.
+		J.A.R. established transplant plots, contributed to research conception, data collection, and manuscript revisions.
+		T.E.X.M. contributed to research conception, data collection, data analysis, and manuscript revisions.}
+		
+
+	%%==================================%%
+	%% Data accessibility  %%
+	%%==================================%%
+	\availab{Data will be made accessible as an Environmental Data Initiative package  online \textbf{DOI: updated here when available.}
+	Code for all analysis is available through \textbf{add github repo}}
+	
+	%%==================================%%
+	%% sample for unstructured abstract %%
+	%%==================================%%
+	
+	\abstract{	Species' persistence in increasingly variable future climates will depend on resilience against environmental stochasticity, which typically reduces fitness.
+		Most organisms host microbiota that shield against stressful conditions, but it remains unknown whether microbial symbioses buffer hosts against the fitness costs of stochasticity because experiments must span long-term environmental variability. 
+		We conducted a 14-year symbiont-removal experiment with seven host species to parameterize stochastic demographic models that predict both the mean and variance of host fitness. 
+		We used cool season grasses and \emph{Epichlo\"{e}} fungal endophytes as a model system.
+		Symbiotic fungal endophytes reduced variance in the fitness of grass hosts by $>$ 10\% on average across species, with up to 50\% reductions in fitness variance for some hosts.
+		Hosts with ``fast'' life history traits that lacked longevity as an intrinsic buffer experienced the greatest benefits from symbiont-mediated buffering. 
+		The contributions of variance buffering to host-symbiont mutualism were modest under the current climate regime compared to symbiont benefits to mean fitness. 
+		However, simulations of increased environmental stochasticity amplified the benefits of variance buffering, which surpassed the symbionts' mean effects, which have dominated most prior research.
+		These results establish microbial-mediated variance buffering as an important, yet cryptic, mechanism of resilience to increasing stochasticity under global change.
+	}
+	
+	%%================================%%
+	%% Sample for structured abstract %%
+	%%================================%%
+	
+	% \abstract{\textbf{Purpose:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+		% 
+		% \textbf{Methods:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+		% 
+		% \textbf{Results:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+		% 
+		% \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
+	
+	\keywords{stochasticity, demography, symbiosis, mutualism, Epichlo\"{e}}
+	
+    \filecounts{Abstract ( XX words), Main Text (XX words), Figures (1-4); Supporting information Methods, Supporting Figures A1-A28, Supplemental Tables S1-S4}
+	
+	%%\pacs[JEL Classification]{D8, H51}
+	
+	%%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
+	
+	\maketitle
+	
+	
+	
+	
+	
+	\section*{Introduction}
+	Global climate change involves increases in environmental variability, including changes to precipitation patterns and the frequency of extreme weather events \cite{seneviratne2012changes, ipcc_2021}.
+	Yet, the ecological consequences of increased variability are less well understood than those of changing climate means, such as long-term warming or drying. 
+	Incorporating environmental variability into forecasts of population dynamics can improve predictions of the future.
+	
+	Classic theory predicts that long-term population growth rates (equivalently, population mean fitness) will decline under increased environmental stochasticity because the costs of bad years outweigh the benefits of good years -- a consequence of nonlinear averaging \cite{lewontin_population_1969,tuljapurkar_population_1982}.
+	For example, in unstructured populations, the long-term stochastic growth rate in a fluctuating environment ($\lambda_s$) will always be lower than the average growth rate ($\overline{\lambda}$) by an amount proportional to the environmental variance ($\sigma^2$): 
+	\begin{equation}
+		log(\lambda_s)  \approx log(\overline{\lambda}) - \frac{\sigma^2}{2\overline{\lambda}^2}
+	\end{equation}
+	
+	\noindent Populations structured by size or stage similarly experience costs of variability \cite{cohen1979comparative, tuljapurkar2013population}.
+	There are accordingly two pathways to increase population viability in a variable environment: increase the mean growth rate and/or dampen temporal fluctuation in growth rates, also called ``variance buffering''.
+	
+	Both the characteristics of species and the properties of their environment can buffer demographic fluctuations, including life history traits such as longevity \cite{pfister1998patterns, morris2008longevity}, correlations among vital rates \cite{compagnoni2016effect}, transient shifts in population structure \cite{ellis2013role}, the magnitude of environmental variability \cite{rodriguez2021limits}, or the degree of environmental autocorrelation \cite{tuljapurkar1980population,fieberg2001stochastic}. 
+	These factors determine the risks of extinction faced by populations \cite{menges2000applications} and underlie management strategies promoting ecosystem resilience \cite{kuparinen2016fishing}. 
+	Yet little is known about how biotic interactions influence demographic
+	
+	
+	\newpage
+	
+	\bibliography{endo_stoch_demo}% common bib file
+	%% if required, the content of .bbl file can be included here once bbl is generated
+	%%\input sn-article.bbl
+	
+	
+	\end{document}
+	
