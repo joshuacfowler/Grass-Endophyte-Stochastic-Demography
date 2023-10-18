@@ -391,32 +391,32 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	%These stromata observations occurred irregularly across years; in most years there were no stromata during the census, and in a few years several plants produced stromata. 
 	
 	\subsection*{Vital rate modeling}
-	Equipped with these demographic data, we fit statistical models for survival, growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production (Fig. S1 - S10).  
+	Equipped with these demographic data, we fit statistical models for survival, growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production (Fig. S1 - S10).\footnote{Not sure why you are referencing Supp figures here, they seem like results not methods.}  
 	We fit these vital rates as generalized linear mixed models in a hierarchical Bayesian framework using RStan \cite{rstan2022} which allowed us to isolate endophyte effects on vital rate means and variances, borrow strength across species for some variance components, and propagate uncertainty from the individual-level vital rates to population projection models \cite{elderd2016quantifying}. 
-	All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance (Fig. S11 - S18). 
-	These variance components and other predictors as described below were given vague priors \cite{gabry2019visualization}.
+	All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance (Fig. S11 - S18).\footnote{Same comment}
+	All parameters were given vague priors \cite{gabry2019visualization}.
 	We ran each vital rate model for 2500 warm-up and 2500 MCMC sampling iterations with three chains. 
 	We assessed model convergence with trace plots of posterior chains and checked for $\hat{R}$ values less than 1.01, indicating low within- and between-chain variation \cite{brooks1998general,gelman2006data}. 
 	For those models that showed poor convergence, we extended the MCMC sampling to include 5000 warm-up and 5000 sampling iterations, which was only necessary for seedling growth. 
-	We graphically checked vital rate model fit with posterior predictive checks comparing simulated data from 500 posterior draws with the observed data (Fig. S19-S20).
+	We graphically checked vital rate model fit with posterior predictive checks comparing simulated and observed data (Fig. S19-S20).
 	
 	\emph{Survival} - We modeled survival as a Bernoulli process, where the survival ($S$) of an individual $i$ in plot $p$ and census year $t$ was predicted by the plot-level endophyte status ($e$), host species ($h$), size in the preceding census, and the plant's origin status (whether it was initially transplanted or naturally recruited into the plot).
 	
 	\begin{subequations}
 		\label{eq:survival}
 		\begin{align}
-			S_{i,p(e),h,t} \sim Bernoulli(\hat{S}_{i,p(e),h,t})\\
-			logit(\hat{S}_{i,p(e),h,t}) = \beta_{0_{h}} + \beta_{1}*origin_{i}\\
-			+ \beta_{2_{h}}*endo_{i} + \beta_{3_{h}}*size_{i,t-1} + \tau_{e,h,t} + \rho_{p}\\
+			S_{i,p,e,h,t} \sim Bernoulli(\hat{S}_{i,p,e,h,t})\\
+			logit(\hat{S}_{i,p,e,h,t}) = \beta_{0_{h}} + \beta_{1}*origin_{i}\\
+			+ \beta_{2_{h}}*endo_{e} + \beta_{3_{h}}*size_{i,t-1} + \tau_{e,h,t} + \rho_{p}\\
 			\tau_{e,h,t} \sim Normal(0,\sigma^2_{\tau_{e,h}})\\
 			\rho_{p} \sim Normal(0,\sigma^2_{\rho})
 		\end{align}
 	\end{subequations}
 	
-	Here, $\hat{S}$ is the survival probability ($p(e)$ indicates that plot identity is uniquely associated with an endophyte status), $\beta_{0_{h}}$ is an intercept specific to each host species, $\beta_1$ is the effect of the plant's recruitment origin, $\beta_{2_{h}}$ is the endophyte effect, $\beta_{3_{h}}$ is the size effect, $\tau_{e,h,t}$ is a normally distributed year effect for each species and endophyte status with variance $\sigma^2_{\tau_{e,h}}$, and $\rho_{p}$ is a normally distributed plot effect with variance $\sigma^2_{\rho}$.
+	Here, $\hat{S}$ is the survival probability, $\beta_{0_{h}}$ is an intercept specific to each host species, $\beta_1$ is the effect of the plant's recruitment origin, $\beta_{2_{h}}$ is the endophyte effect, $\beta_{3_{h}}$ is the size effect, $\tau_{e,h,t}$ is a normally distributed year effect for each species and endophyte status with variance $\sigma^2_{\tau_{e,h}}$, and $\rho_{p}$ is a normally distributed plot effect with variance $\sigma^2_{\rho}$ ($p(e)$ indicates that plot identity is uniquely associated with an endophyte status).
 	We assume that origin effect $\beta_1$ and plot-to-plot variance $\sigma^2_{\rho}$ are shared across host species, allowing us to ``borrow strength'' across the multi-species dataset; other model parameters are unique to host species. 
-	We separately modeled the survival of newly recruited seedlings, which were typically one tiller and non-reproductive, with a similar model but omitting size dependence and the effect of the plant's origin status. 
-	All random effects were estimated independently between seedling and adult vital rates models.
+	We separately modeled the survival of newly recruited seedlings with a similar model but omitting previous size dependence and origin status. 
+	%All random effects were estimated independently between seedling and adult vital rates models.
 	
 	
 	\emph{Growth} - We modeled plant size in census year $t$ ($G$) with the same linear predictor for the mean as described for survival.
@@ -436,14 +436,16 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	
 	\emph{Seedling Recruitment} - We used a binomial distribution to model the recruitment of new seedlings ($R$) into the plots from seeds produced in the preceding year, assuming no long-lived seed bank. 
 	We included an intercept specific to each host and endophyte status and the same random effects structure as in other models. 
-	We estimated the number of seeds per plot in the preceding year by multiplying the total number of reproductive tillers per plant by the mean number of spikelets per inflorescence on that plant and by a sample from the posterior distribution of mean number of seeds per spikelet ($D$).
+	We estimated the number of seeds per plot in the preceding year by multiplying the total number of reproductive tillers per plant by the mean number of spikelets per inflorescence and mean number of seeds per spikelet ($D$).
 	For plants with missing fertility or spikelet data, we used the expected number of reproductive tillers ($F$) or of spikelets per inflorescence from ($K$), drawing from the full posteriors of our models. 
 	We rounded this value to get the estimated seed production for each individual, and finally summed across all reproductive plants in each year and plot to get the total number of seeds produced. 
 	
 	\subsection*{Stochastic population model}
 	Using the fitted vital rate models, we parameterized stochastic matrix projection models including two state variables: $r_{t}$ (the number of newly recruited individuals in year $t$), and $\textbf{n}_{t}$ (a vector including all non-seedling individuals of sizes $x\in\{1,2,...U\} $, ranging from one to the maximum number of tillers $U$. 
+	We use these two state variables to avoid having to assume demographic equivalence between seedling and non-seedling one-tiller plants. 
 	We used the same model structure for each species and endophyte status (not shown in model notation, to make it more readable). 
-	The total number of recruits in year $t+1$ is given by:
+
+	The number of recruits in year $t+1$ is given by:
 	
 	\begin{equation} 
 		\label{eq:MPM_F}
@@ -452,10 +454,9 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 		\end{aligned}
 	\end{equation}
 	The total number of seeds produced by a maternal plant of size $x$ is the product of the size-specific probability of flowering $P$, the number of reproductive tillers $F$, the number of spikelets per inflorescence $K$, and the number of seeds per spikelet $D$. 
-	Multiplying by the probability of transitioning from seed to seedling $R$ gives a per-capita rate of seedling production, which is multiplied by the number of plants of size $x$ ($n^x_{t}$, the $x$\textsuperscript{th} element of \textbf{$n_{t}$}) and summed. 
+	Multiplying by the probability of transitioning from seed to seedling $R$ gives a per-capita rate of seedling production, which is multiplied by the number of plants of size $x$ ($n^x_{t}$, the $x$\textsuperscript{th} element of \textbf{$n_{t}$}) and summed over all sizes. 
 	Each function also depends on the species- and endophyte-specific year random effects for that vital rate ($\pmb{\tau}$, a vector of year-specific values derived from the statistical models). 
 	
-	Recruitment, survival and growth determine the rest of the population dynamics of the new seedlings and larger plants. 
 	The number of $y$-sized plants in year $t+1$ is given by:
 	\begin{equation} 
 		\label{eq:MPM_T}
@@ -464,14 +465,14 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 			\sum_{x=1}^{U} S(x; \pmb{\tau}_{S})G(x,y; \pmb{\tau}_{G}) n^x_{t}\\
 		\end{aligned}
 	\end{equation}
-	
-	where $n^y_{t+1}$ is the $y$\textsuperscript{th} element of vector \textbf{$n_{t+1}$}.
+	where $n^y_{t+1}$ is the $y$\textsuperscript{th} element of vector {$\textbf{n}_{t+1}$}.
 	The first term on the right hand side of Eqn. \ref{eq:MPM_T} represents growth ($Z$) and survival ($B$) of seedling recruits. 
-	The second term includes the survival of $x$-sized plants and the growth of survivors from size $x$ to $y$, summed over all $x$. 
-	To avoid predictions of unrealistic growth outside of the observed size distribution, we set a ceiling on the growth function for plants at the 97.5\textsuperscript{th} percentile in the observed size distribution \cite{williams2012avoiding}.
+	The second term includes the survival of previously $x$-sized plants and the growth of survivors from size $x$ to $y$, summed over all $x$. 
+	To avoid predictions of unrealistic growth outside of the observed size distribution, we set a ceiling on the growth function for plants at the 97.5\textsuperscript{th} percentile of observed sizes for each host species \cite{williams2012avoiding}.
 	
-	Each of the functions in Eqns. \ref{eq:MPM_F} and \ref{eq:MPM_T} have separate intercepts and year random effects for symbiotic and symbiont-free populations, allowing us to calculate the effect of endophyte symbiosis on the mean and variance of $\lambda$, the dominant eigenvalue of the projection matrix. 
-	Analysis of climate-explicit population models followed the same logic as for the climate-implicit models presented here with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the Supporting Information Text.
+	Each of the vital rate functions in Eqns. \ref{eq:MPM_F} and \ref{eq:MPM_T} have separate intercepts and year random effects for symbiotic and symbiont-free populations, allowing us to calculate the effect of endophyte symbiosis on the mean, variance, and coefficient of variation (CV) of $\lambda$, the dominant eigenvalue of the year- and endophyte-specific projection matrix. 
+	This model treats climate drivers implictly through year-specific random effects. 
+	We also developed a climate-explicit version with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the Supporting Information Text.
 	
 	\subsection*{Life History Analysis}
 	
@@ -479,12 +480,11 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	Using the Rage package \cite{jones2022rcompadre}, we calculated $R_0$, longevity, and generation time from our estimated transition matrices using the symbiont-free mean matrix as the reference condition.
 	We recorded seed size as the average lemma length from the Flora of North America \cite{FloraNAonline}. 
 	We also calculated the 99th percentile of maximum observed age for each species from their S- populations.
-	Next, we fit Bayesian phylogenetic mixed-effects models using the 'brms' package \cite{Burkner2017brms} to test the relationship between each life history trait and the estimated effect of symbiosis on the coefficient of variation from the population model while controlling for phylogenetic non-independence in the hosts (Fig. 26) and the symbiont (Fig. S27).
-	We pruned larger species-level phylogenies of plants\cite{zanne2014three} and \emph{Epichlo\"{e}} fungi \cite{leuchtmann2014nomenclatural} to include the focal species.
-	\emph{Agrostis perennans} was not included in the tree, and so we used a congeneric species, \emph{A. hyemalis}. 
+	Next, we fit Bayesian phylogenetic mixed-effects models using the brms package \cite{Burkner2017brms} to test the relationship between each life history trait and the effect of symbiosis on the CV of $\lambda$ (a measure of variance buffering) while controlling for phylogenetic non-independence between host (Fig. 26) and symbiont (Fig. S27) species.
+	We pruned species-level phylogenies of plants\cite{zanne2014three} and \emph{Epichlo\"{e}} fungi \cite{leuchtmann2014nomenclatural} to include the focal species.
+	\emph{Agrostis perennans} was not included in the tree, and so we used the congener \emph{A. hyemalis}. 
 	We defined separate phylogenetic covariance matrices for each pruned tree.
-	We propagated uncertainty in the estimated variance buffering effect with a measurement error model.
-	Thus the model for the variance buffering effect $V$ was given by:
+	We propagated uncertainty in the estimated variance buffering effect $V$ with a measurement error model:
 	
 	\begin{subequations}
 		\begin{align}
@@ -499,18 +499,18 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 		\end{align}
 	\end{subequations}
 	
-	Here, $V_{EST}$ is the variance buffering effect for each host species $h$, estimated from the posterior mean ($V_{MEAN}$) and standard deviation ($V_{SD}$), propogating uncertainty associated with the effect of symbiosis in our population model.
-	The model includes an intercept parameter ($\alpha$) and a slope parameter ($\beta$) defining the relationship between the variance buffering effect and the life history trait. 
+	Here, $V_{EST}$ is the variance buffering effect for host species $h$, estimated from the posterior mean ($V_{MEAN}$) and standard deviation ($V_{SD}$), propogating uncertainty associated with the effect of symbiosis.
+	The model includes an intercept ($\alpha$) and a slope ($\beta$) defining the relationship between the variance buffering effect and the life history trait. 
 	The residual standard deviation is given by ($\sigma$). 
 	We used weakly informative prios to aid model convergence.
 	Each prior was centered at zero, except for the residual standard deviation, which we centered at the standard deviation of the estimated variance buffering effect, $.04$.
-	The phylogenetic random effect ($\pi$) has a standard deviation ($\sigma_{\pi}$) which is structured by the covariance matrix \textbf{A}.
+	The phylogenetic random effect ($\pi$) has a standard deviation ($\sigma_{\pi}$) which is structured by the covariance matrix \textbf{A}.\footnote{I don't really know these methods so I trust you have thought through this, but equation 5g is not a coherent statistical statment. You are multiplying a scalar times a matrix, which gives a matrix. Is pi actually a vector and the distribution should be MVN?}
 	We ran each MCMC sampling chain for 8000 warmup iterations and 2000 sampling iterations. 
 	We assessed model convergence as described for the vital rate models.
 	
 	\subsection*{Mean-variance decomposition}
-	To calculate stochastic population growth rates ($\lambda_s$) for each host species and endophyte status we simulated population dynamics for 1000 years by randomly sampling from the 13 annual transition matrices observed over the course of the experiment, discarding the first 100 years to minimize the influence of initial conditions. 
-	Sampling observed transition matrices produces models which realistically capture inter-annual variation by preserving correlations between vital rates \cite{metcalf2015statistical}.
+	To calculate stochastic population growth rates ($\lambda_s$) for each host species and endophyte status we simulated population dynamics for 1000 years by randomly sampling from the 13 annual transition matrices, discarding the first 100 years to minimize the influence of initial conditions. 
+	Sampling observed transition matrices produces models that realistically capture inter-annual variation by preserving correlations between vital rates \cite{metcalf2015statistical}.
 	We tallied the total population size at each time step as  $N_{t} = r_{t} + \sum_{x=1}^{U}n^x_{t}$ and calculated the stochastic growth rate as $log(\lambda_s) = E[log(\frac{N_{t}}{N_{t+1}})]$ \cite{caswell2001matrix,rees2009integral}.
 	We calculated the total effect of endophyte symbiosis as the difference in $\lambda_s$ between S+ and S- populations. 
 	We propagated uncertainty from the vital rate models to the calculation of $\lambda_s$ using 500 draws from the posterior distribution of model parameters. 
@@ -518,14 +518,13 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	We decomposed the total endophyte effect on $\lambda_s$ into contributions from effects on vital rate means, variances, and their interaction. 
 	Specifically, we repeated the calculation of $\lambda_s$ for two additional ``treatments'': (1) endophyte effects on mean vital rates only, with inter-annual variances shared between S+ and S- at the S- reference level for all vital rates, and (2) endophyte effects on vital rate variances only, with vital rate means shared between S+ and S- at the S- reference level. 
 	The combination of all four $\lambda_s$ treatments (S+ vital rate means and variances, S- means and variances, S+ means with S- variances, S- means with S+ variances) allowed us to quantify to what extent the overall effect of symbiosis derives from changes in vital rates means, variances, and their interaction. 
-	The interaction occurs because the variance penalty to stochastic growth is proportional to the mean value of annual growth rates (see Eq. 1) such that variance is more detrimental for populations with low average growth rates. 
-	For each contribution element (variance buffering, mean effects, and their interaction), we calculated a cross-species mean to assess the overall contributions (Fig. 4).
-	
-	\subsection*{Simulation experiment}
-	To create scenarios of increased variance relative to that observed during the study period, we repeated the stochastic growth rate estimation and decomposition, but sampling only a subset of the 13 observed annual transition matrices. 
+	The interaction occurs because the variance penalty to stochastic growth is proportional to the mean value of annual growth rates (see Eq. 1) such that variance is more detrimental for populations with lower average growth rates. 
+%	For each contribution element (variance buffering, mean effects, and their interaction), we calculated a cross-species mean to assess the overall contributions (Fig. 4).
+
+	To create scenarios of increased variance relative to that observed during the study period, we repeated the stochastic growth rate decomposition, but sampling only a subset of the 13 observed annual transition matrices. 
 	We created two scenarios of increased environmental variance by sampling the transition matrices associated with the six or two most extreme $\lambda$ values, representing the six or two best and worst years, using S- populations as the reference condition. 
-	By sampling away from an average year in both directions, the mean value of annual growth rates remained similar across treatments ($\bar{\lambda}$ averaged across species: All years = 0.71; 6 years = 0.71; 2 years = 0.73; Fig. S21A), while the standard deviation more than doubled ($sd(\lambda)$ averaged across species: All years = 0.25; 6 years = 0.34; 2 years = 0.54 ; Fig. S21B), representing elevated environmental fluctuations.
-	We performed the same mean-variance decomposition for these scenarios as for the ambient conditions (all 13 years sampled) for all host species described above (Fig. S22). 
+	By sampling away from an average year in both directions, the mean value of annual growth rates remained similar across treatments ($\bar{\lambda}$ averaged across species: All years = 0.71; six extreme years = 0.71; two extreme years = 0.73; Fig. S21A), while the standard deviation more than doubled ($sd(\lambda)$ averaged across species: All years = 0.25; six extreme years = 0.34; two extreme years = 0.54 ; Fig. S21B), representing elevated environmental fluctuations.\footnote{I am not suggesting any changes but this sentence lets the cat out of the bag that the predicted growth rates are rapidly declining, which we will likely be asked to address.}
+	We performed the same mean-variance decomposition for these scenarios as for the ambient conditions (all 13 years sampled) for all host species described above (Fig. S22).\footnote{This might be a holdover from other formats but again, do not reference results figures when you describe methods.} 
 
 \section*{Results and Discussion}
 
