@@ -148,4 +148,13 @@ for(e in 1:2){
 
 saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
 
+
+GrassEndo_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
+
+AGPE_list_of_matrices <- list()
+
+AGPE_list_of_matrices[["Eminus"]] <- GrassEndo_list_of_matrices$Eminus$Agrostis_perennans
+AGPE_list_of_matrices[["Eplus"]] <- GrassEndo_list_of_matrices$Eplus$Agrostis_perennans
+
+saveRDS(AGPE_list_of_matrices, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_list_of_matrices.rds")
  
