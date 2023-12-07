@@ -148,13 +148,51 @@ for(e in 1:2){
 
 saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
 
+saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_oneiter_list_of_matrices.rds")
+
 
 GrassEndo_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
 
+AGPE_oneiter_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_oneiter_list_of_matrices.rds")
+
+#pulling out just agrostis perennans
 AGPE_list_of_matrices <- list()
 
 AGPE_list_of_matrices[["Eminus"]] <- GrassEndo_list_of_matrices$Eminus$Agrostis_perennans
 AGPE_list_of_matrices[["Eplus"]] <- GrassEndo_list_of_matrices$Eplus$Agrostis_perennans
 
+
 saveRDS(AGPE_list_of_matrices, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_list_of_matrices.rds")
  
+
+
+# Making mean matrices for each year/endo/species
+
+GrassEndo_mean_list_of_matrices <- list()
+
+for(e in 1:2){
+  for(s in 1:7){
+    for(y in 1:13){
+      mean_matrix <- popbio::mean.list(GrassEndo_list_of_matrices[[e]][[s]][[y]])
+      name <- paste0("y",year_vec[y])
+      year.list[[name]]  <-mean_matrix 
+    }
+    name <- paste0(spp_vec[s])
+    spp.list[[name]]  <- year.list
+  }
+  name <- paste0(endo_vec[e])
+  endo.list[[name]] <- spp.list
+}
+
+View(endo.list)
+
+saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices.rds")
+GrassEndo_mean_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices.rds")
+
+
+image(GrassEndo_list_of_matrices$Eminus$Agrostis_perennans$y2009$iter3)
+image(GrassEndo_mean_list_of_matrices$Eminus$Agrostis_perennans$y2009)
+
+
+image(GrassEndo_mean_list_of_matrices$Eminus$Elymus_villosus$y2010)
+
