@@ -1693,12 +1693,12 @@ dimnames(recruit_par$sigmaendo) <- list(Draw = paste0("i",1:dim(recruit_par$sigm
 recruit_sigmaendo_cube <- cubelyr::as.tbl_cube(recruit_par$sigmaendo)
 recruit_sigmaendo_df <- as_tibble(recruit_sigmaendo_cube)  %>% 
   rename(estimate = `recruit_par$sigmaendo`)%>% 
-  mutate(vital_rate = "Germination", effect = "Standard Deviation")
+  mutate(vital_rate = "Recruitment", effect = "Standard Deviation")
 dimnames(recruit_par$betaendo) <- list(Draw = paste0("i",1:dim(recruit_par$betaendo)[1]), Species = species_list)
 recruit_betaendo_cube <- cubelyr::as.tbl_cube(recruit_par$betaendo)
 recruit_betaendo_df <- as_tibble(recruit_betaendo_cube)  %>% 
   rename(estimate = `recruit_par$betaendo`)%>% 
-  mutate(vital_rate = "Germination", effect = "Mean")
+  mutate(vital_rate = "Recruitment", effect = "Mean")
 
 #Combining all of those into one dataframe
 endo_vr_effects_df <- surv_sigmaendo_df %>% 
@@ -1723,14 +1723,14 @@ endo_vr_effects_overallsd <- endo_vr_effects_df %>%
 endo_vr_effects_standardized <- endo_vr_effects_summary %>% 
   mutate(stand_effect = case_when(effect == "Mean" ~ average_effect/endo_vr_effects_overallsd$Mean,
                                   effect == "Standard Deviation" ~ average_effect/endo_vr_effects_overallsd$`Standard Deviation`))
-# some overal summary numbers for manuscript
+# some overall summary numbers for manuscript
 summary_endo_vr_effects_standardized <- endo_vr_effects_standardized %>% 
   group_by(effect) %>% 
   summarize(mean_average = mean(average_effect),
             mean_stand = mean(stand_effect))
 
 #now we can make a heat map based on those means
-vr_order <- c("Survival","Seedling Survival", "Growth", "Seedling Growth", "Flowering", "Inflorescence Production", "Spikelets/Infl.", "Germination")
+vr_order <- c("Survival","Seedling Survival", "Growth", "Seedling Growth", "Flowering", "Inflorescence Production", "Spikelets/Infl.", "Recruitment")
 meanvar_effect_heatmap <- ggplot()+
   geom_tile(data = endo_vr_effects_summary, aes(x = Species, y = factor(vital_rate, levels=vr_order), fill = average_effect), color = "lightgrey")+
   scale_fill_gradient2(limits = c(-1.6, 1.6), low = "#d8b365",mid="#f5f5f5",high="#5ab4ac")+
