@@ -92,7 +92,7 @@ recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
 #############################################################################################
 
 # make the list of parameters and calculate mean lambdas
-n_draws <- 500 # the means are the same whether we do 500 or 1000 draws
+n_draws <- 500# the means are the same whether we do 500 or 1000 draws
 post_draws <- sample.int(7500,size=n_draws) # The models except for seedling growth have 7500 iterations. That one has more (15000 iterations) to help it converge.
 
 # Running and saving the annual matrices for each species
@@ -111,6 +111,11 @@ iter.list <- list()
 year.list <- list()
 spp.list <- list()
 endo.list <- list()
+
+fert_iter.list <- list()
+fert_year.list <- list()
+fert_spp.list <- list()
+fert_endo.list <- list()
 
 for(e in 1:2){
   for(s in 1:7){
@@ -135,7 +140,6 @@ for(e in 1:2){
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par),
                                                    extension = 100)$MPMmat # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
-        }
       name <- paste0("y",year_vec[y])
       year.list[[name]] <- iter.list
     }
@@ -145,13 +149,59 @@ for(e in 1:2){
   name <- paste0(endo_vec[e])
   endo.list[[name]] <- spp.list
   }
-
+}
 saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
 
 saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_oneiter_list_of_matrices.rds")
-
-
 GrassEndo_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices.rds")
+
+
+
+for(e in 1:2){
+  for(s in 1:7){
+    for(y in 1:13){
+      for(i in 1:length(post_draws)){
+        name <- paste0("iter", i)
+        fert_iter.list[[name]] <- bigmatrix(make_params(species=s,
+                                                        endo_mean=(e-1),
+                                                        endo_var=(e-1),
+                                                        original = 1, # should be =1 to represent recruit
+                                                        draw=post_draws[i],
+                                                        max_size=max_size,
+                                                        rfx=T,
+                                                        year=y+1,
+                                                        surv_par=surv_par,
+                                                        surv_sdlg_par = surv_sdlg_par,
+                                                        grow_par=grow_par,
+                                                        grow_sdlg_par = grow_sdlg_par,
+                                                        flow_par=flow_par,
+                                                        fert_par=fert_par,
+                                                        spike_par=spike_par,
+                                                        seed_par=seed_par,
+                                                        recruit_par=recruit_par),
+                                            extension = 100)$Fmat # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
+      }
+      name <- paste0("y",year_vec[y])
+      fert_year.list[[name]] <- fert_iter.list
+      
+    }
+    name <- paste0(spp_vec[s])
+    fert_spp.list[[name]] <- fert_year.list
+    
+  }
+  name <- paste0(endo_vec[e])
+  fert_endo.list[[name]] <- fert_spp.list
+  
+}
+
+
+saveRDS(fert_endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices_fert.rds")
+
+GrassEndo_list_of_matrices_fert <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_list_of_matrices_fert.rds")
+
+# GrassEndo_list_of_matrices_fert <- fert_endo.list
+
+
 
 AGPE_oneiter_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/AGPE_oneiter_list_of_matrices.rds")
 
@@ -170,6 +220,8 @@ saveRDS(AGPE_list_of_matrices, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_ou
 
 GrassEndo_mean_list_of_matrices <- list()
 
+GrassEndo_mean_list_of_matrices_fert <- list()
+
 for(e in 1:2){
   for(s in 1:7){
     for(y in 1:13){
@@ -184,10 +236,33 @@ for(e in 1:2){
   endo.list[[name]] <- spp.list
 }
 
-View(endo.list)
-
 saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices.rds")
 GrassEndo_mean_list_of_matrices <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices.rds")
+
+
+
+
+for(e in 1:2){
+  for(s in 1:7){
+    for(y in 1:13){
+      mean_matrix <- popbio::mean.list(GrassEndo_list_of_matrices_fert[[e]][[s]][[y]])
+      name <- paste0("y",year_vec[y])
+      year.list[[name]]  <-mean_matrix 
+    }
+    name <- paste0(spp_vec[s])
+    spp.list[[name]]  <- year.list
+  }
+  name <- paste0(endo_vec[e])
+  endo.list[[name]] <- spp.list
+}
+
+saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices_fert.rds")
+GrassEndo_mean_list_of_matrices_fert <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/GrassEndo_mean_list_of_matrices_fert.rds")
+
+
+
+
+View(endo.list)
 
 
 image(GrassEndo_list_of_matrices$Eminus$Agrostis_perennans$y2009$iter3)
