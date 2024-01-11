@@ -457,6 +457,254 @@ ggsave(fitsandmoments_plot, filename = "fitsandmoments_plot.png", width = 12, he
 
 
 
+
+### Plot for vital rate fits vs simulated data for each species separately. ####
+
+# First making a function to filter our vital rate data and the simulations we already have by species
+filterspecies_densplot <- function(data, data_list, sim, species = NA, x, y, xlim = NA){
+  require(tidyverse); require(bayesplot); require(patchwork)
+  filtered_data_list <- lapply(data_list, function(x) x[data$species == species])
+  
+  sim_list <- as.list(data.frame(t(sim)))
+  filtered_sim_list <- lapply(sim_list, function(x) x[data$species == species])
+  
+  filtered_sim <- matrix(unlist(filtered_sim_list), ncol = length(filtered_data_list$y))
+  min_x <- min(filtered_sim)
+  
+  densplot <- ppc_dens_overlay(filtered_data_list$y, filtered_sim) + theme_classic() + xlim(min_x,xlim) + labs(subtitle = species, x = x, y = y)
+
+  mean_plot <-   ppc_stat(filtered_data_list$y, filtered_sim, stat = "mean") + legend_none()+labs(x = "Mean")
+  sd_plot <- ppc_stat(filtered_data_list$y, filtered_sim, stat = "sd")+ legend_none()+labs(x = "SD")
+  skew_plot <- ppc_stat(filtered_data_list$y, filtered_sim, stat = "skewness")+ legend_none()+labs(x = "Skew")
+  kurt_plot <- ppc_stat(filtered_data_list$y, filtered_sim, stat = "Lkurtosis")+ legend_none()+labs(x = "Kurtosis")
+  moments <- mean_plot+sd_plot+skew_plot+kurt_plot + plot_layout(nrow = 1)
+  # 
+  densplot_combo <- densplot + moments
+  return(densplot_combo)
+}
+
+
+# Adult Survival
+AGPE_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "AGPE", x = "Survival Status", y = "Density")
+ELRI_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "ELRI", x = "Survival Status", y = "Density")
+ELVI_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "ELVI", x = "Survival Status", y = "Density")
+FESU_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "FESU", x = "Survival Status", y = "Density")
+LOAR_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "LOAR", x = "Survival Status", y = "Density")
+POAL_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "POAL", x = "Survival Status", y = "Density")
+POSY_surv_densplot <- filterspecies_densplot(data = LTREB_data_forsurv, data_list = surv_data_list, sim = y_s_sim, 
+                                             species = "POSY", x = "Survival Status", y = "Density")
+
+fm_layout <- "
+A
+B
+C
+D
+E
+G
+H"
+survbyspecies_densplot <- wrap_plots(A = (AGPE_surv_densplot), B = (ELRI_surv_densplot), C = (ELVI_surv_densplot), D = (FESU_surv_densplot), E = (LOAR_surv_densplot), G = (POAL_surv_densplot), H = (POSY_surv_densplot),
+design = fm_layout, guides = "collect") + plot_annotation(title = "Adult Survival", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(survbyspecies_densplot, filename = "survbyspecies_densplot.png", width = 8, height = 10)
+
+
+# Seedling Survival
+AGPE_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "AGPE", x = "Survival Status", y = "Density")
+ELRI_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "ELRI", x = "Survival Status", y = "Density")
+ELVI_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "ELVI", x = "Survival Status", y = "Density")
+FESU_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "FESU", x = "Survival Status", y = "Density")
+LOAR_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "LOAR", x = "Survival Status", y = "Density")
+POAL_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "POAL", x = "Survival Status", y = "Density")
+POSY_seedsurv_densplot <- filterspecies_densplot(data = LTREB_surv_seedling, data_list = seed_surv_data_list, sim = y_seed_s_sim, 
+                                             species = "POSY", x = "Survival Status", y = "Density")
+
+
+seedsurvbyspecies_densplot <- wrap_plots(A = (AGPE_seedsurv_densplot), B = (ELRI_seedsurv_densplot), C = (ELVI_seedsurv_densplot), D = (FESU_seedsurv_densplot), E = (LOAR_seedsurv_densplot), G = (POAL_seedsurv_densplot), H = (POSY_seedsurv_densplot),
+                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Seedling Survival", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(seedsurvbyspecies_densplot, filename = "seedsurvbyspecies_densplot.png", width = 8, height = 10)
+
+# Flowering
+
+AGPE_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "AGPE", x = "Flowering Status", y = "Density")
+ELRI_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "ELRI", x = "Flowering Status", y = "Density")
+ELVI_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "ELVI", x = "Flowering Status", y = "Density")
+FESU_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "FESU", x = "Flowering Status", y = "Density")
+LOAR_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "LOAR", x = "Flowering Status", y = "Density")
+POAL_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "POAL", x = "Flowering Status", y = "Density")
+POSY_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list = flw_data_list, sim = y_f_sim, 
+                                             species = "POSY", x = "Flowering Status", y = "Density")
+
+flwbyspecies_densplot <- wrap_plots(A = (AGPE_flw_densplot), B = (ELRI_flw_densplot), C = (ELVI_flw_densplot), D = (FESU_flw_densplot), E = (LOAR_flw_densplot), G = (POAL_flw_densplot), H = (POSY_flw_densplot),
+                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Flowering Probability", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(flwbyspecies_densplot, filename = "flwbyspecies_densplot.png", width = 8, height = 10)
+
+
+
+# Growth
+
+AGPE_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "AGPE", x = "Adult Growth", y = "Density", xlim = 50)
+ELRI_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "ELRI", x = "Adult Growth", y = "Density", xlim = 30)
+ELVI_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "ELVI", x = "Adult Growth", y = "Density", xlim = 30)
+FESU_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "FESU", x = "Adult Growth", y = "Density", xlim = 40)
+LOAR_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "LOAR", x = "Adult Growth", y = "Density", xlim = 50)
+POAL_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "POAL", x = "Adult Growth", y = "Density", xlim = 60)
+POSY_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_list = grow_data_list, sim = y_g_sim, 
+                                            species = "POSY", x = "Adult Growth", y = "Density", xlim = 50)
+
+
+growbyspecies_densplot <- wrap_plots(A = (AGPE_grow_densplot), B = (ELRI_grow_densplot), C = (ELVI_grow_densplot), D = (FESU_grow_densplot), E = (LOAR_grow_densplot), G = (POAL_grow_densplot), H = (POSY_grow_densplot),
+                                    design = fm_layout, guides = "collect") + plot_annotation(title = "Adult Growth", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(growbyspecies_densplot, filename = "growbyspecies_densplot.png", width = 8, height = 10)
+
+
+
+# Seedling Growth
+
+AGPE_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "AGPE", x = "Seedling Growth", y = "Density", xlim = 20)
+ELRI_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "ELRI", x = "Seedling Growth", y = "Density", xlim = 10)
+ELVI_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "ELVI", x = "Seedling Growth", y = "Density", xlim = 10)
+FESU_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "FESU", x = "Seedling Growth", y = "Density", xlim = 20)
+LOAR_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "LOAR", x = "Seedling Growth", y = "Density",  xlim = 30)
+POAL_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "POAL", x = "Seedling Growth", y = "Density",  xlim = 20)
+POSY_seedgrow_densplot <- filterspecies_densplot(data = LTREB_grow_seedling, data_list = seed_grow_data_list, sim = y_seed_g_sim, 
+                                             species = "POSY", x = "Seedling Growth", y = "Density",  xlim = 20)
+
+
+seedgrowbyspecies_densplot <- wrap_plots(A = (AGPE_seedgrow_densplot), B = (ELRI_seedgrow_densplot), C = (ELVI_seedgrow_densplot), D = (FESU_seedgrow_densplot), E = (LOAR_seedgrow_densplot), G = (POAL_seedgrow_densplot), H = (POSY_seedgrow_densplot),
+                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Seedling Growth", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(seedgrowbyspecies_densplot, filename = "seedgrowbyspecies_densplot.png", width = 8, height = 10)
+
+# Fertility
+AGPE_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "AGPE", x = "No. of Reproductive Tillers", y = "Density")
+ELRI_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "ELRI", x = "No. of Reproductive Tillers", y = "Density")
+ELVI_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "ELVI", x = "No. of Reproductive Tillers", y = "Density")
+FESU_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "FESU", x = "No. of Reproductive Tillers", y = "Density")
+LOAR_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "LOAR", x = "No. of Reproductive Tillers", y = "Density")
+POAL_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "POAL", x = "No. of Reproductive Tillers", y = "Density")
+POSY_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_list = fert_data_list, sim = y_fert_sim, 
+                                            species = "POSY", x = "No. of Reproductive Tillers", y = "Density")
+
+fertbyspecies_densplot <- wrap_plots(A = (AGPE_fert_densplot), B = (ELRI_fert_densplot), C = (ELVI_fert_densplot), D = (FESU_fert_densplot), E = (LOAR_fert_densplot), G = (POAL_fert_densplot), H = (POSY_fert_densplot),
+                                    design = fm_layout, guides = "collect") + plot_annotation(title = "Fertility", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(fertbyspecies_densplot, filename = "fertbyspecies_densplot.png", width = 8, height = 10)
+
+
+# Spikelet Count
+AGPE_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "AGPE", x = "Spikelets/Inflorescence", y = "Density")
+ELRI_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "ELRI", x = "Spikelets/Inflorescence", y = "Density")
+ELVI_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "ELVI", x = "Spikelets/Inflorescence", y = "Density")
+FESU_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "FESU", x = "Spikelets/Inflorescence", y = "Density")
+LOAR_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "LOAR", x = "Spikelets/Inflorescence", y = "Density")
+POAL_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "POAL", x = "Spikelets/Inflorescence", y = "Density")
+POSY_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_list = spike_data_list, sim = y_spike_sim, 
+                                             species = "POSY", x = "Spikelets/Inflorescence", y = "Density")
+
+spikebyspecies_densplot <- wrap_plots(A = (AGPE_spike_densplot), B = (ELRI_spike_densplot), C = (ELVI_spike_densplot), D = (FESU_spike_densplot), E = (LOAR_spike_densplot), G = (POAL_spike_densplot), H = (POSY_spike_densplot),
+                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Spikelet Production", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(spikebyspecies_densplot, filename = "spikebyspecies_densplot.png", width = 8, height = 10)
+
+# Spikelet Count
+# Need to rename the outcome variable because I had used seed in the past, and this function, I'm using 'y' for every other vital rate.
+seed_mean_data_list$y <- seed_mean_data_list$seed
+
+AGPE_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "AGPE", x = "Seeds/Spikelets", y = "Density")
+ELRI_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "ELRI", x = "Seeds/Spikelets", y = "Density")
+ELVI_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "ELVI", x = "Seeds/Spikelets", y = "Density")
+FESU_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "FESU", x = "Seeds/Spikelets", y = "Density")
+LOAR_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "LOAR", x = "Seeds/Spikelets", y = "Density")
+POAL_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "POAL", x = "Seeds/Spikelets", y = "Density")
+POSY_seedmean_densplot <- filterspecies_densplot(data = LTREB_data_for_seedmeans, data_list = seed_mean_data_list, sim = y_seedmean_sim, 
+                                              species = "POSY", x = "Seeds/Spikelets", y = "Density")
+
+seedmeanbyspecies_densplot <- wrap_plots(A = (AGPE_seedmean_densplot), B = (ELRI_seedmean_densplot), C = (ELVI_seedmean_densplot), D = (FESU_seedmean_densplot), E = (LOAR_seedmean_densplot), G = (POAL_seedmean_densplot), H = (POSY_seedmean_densplot),
+                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Seed Production", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(seedmeanbyspecies_densplot, filename = "seedmeanbyspecies_densplot.png", width = 8, height = 10)
+
+
+# Recruitment
+# Need to create a dataframe version of the s_to_s list
+rev_species_factor_key <- setNames(names(species_factor_key), species_factor_key)
+
+s_to_s_df <- data.frame(s_to_s_data_list) %>% 
+  mutate(species = as.character(recode(spp, !!!rev_species_factor_key)))
+
+AGPE_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "AGPE", x = "Spikelets/Inflorescence", y = "Density")
+ELRI_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "ELRI", x = "Spikelets/Inflorescence", y = "Density")
+ELVI_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "ELVI", x = "Spikelets/Inflorescence", y = "Density")
+FESU_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "FESU", x = "Spikelets/Inflorescence", y = "Density")
+LOAR_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "LOAR", x = "Spikelets/Inflorescence", y = "Density")
+POAL_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "POAL", x = "Spikelets/Inflorescence", y = "Density")
+POSY_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
+                                              species = "POSY", x = "Spikelets/Inflorescence", y = "Density")
+
+stosbyspecies_densplot <- wrap_plots(A = (AGPE_stos_densplot), B = (ELRI_stos_densplot), C = (ELVI_stos_densplot), D = (FESU_stos_densplot), E = (LOAR_stos_densplot), G = (POAL_stos_densplot), H = (POSY_stos_densplot),
+                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Spikelet Production", subtitle = "Vital rate fits and moments with 500 posterior draws")
+
+ggsave(stosbyspecies_densplot, filename = "stosbyspecies_densplot.png", width = 8, height = 10)
+
+
+
 ## Plot for size-specific moments for growth model minus seedlings, which have only one size ####
 ## could plot these for other vital rates if desired
 
