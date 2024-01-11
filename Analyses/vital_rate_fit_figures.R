@@ -683,23 +683,25 @@ rev_species_factor_key <- setNames(names(species_factor_key), species_factor_key
 s_to_s_df <- data.frame(s_to_s_data_list) %>% 
   mutate(species = as.character(recode(spp, !!!rev_species_factor_key)))
 
+s_to_s_data_list$y <- s_to_s_data_list$tot_recruit_t1
+
 AGPE_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "AGPE", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "AGPE", x = "Successful Germination", y = "Density", xlim = 30)
 ELRI_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "ELRI", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "ELRI", x = "Successful Germination", y = "Density", xlim = 30)
 ELVI_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "ELVI", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "ELVI", x = "Successful Germination", y = "Density", xlim = 20)
 FESU_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "FESU", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "FESU", x = "Successful Germination", y = "Density", xlim = 20)
 LOAR_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "LOAR", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "LOAR", x = "Successful Germination", y = "Density", xlim = 20)
 POAL_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "POAL", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "POAL", x = "Successful Germination", y = "Density", xlim = 10)
 POSY_stos_densplot <- filterspecies_densplot(data = s_to_s_df, data_list = s_to_s_data_list, sim = y_recruit_sim, 
-                                              species = "POSY", x = "Spikelets/Inflorescence", y = "Density")
+                                              species = "POSY", x = "Successful Germination", y = "Density", xlim = 30)
 
 stosbyspecies_densplot <- wrap_plots(A = (AGPE_stos_densplot), B = (ELRI_stos_densplot), C = (ELVI_stos_densplot), D = (FESU_stos_densplot), E = (LOAR_stos_densplot), G = (POAL_stos_densplot), H = (POSY_stos_densplot),
-                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Spikelet Production", subtitle = "Vital rate fits and moments with 500 posterior draws")
+                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Recruitment", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
 ggsave(stosbyspecies_densplot, filename = "stosbyspecies_densplot.png", width = 8, height = 10)
 
