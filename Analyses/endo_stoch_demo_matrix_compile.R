@@ -1,5 +1,5 @@
 ## Purpose: compile and save matrix population model from vital rate estimates for stochastic grass endophyte population model
-### Compiling these to share matrices with Robin Snyder
+### Compiling these to share matrices with Robin Snyder and to make a life cycle graph
 ## Authors: Joshua Fowler and Tom Miller
 #############################################################
 
@@ -10,6 +10,7 @@ library(popbio)
 # library(countreg)
 library(actuar)
 library(rstan)
+library(Rage)
 
 
 
@@ -270,4 +271,59 @@ image(GrassEndo_mean_list_of_matrices$Eminus$Agrostis_perennans$y2009)
 
 
 image(GrassEndo_mean_list_of_matrices$Eminus$Elymus_villosus$y2010)
+
+
+
+## Making an example life cycle graph 
+# Looking at one iteration of the matrix for ELVI in one year
+# and getting rid of the "extension" because I just want to visualize the actual max size
+
+
+for(e in 1){
+  for(s in 3){
+    for(y in 5){
+      for(i in 100){
+        name <- paste0("iter", i)
+        iter.list[[name]] <- bigmatrix(make_params(species=s,
+                                                   endo_mean=(e-1),
+                                                   endo_var=(e-1),
+                                                   original = 1, # should be =1 to represent recruit
+                                                   draw=post_draws[i],
+                                                   max_size=max_size,
+                                                   rfx=T,
+                                                   year=y+1,
+                                                   surv_par=surv_par,
+                                                   surv_sdlg_par = surv_sdlg_par,
+                                                   grow_par=grow_par,
+                                                   grow_sdlg_par = grow_sdlg_par,
+                                                   flow_par=flow_par,
+                                                   fert_par=fert_par,
+                                                   spike_par=spike_par,
+                                                   seed_par=seed_par,
+                                                   recruit_par=recruit_par),
+                                       extension = 0)$MPMmat # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
+        name <- paste0("y",year_vec[y])
+        year.list[[name]] <- iter.list
+      }
+      name <- paste0(spp_vec[s])
+      spp.list[[name]] <- year.list
+    }
+    name <- paste0(endo_vec[e])
+    endo.list[[name]] <- spp.list
+  }
+}
+
+saveRDS(endo.list, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/one_matrix_for_lifecyclegraph.rds")
+
+one_matrix <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/one_matrix_for_lifecyclegraph.rds")
+
+# Looking at the matrix
+image(one_matrix$Eminus$Elymus_virginicus$y2013$iter100)
+
+# making a lifecycle graph
+plot_life_cycle(one_matrix$Eminus$Elymus_virginicus$y2013$iter100,
+                stages = c("seedling", 1:filter(max_size, species == "ELVI")$max_size),
+                )
+repro_stages(one_matrix$Eminus$Elymus_virginicus$y2013$iter100)
+
 
