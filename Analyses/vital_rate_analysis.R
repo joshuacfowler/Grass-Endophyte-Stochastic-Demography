@@ -122,7 +122,7 @@ LTREB_data_forspike <- LTREB_full %>%
   dplyr::select(-FLW_COUNT_T, -FLW_STAT_T, -SPIKE_A_T, -SPIKE_B_T, -SPIKE_C_T, -SPIKE_D_T, -SPIKE_AGPE_MEAN_T, -census_month, -year, -spei1, -spei3, -spei12, -spei24, -annual_temp, -annual_precip, -endo_status_from_check, -plot_endo_for_check, -endo_mismatch, -dist_a, -dist_b) %>% 
   filter(!is.na(FLW_STAT_T1)) %>% 
   filter(FLW_STAT_T1>0) %>% 
-  melt(id.var = c("plot_fixed" ,   "plot_index",         "pos"         ,           "id",
+  reshape2::melt(id.var = c("plot_fixed" ,   "plot_index",         "pos"         ,           "id",
                   "species"       ,         "species_index"  ,        "endo_01",
                   "endo_index"  ,           "origin_01"       ,       "birth" ,
                   "year_t1"         ,       "year_t1_index"       ,   "surv_t1" ,
