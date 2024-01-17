@@ -56,6 +56,7 @@
 \usepackage{algpseudocode}%
 \usepackage{listings}%
 \usepackage{natbib}
+\usepackage{totcount}
 
 
 
@@ -157,7 +158,7 @@
 	{\hbox to \textwidth{{\Artcatfont\ArtType\hfill}\par}}
 	%% Aritle Title
 	\ifx\@title\empty\else%
-	\removelastskip\vskip20pt\nointerlineskip%
+	\removelastskip\vskip5pt\nointerlineskip%
 	{\Titlefont\@title\par}
 	%\addcontentsline{toc}{chapter}{\@title}% for bookmarks
 	\fi%
@@ -188,11 +189,13 @@
 	{\printcontrib\par}%
 	\vspace{-10pt}
 	{\printavailab\par}%
-	\vspace{40pt}
+	\vspace{15pt}
 	{\printarttype\par}%
 	{\printrunning\par}%
 	{\printkeywords\par}%
 	{\printfilecounts\par}%
+	\vspace{5pt}
+	{\textcolor{red}{Manuscript submitted following PNAS style guidelines and can be reformatted upon revision}\par}%
 	\newpage
 	{\printabstract\par}%
 	\newpage
@@ -266,7 +269,7 @@
 	%% Data accessibility  %%
 	%%==================================%%
 	\availab{Data will be made accessible as an Environmental Data Initiative package  online \textbf{DOI: updated here when available.}
-		Code for all analysis is available through \textbf{add github repo}}
+		Code for all analysis is available through \href{https://github.com/joshuacfowler/Grass-Endophyte-Stochastic-Demography}{https://github.com/joshuacfowler/Grass-Endophyte-Stochastic-Demography}}
 	
 	%%==================================%%
 	%% sample for unstructured abstract %%
@@ -278,7 +281,7 @@
 		We parameterized stochastic models using data from a 14-year symbiont-removal experiment including seven grass species that host \emph{Epichlo\"{e}} fungal endophytes. 
 	    Endophytes reduced variance in fitness by $>$ 10\%, on average.
 		Hosts with ``fast'' life history traits that lacked longevity as an intrinsic buffer benefited most from symbiont-mediated variance buffering. 
-		Under current climate, contributions of variance buffering were modest compared to symbiont benefits to mean fitness. 
+		Under current climate conditions, contributions of variance buffering were modest compared to symbiont benefits to mean fitness. 
 		However, simulations of increased stochasticity amplified benefits of variance buffering and made it the more important pathway of host-symbiont mutualism than elevated mean fitness.
 		Microbial-mediated variance buffering is likely an important, yet cryptic, mechanism of resilience in an increasingly variable world.
 	}
@@ -298,7 +301,7 @@
 	
 	\keywords{stochasticity, demography, symbiosis, mutualism, Epichlo\"{e}}
 	
-	\filecounts{Abstract ( XX words), Main Text (XX words), Figures (1-4); Supporting information Methods, Supporting Figures A1-A28, Supplemental Tables S1-S4}
+	\filecounts{Abstract ( 150 words), Main Text (5397 words), Figures (1-4); Supporting Information - Supplemental Methods, Supplemental Figures A1-A28, Supplemental Tables S1-S3, References (66)}
 	
 	%%\pacs[JEL Classification]{D8, H51}
 	
@@ -362,7 +365,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	We established experimental populations with vegetatively propagated clones of similar sizes. 
 	By starting the experiment with plants of similar sizes and the same number of unique genotypes, we aimed to limit any potential effects of heat treatments on initial plant growth \cite{rudgers2009benefits}.
 	
-	During the fall of 2007 and spring of 2008, we established 10 3x3 m. plots\footnote{I think they are 3 x 2.5} for \emph{A. perennans}, \emph{E. villosus}, \emph{E. virginicus}, \emph{F. subverticillata}, and \emph{L. arundinaceum}  and 18 plots for \emph{P. alsodes} and \emph{P. sylvestris}.
+	During the fall of 2007 and spring of 2008, we established 10 3x3 m. plots for \emph{A. perennans}, \emph{E. villosus}, \emph{E. virginicus}, \emph{F. subverticillata}, and \emph{L. arundinaceum}  and 18 plots for \emph{P. alsodes} and \emph{P. sylvestris}.
 	Half of the plots were randomly assigned to be planted with either symbiotic (S+) or symbiont-free (S-) plants, and initiated with 20 evenly spaced individuals labeled with aluminum tags.
 	In spring 2008, we placed plastic deer net fencing around each plot to limit deer herbivory and disturbance; damaged fences were regularly replaced.
 	
@@ -375,8 +378,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	For each plant remaining from the previous year, we determined survival, measured its size as a count of tillers, and collected reproductive data as counts of reproductive tillers and seed-bearing spikelets on all reproductive tillers to a maximum of three. 
 	We also tagged all unmarked individuals that were recruits from the previous years' seed production and collected the same demographic data. 
 	New recruits typically had one tiller and were non-reproductive. 
-	In 2008 and 2009, we took additional counts of seeds per inflorescence for all reproducing individuals in the plots to ground-truth our sub-sample estimates.\footnote{I don't know what subsample estimates this sentence is referring to.} 
-	For \emph{Agrostis perennans}, we also collected seed counts in 2010.\footnote{Is this sentence necessary?}
+	In 2008 through 2010, we took additional counts of seeds per inflorescence for all reproducing individuals in the plots to relate inflorescence and spikelet counts to seed production.
 	In 2018, we stopped collecting data for the exotic \emph{L. arundinaceum}, which had very high survival and low recruitment, and consequently very low variation across years.
 	%For each individual, our data recorded their transitions in size and reproduction from one year to the next. 
 	In total across 14 years, the dataset included demographic information for 16,789 individual host-plants and 31,216 transition-year observations.
@@ -387,13 +389,12 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	Additionally, we have rarely observed fungal stromata, the fruiting bodies by which \emph{Epichlo\"e} are potentially transmitted horizontally, provided the fly vector is also present \cite{bultman1995mutualistic}. 
 	For \emph{A. perennans}, \emph{F. subverticillata}, \emph{L. arundinaceum}, and \emph{P. alsodes}, we never observed stromata. 
 	We observed stromata only infrequently for \emph{E. villosus}, and even more rarely for \emph{E. virginicus} and \emph{P. sylvestris} (Table S2). 
-	For these species, stromata have only been observed on 35, 4, and 6 plants respectively, making up $< 0.3$\% of all censused plants (Supplemental data).\footnote{Check how Ecology Letters wants supplements or appendices referenced.}
-	%These stromata observations occurred irregularly across years; in most years there were no stromata during the census, and in a few years several plants produced stromata. 
+	For these species, stromata have only been observed irregularly across years on 35, 4, and 6 plants respectively, making up $< 0.3$\% of all censused plants.
 	
 	\subsection*{Vital rate modeling}
-	Equipped with these demographic data, we fit statistical models for survival, growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production (Fig. S1 - S10).\footnote{Not sure why you are referencing Supp figures here, they seem like results not methods.}  
+	Equipped with these demographic data, we fit statistical models for survival, growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production.
 	We fit these vital rates as generalized linear mixed models in a hierarchical Bayesian framework using RStan \cite{rstan2022} which allowed us to isolate endophyte effects on vital rate means and variances, borrow strength across species for some variance components, and propagate uncertainty from the individual-level vital rates to population projection models \cite{elderd2016quantifying}. 
-	All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance (Fig. S11 - S18).\footnote{Same comment}
+	All vital rate models included random plot and year effects, with separate estimates of year-to-year variance for symbiotic and symbiont-free plants, to quantify the effect of endophytes on inter-annual variance.
 	All parameters were given vague priors \cite{gabry2019visualization}.
 	We ran each vital rate model for 2500 warm-up and 2500 MCMC sampling iterations with three chains. 
 	We assessed model convergence with trace plots of posterior chains and checked for $\hat{R}$ values less than 1.01, indicating low within- and between-chain variation \cite{brooks1998general,gelman2006data}. 
@@ -472,7 +473,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	
 	Each of the vital rate functions in Eqns. \ref{eq:MPM_F} and \ref{eq:MPM_T} have separate intercepts and year random effects for symbiotic and symbiont-free populations, allowing us to calculate the effect of endophyte symbiosis on the mean, variance, and coefficient of variation (CV) of $\lambda$, the dominant eigenvalue of the year- and endophyte-specific projection matrix. 
 	This model treats climate drivers implictly through year-specific random effects. 
-	We also developed a climate-explicit version with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the Supporting Information Text.
+	We also developed a climate-explicit version with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the \emph{Supporting Information Supplemental Methods}.
 	
 	\subsection*{Life History Analysis}
 	
@@ -480,8 +481,8 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	Using the Rage package \cite{jones2022rcompadre}, we calculated $R_0$, longevity, and generation time from our estimated transition matrices using the symbiont-free mean matrix as the reference condition.
 	We recorded seed size as the average lemma length from the Flora of North America \cite{FloraNAonline}. 
 	We also calculated the 99th percentile of maximum observed age for each species from their S- populations.
-	Next, we fit Bayesian phylogenetic mixed-effects models using the brms package \cite{Burkner2017brms} to test the relationship between each life history trait and the effect of symbiosis on the CV of $\lambda$ (a measure of variance buffering) while controlling for phylogenetic non-independence between host (Fig. 26) and symbiont (Fig. S27) species.
-	We pruned species-level phylogenies of plants\cite{zanne2014three} and \emph{Epichlo\"{e}} fungi \cite{leuchtmann2014nomenclatural} to include the focal species.
+	Next, we fit Bayesian phylogenetic mixed-effects models using the brms package \cite{Burkner2017brms} to test the relationship between each life history trait and the effect of symbiosis on the CV of $\lambda$ (a measure of variance buffering) while controlling for phylogenetic non-independence between host and symbiont species.
+	We pruned species-level phylogenies of plants \cite{zanne2014three} and \emph{Epichlo\"{e}} fungi \cite{leuchtmann2014nomenclatural} to include the focal species.
 	\emph{Agrostis perennans} was not included in the tree, and so we used the congener \emph{A. hyemalis}. 
 	We defined separate phylogenetic covariance matrices for each pruned tree.
 	We propagated uncertainty in the estimated variance buffering effect $V$ with a measurement error model:
@@ -490,11 +491,11 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 		\begin{align}
 			V_{MEAN,h} \sim Normal(V_{EST,h}, V_{SD,h})\\
 			V_{EST,h} \sim Normal(\mu_h,\sigma)\\
-			\mu = \alpha + \beta*trait + \pi \\
+			\mu = \alpha + \beta*trait + \pi _j\\
 			\alpha \sim Normal(0,.5)\\
 			\beta \sim Normal(0,.1)\\
 			\sigma \sim Half-Normal(.04,.01)\\
-			\pi \sim Normal(0,\sigma_{\pi}*\mathbf{A})\\
+			\pi_h \sim MVN(0,\sigma_{\pi}\mathbf{A})\\
 			\sigma_{\pi} \sim Half-Normal(0,.1)
 		\end{align}
 	\end{subequations}
@@ -504,7 +505,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	The residual standard deviation is given by ($\sigma$). 
 	We used weakly informative prios to aid model convergence.
 	Each prior was centered at zero, except for the residual standard deviation, which we centered at the standard deviation of the estimated variance buffering effect, $.04$.
-	The phylogenetic random effect ($\pi$) has a standard deviation ($\sigma_{\pi}$) which is structured by the covariance matrix \textbf{A}.\footnote{I don't really know these methods so I trust you have thought through this, but equation 5g is not a coherent statistical statment. You are multiplying a scalar times a matrix, which gives a matrix. Is pi actually a vector and the distribution should be MVN?}
+	The phylogenetic random effect ($\pi$), which is modeled as a multivariate normal distribution, has a between-species standard deviation ($\sigma_{\pi}$) structured by the phylogenetic covariance matrix \textbf{A}.
 	We ran each MCMC sampling chain for 8000 warmup iterations and 2000 sampling iterations. 
 	We assessed model convergence as described for the vital rate models.
 	
@@ -525,14 +526,13 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	We created two scenarios of increased environmental variance by sampling the transition matrices associated with the six or two most extreme $\lambda$ values, representing the six or two best and worst years, using S- populations as the reference condition. 
 	%By sampling away from an average year in both directions, the mean value of annual growth rates remained similar across treatments ($\bar{\lambda}$ averaged across species: All years = 0.71; six extreme years = 0.71; two extreme years = 0.73; Fig. S21A), while the standard deviation more than doubled ($sd(\lambda)$ averaged across species: All years = 0.25; six extreme years = 0.34; two extreme years = 0.54 ; Fig. S21B), representing elevated environmental fluctuations.\footnote{I am not suggesting any changes but this sentence lets the cat out of the bag that the predicted growth rates are rapidly declining, which we will likely be asked to address.}
 	By sampling away from an average year in both directions, the six- and two- years scenarios increased the standard deviation of yearly host growth rates by $1.3$ and $2.1$ times, respectively, without changing mean growth rates ($<2.3$\% difference in $\overline{\lambda}$ between simulation treatments, Fig. S21).
-	We performed the same mean-variance decomposition for these scenarios as for the ambient conditions (all 13 years sampled) for all host species described above (Fig. S22).\footnote{This might be a holdover from other formats but again, do not reference results figures when you describe methods.} 
+	We performed the same mean-variance decomposition for these scenarios as for the ambient conditions (all 13 years sampled) for all host species described above.
 
 \section*{Results and Discussion}
-\footnote{should results and discussion be separate for EL?}
 \subsection*{Symbionts buffer host demographic variance}
 Across seven host species, eight vital rates, 14 years, and 16,789 individual plants, our analysis provided the first empirical evidence of symbiont-mediated variance buffering. 
-Endophytes reduced inter-annual variance for 66\% ($37$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate standard deviation: $-0.15$) (Fig 1A). 
-Endophytes also increased mean vital rates for the majority ($36$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate mean: $0.15$), and benefits were particularly strong for host survival, plant growth and recruitment (Fig. 1A).
+Endophytes reduced inter-annual variance for 66\% ($37$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate standard deviation: $-0.15$) (Fig 1A; Fig. S6 - Fig. S18). 
+Endophytes also increased mean vital rates for the majority ($36$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate mean: $0.15$), and benefits were particularly strong for host survival, plant growth and recruitment (Fig. 1A; Fig. S1 - Fig. S5).
 The magnitude of mean and variance effects differed among host species and vital rates.
 For example, endophytes modestly increased mean adult survival (Fig. 1C) and reduced variance in survival (Fig. 1D) for \emph{Festuca subverticillata}, while for \emph{Poa alsodes}, variance buffering was more apparent in seedling growth and inflorescence production (Fig 1E). 
 Interestingly, certain vital rates showed costs of endophyte symbiosis. 
@@ -567,7 +567,7 @@ Overall, the full effect of symbiosis on $\lambda_{S}$, averaged across host spe
 Contributions to this full effect derived from both mean and variance buffering effects, as well as a slightly negative interaction (i.e., the combined influence of mean and variance effects was smaller than the sum of their individual effects). 
 Endophytes' contributions to  $\lambda_{S}$ from mean effects were four times greater, averaged across species, than contributions from variance buffering (Fig. 4), suggesting that, under the regime of environmental variability represented by our 14-year study, dampened fluctuations in fitness via variance buffering was a far less important element of the benefits of symbiosis than increased mean fitness. 
 Results for individual host species were largely consistent with the cross-species trends (Fig S22). 
-The full effect of symbiosis on $\lambda_{S}$ was positive for seven out of eight host species, with statistical confidence ranging from 66\% to \>99\% certainty.
+The full effect of symbiosis on $\lambda_{S}$ was positive for seven out of eight host species, with statistical confidence ranging from 66\% to $>99\%$ certainty.
 The one exception was the host species \emph{P. sylvestris}, for which our analysis indicated that fungal endophytes were effectively neutral in their overall fitness effect (45\% and 55\% posterior probability of positive and negative effects; Fig S22). 
 
 
@@ -601,19 +601,52 @@ This research was supported by the National Science Foundation (grants 1754468 a
 
 \bmhead{Supplementary information} Supplementary information for this paper includes Supplementary Methods, Figs. A1 to A28, and Tables A1 to A3. 
 
-\newpage
+\clearpage
+
+
+\section*{Figures}
+
+\begin{figure*}[h]
+	\centering
+	\includegraphics[width=\linewidth]{StochDemo_fig1_Oct2023.png}
+	\caption{Endophyte symbiosis altered host vital rates.(A) Shading represents the posterior mean standardized effect size (Cohen's D) of endophyte symbiosis on mean or standard deviation of host vital rates (blue indicates that symbiosis increased the mean or standard deviation and red indicates a reduction). Endophytes' diverse vital rate effects include increased (B) mean growth of \emph{A. perennans} and (C) mean survival probability of \emph{F. subverticillata}. Endophyte presence also reduced inter-annual variance in (D) the survival of \emph{F. subverticillata} and (E) the fertility of \emph{P. alsodes}. In panels B-C, mean vital rate estimates are shown with 80\% credibles along with data binned by size for symbiotic (S+) and symbiont-free (S-) plants, while in panels D-E, annual vital rate estimates are shown along with data binned by size and census year. Organism silhouettes modified from "Festuca subverticillata" by Cindy Roch\'e and "Agrostis hyemalis" and "Poa alsodes" by Sandy Long \copyright Utah State University.}
+\end{figure*}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width =\linewidth]{StochDemo_fig2.png}
+	\caption{Mean and variance-buffering effects on fitness. Black circles indicate the average effect of endophytes along with 500 posterior draws (smaller colored circles) on the (A) mean and (B) coefficient of variation in $\lambda$ for each host species as well as a cross species mean. (C) For all hosts, endophytes either reduce variance, increase the mean, or both, and consequently when considering stochastic environments, the interactions are always at least potentially mutualistic.}
+\end{figure*}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=.8\linewidth]{StochDemo_fig3.png}
+	\caption{Host species with faster life history traits experience stronger effects of symbiont-mediated variance buffering. Regressions between life history traits describing the fast-slow life history continuum ((A) 99th percentile maximum age observed during long term censuses in years; (B) Seed size) and the effect of endophyte symbiosis on the coefficent of variation in population growth rate ($\lambda$). Each panel shows the fitted mean relationship (line) along with the 95\% credible interval.}
+\end{figure*}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=.8\linewidth]{StochDemo_fig4.png}
+	\caption{Cross-species average endophyte contributions to stochastic growth rates under observed and elevated variance. Endophyte symbiosis contributes to the total effect of mutualism on $\lambda_{S}$ through benefits to mean growth rates and through variance buffering as well as the interaction between mean and variance effects. Shapes indicate the posterior mean of each contribution averaged across the seven focal symbiota, along with bars for the 50, 75 and 95\% credible intervals.  The full effect of the symbiosis (circles) becomes more mutualistic under scenarios of increased variance (represented by color shading). Relative to the ambient scenario sampling transition matrices for all 13 transition years during the study period, simulations increased variance by sampling the most extreme six or two years years, leading to increased contributions from variance buffering effects (triangles) and a constant contribution from mean effects (squares).}
+\end{figure*}
+
+
+
+\clearpage
 
 \begin{appendices}
 
-\subsection*{Supplemental Methods}\label{secA}
+\section*{Supporting Information}\label{secA}
 
-\subsubsection*{Estimating climate drivers of environmental context-dependence}
-{
+\subsubsection*{Supplemental Methods}
+
+\subsubsection*{Estimating climate drivers of environmental context-dependence}{
+
 	To connect the variance buffering effects of endophytes with inter-annual variability in climate, we built climate-explicit stochastic matrix population models from the vital rate data in addition to the climate-implicit model described in the main text. 
 	Identifying the potentially complex relationships between vital rates and environmental drivers remains a key challenge for accurate forecasts of the ecological impacts of environmental stochasticity \cite{ehrlen2015predicting}.
 	We first downloaded temperature and precipitation data from a weather station in Bloomington, IN,  approx. 27 km from our study site, using the rnoaa package \cite{chamberlain2022package}. 
 	Compared to other weather stations in the area, the measurements from Bloomington contain the most complete climate record across the study period and are correlated with more local measurements from Nashville, IN for years in which local data are available (total daily precipitation: $R^2$ = .76; mean daily temperature: $R^2$ = .94).
-	The mean annual temperature across the study period was 11.9 $C^o $ (SD: 1.05 $C^o $) and the average annual precipitation was 1237.9 mm/year (SD: 204.89 mm/year) (Fig. A24).
+	The mean annual temperature across the study period was 11.9 $C^o $ (SD: 1.05 $C^o $) and the average annual precipitation was 1237.9 mm/year (SD: 204.89 mm/year) (Fig. S24).
 	Given the known role of endophytes in promoting host drought tolerance, we calculated the Standardised Precipitation-Evapotranspiration Index (SPEI) for 3 and 12 months preceding each annual censuses, reflecting drought during the growing season and across the year \cite{vicente2010multiscalar}.
 	To calculate SPEI, we used the Thornthwaite equation to model potential evapotranspiration as implemented in the SPEI R package \cite{begueria2013spei}
 	
@@ -633,9 +666,9 @@ This research was supported by the National Science Foundation (grants 1754468 a
 }
 \newpage
 
-\subsection*{Supplemental Figures A1-A28}\label{secA_figs}
+\subsection*{Supplemental Figures S1-S28}\label{secS_figs}
 
-
+\renewcommand\thefigure{S\arabic{figure}}   
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.6\linewidth]{surv_meanplot.png}
@@ -821,7 +854,7 @@ This research was supported by the National Science Foundation (grants 1754468 a
 	\centering
 	\includegraphics[width=\linewidth]{lh_epichloe_plot.png}
 	\label{fig:lh_epich}
-	\caption{Relationship between variance buffering and life history traits describing the fast-slow life history continuum accounting for phylogenetic covariance between \emph{Epichlo\"{e}} symbionts. Regressions between life history traits describing the fast-slow life history continuum ((A) 99th percentile maximum age observed during long term censuses in years; (B) Net reproductive rate; (C) Longevity; (D) Generation time in years; (G) Seed size) and the effect of endophyte symbiosis on the coefficent of variation in population growth rate ($\lambda$). Results are similar to regressions accounting for host plant phylogeny (Fig. A25), however symbionts are all within a single genus. Each panel shows the fitted mean relationship (line) along with the 95\% credible interval.}
+	\caption{Relationship between variance buffering and life history traits describing the fast-slow life history continuum accounting for phylogenetic covariance between \emph{Epichlo\"{e}} symbionts. Regressions between life history traits describing the fast-slow life history continuum ((A) 99th percentile maximum age observed during long term censuses in years; (B) Net reproductive rate; (C) Longevity; (D) Generation time in years; (G) Seed size) and the effect of endophyte symbiosis on the coefficent of variation in population growth rate ($\lambda$). Results are similar to regressions accounting for host plant phylogeny (Fig. S25), however symbionts are all within a single genus. Each panel shows the fitted mean relationship (line) along with the 95\% credible interval.}
 \end{figure}
 
 
@@ -832,9 +865,9 @@ This research was supported by the National Science Foundation (grants 1754468 a
 \end{figure}
 \newpage
 
-\subsection*{Supplemental Tables A1-A3}
+\subsection*{Supplemental Tables S1-S3}
  
-
+\renewcommand\thetable{S\arabic{table}}   
 
 \begin{sidewaystable}\centering
 	\caption{Summary of host-endophyte proprogation and transplant methods}
