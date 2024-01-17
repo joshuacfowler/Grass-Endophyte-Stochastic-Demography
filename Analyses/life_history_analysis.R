@@ -118,6 +118,8 @@ mean_life_expect <- array(dim = c(7,2,n_draws))
 var_life_expect <- array(dim = c(7,2,n_draws))
 R0 <- array(dim = c(7,2,n_draws))
 repro_age <- array(dim = c(7,2,n_draws))
+k_entropy <- array(dim = c(7,2,n_draws))
+d_entropy <- array(dim = c(7,2,n_draws))
 for(i in 1:length(post_draws)){
   for(e in 1:2){
     for(s in 1:7){
@@ -274,6 +276,57 @@ for(i in 1:length(post_draws)){
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
                                                    extension = 100)$Fmat)
+      k_entropy[s,e,i] <- entropy_k(lx = bigmatrix(make_params(species=s,
+                                                               endo_mean=(e-1),
+                                                               endo_var=(e-1),
+                                                               original = 0, # should be =1 to represent recruit
+                                                               draw=post_draws[i],
+                                                               max_size=max_size,
+                                                               rfx=F,
+                                                               surv_par=surv_par,
+                                                               surv_sdlg_par = surv_sdlg_par,
+                                                               grow_par=grow_par,
+                                                               grow_sdlg_par = grow_sdlg_par,
+                                                               flow_par=flow_par,
+                                                               fert_par=fert_par,
+                                                               spike_par=spike_par,
+                                                               seed_par=seed_par,
+                                                               recruit_par=recruit_par), 
+                                                   extension = 100)$Tmat) 
+      d_entropy[s,e,i] <- entropy_d(lx = bigmatrix(make_params(species=s,
+                                                               endo_mean=(e-1),
+                                                               endo_var=(e-1),
+                                                               original = 0, # should be =1 to represent recruit
+                                                               draw=post_draws[i],
+                                                               max_size=max_size,
+                                                               rfx=F,
+                                                               surv_par=surv_par,
+                                                               surv_sdlg_par = surv_sdlg_par,
+                                                               grow_par=grow_par,
+                                                               grow_sdlg_par = grow_sdlg_par,
+                                                               flow_par=flow_par,
+                                                               fert_par=fert_par,
+                                                               spike_par=spike_par,
+                                                               seed_par=seed_par,
+                                                               recruit_par=recruit_par), 
+                                                   extension = 100)$Tmat,
+                                    mx = bigmatrix(make_params(species=s,
+                                                               endo_mean=(e-1),
+                                                               endo_var=(e-1),
+                                                               original = 0, # should be =1 to represent recruit
+                                                               draw=post_draws[i],
+                                                               max_size=max_size,
+                                                               rfx=F,
+                                                               surv_par=surv_par,
+                                                               surv_sdlg_par = surv_sdlg_par,
+                                                               grow_par=grow_par,
+                                                               grow_sdlg_par = grow_sdlg_par,
+                                                               flow_par=flow_par,
+                                                               fert_par=fert_par,
+                                                               spike_par=spike_par,
+                                                               seed_par=seed_par,
+                                                               recruit_par=recruit_par), 
+                                                   extension = 100)$Fmat) 
     }
   }
 }
@@ -285,15 +338,20 @@ saveRDS(mean_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/
 saveRDS(var_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
 saveRDS(R0, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
 saveRDS(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age.rds")
+saveRDS(k_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
+saveRDS(d_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
 
 gen_time <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time.rds")
 longev <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev.rds")
 mean_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect.rds")
 var_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
 R0 <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
+k_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
+d_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
+
 # repro_age <- read_rds(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age.rds")
 
-gen_time_summary <- longev_summary <- mean_life_expect_summary <- var_life_expect_summary <-  R0_summary <- repro_age_summary <- matrix(NA,7,4)
+gen_time_summary <- longev_summary <- mean_life_expect_summary <- var_life_expect_summary <-  R0_summary <- repro_age_summary <- k_entropy_summary <- d_entropy_summary <- matrix(NA,7,4)
 for(s in 1:7){
   gen_time_summary[s,1] <- mean(gen_time[s,1,])
   gen_time_summary[s,2] <- mean(gen_time[s,2,])
@@ -325,6 +383,16 @@ for(s in 1:7){
   # repro_age_summary[s,1] <- mean(repro_age[s,1,])
   # repro_age_summary[s,2] <- mean(repro_age[s,2,])
   # repro_age_summary[s,3] <- mean(repro_age[s,,])
+  
+  k_entropy_summary[s,1] <- mean(k_entropy[s,1,])
+  k_entropy_summary[s,2] <- mean(k_entropy[s,2,])
+  k_entropy_summary[s,3] <- mean(k_entropy[s,,])
+  k_entropy_summary[s,4] <- sd(k_entropy[s,1,])
+  
+  d_entropy_summary[s,1] <- mean(d_entropy[s,1,])
+  d_entropy_summary[s,2] <- mean(d_entropy[s,2,])
+  d_entropy_summary[s,3] <- mean(d_entropy[s,,])
+  d_entropy_summary[s,4] <- sd(d_entropy[s,1,])
 }
 
 
@@ -409,6 +477,10 @@ traits_df$mean_life_expect <- mean_life_expect_summary[,1]
 traits_df$var_life_expect <- var_life_expect_summary[,1]
 traits_df$R0 <- R0_summary[,1]
 # traits_df$repro_age <- repro_age_summary[,3]
+traits_df$k_entropy <- k_entropy_summary[,1]
+traits_df$d_entropy <- d_entropy_summary[,1]
+
+
 traits_df$seed_size <- seed_size
 traits_df$imperfect_trans <- imperfect_trans
 
@@ -1242,7 +1314,7 @@ plant_models <- list()
 #                          iter = mcmc_pars$iter,
 #                          warmup = mcmc_pars$warmup,
 #                          save_pars = save_pars(latent = TRUE))
-plant_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(plant_label, cov = A)),
+plant_models[[1]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(plant_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = A),
@@ -1256,7 +1328,7 @@ plant_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(plant_l
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
-plant_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(plant_label, cov = A)),
+plant_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(plant_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = A),
@@ -1270,7 +1342,7 @@ plant_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(plant_label, co
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
-plant_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(plant_label, cov = A)),
+plant_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(plant_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = A),
@@ -1298,7 +1370,7 @@ plant_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(plant_label
 #                          iter = mcmc_pars$iter,
 #                          warmup = mcmc_pars$warmup,
 #                          save_pars = save_pars(latent = TRUE))
-plant_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(plant_label, cov = A)),
+plant_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(plant_label, cov = A)),
                        data = traits_df,
                        family = gaussian(),
                        data2 = list(A = A),
@@ -1312,7 +1384,7 @@ plant_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(plant_lab
                        iter = mcmc_pars$iter,
                        warmup = mcmc_pars$warmup,
                        save_pars = save_pars(latent = TRUE))
-plant_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(plant_label, cov = A)),
+plant_models[[5]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(plant_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = A),
@@ -1326,6 +1398,37 @@ plant_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(plant_la
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
+plant_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ k_entropy + (1|gr(plant_label, cov = A)),
+                         data = traits_df,
+                         family = gaussian(),
+                         data2 = list(A = A),
+                         prior = c(
+                           prior(normal(0, .1), "b"),
+                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0,.1), class = "sd", lb = 0),
+                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                         control = list(adapt_delta = 0.999,
+                                        max_treedepth = 20),
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         save_pars = save_pars(latent = TRUE))
+plant_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ d_entropy + (1|gr(plant_label, cov = A)),
+                         data = traits_df,
+                         family = gaussian(),
+                         data2 = list(A = A),
+                         prior = c(
+                           prior(normal(0, .1), "b"),
+                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0,.1), class = "sd", lb = 0),
+                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                         control = list(adapt_delta = 0.999,
+                                        max_treedepth = 20),
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         save_pars = save_pars(latent = TRUE))
+
+
+
 plant_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr(plant_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
