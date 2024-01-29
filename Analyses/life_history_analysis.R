@@ -1450,16 +1450,18 @@ saveRDS(plant_models, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plan
 plant_models <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_lh_models.rds")
 
 print(plant_models[[4]])
-pp_check(plant_models[[6]], ndraws = 100)
+# pp_check(plant_models[[7]], ndraws = 100)
 
 # making data for the prediction
-newdata <- data.frame(observed_max_age = seq(from = min(traits_df$observed_max_age), to = max(traits_df$observed_max_age), length.out = 50),
+newdata <- data.frame(#observed_max_age = seq(from = min(traits_df$observed_max_age), to = max(traits_df$observed_max_age), length.out = 50),
                       max_age_99 = seq(from = min(traits_df$max_age_99), to = max(traits_df$max_age_99), length.out = 50),
                       gen_time = seq(from = min(traits_df$gen_time), to = max(traits_df$gen_time), length.out = 50),
                       longev = seq(from = min(traits_df$longev), to = max(traits_df$longev), length.out = 50),
-                      mean_life_expect = seq(from = min(traits_df$mean_life_expect), to = max(traits_df$mean_life_expect), length.out = 50),
+                      #mean_life_expect = seq(from = min(traits_df$mean_life_expect), to = max(traits_df$mean_life_expect), length.out = 50),
                       R0 = seq(from = min(traits_df$R0), to = max(traits_df$R0), length.out = 50),
                       seed_size = seq(from = min(traits_df$seed_size), to = max(traits_df$seed_size), length.out = 50),
+                      k_entropy = seq(from = min(traits_df$k_entropy), to = max(traits_df$k_entropy), length.out = 50),
+                      d_entropy = seq(from = min(traits_df$d_entropy), to = max(traits_df$d_entropy), length.out = 50),
                       imperfect_trans = seq(from = min(traits_df$imperfect_trans), to = max(traits_df$imperfect_trans), length.out = 50),
                       cv_effect_sd = seq(from = min(traits_df$cv_effect_sd), to = max(traits_df$cv_effect_sd), length.out = 50),
                       plant_label = rep("new", 50),
@@ -1469,35 +1471,42 @@ newdata_plant_fit <- newdata %>%
   select(-epichloe_label) %>% 
   rename_with(.fn = str_c, pattern = ".x")  %>% 
   mutate(row_id = row_number()) %>% 
-mutate(observed_max_age.fit = fitted(plant_models[[1]], newdata, re_formula = NA, allow_new_levels = TRUE)[,1],
-       max_age_99.fit = fitted(plant_models[[2]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-       R0.fit = fitted(plant_models[[3]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-       longev.fit = fitted(plant_models[[4]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-       mean_life_expect.fit = fitted(plant_models[[5]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-       gen_time.fit =fitted(plant_models[[6]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-       seed_size.fit =fitted(plant_models[[7]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+mutate(#observed_max_age.fit = fitted(plant_models[[1]], newdata, re_formula = NA, allow_new_levels = TRUE)[,1],
+       max_age_99.fit = fitted(plant_models[[1]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       R0.fit = fitted(plant_models[[2]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       longev.fit = fitted(plant_models[[3]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       # mean_life_expect.fit = fitted(plant_models[[4]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       gen_time.fit =fitted(plant_models[[4]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       seed_size.fit =fitted(plant_models[[5]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       k_entropy.fit =fitted(plant_models[[6]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+       d_entropy.fit =fitted(plant_models[[7]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
        imperfect_trans.fit =fitted(plant_models[[8]], newdata = newdata, re_effects = NA,allow_new_levels = TRUE)[,1]) %>% 
-mutate(observed_max_age.lwr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         max_age_99.lwr = fitted(plant_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         R0.lwr = fitted(plant_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         longev.lwr = fitted(plant_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         mean_life_expect.lwr = fitted(plant_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         gen_time.lwr =fitted(plant_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         seed_size.lwr =fitted(plant_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+mutate(#observed_max_age.lwr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         max_age_99.lwr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         R0.lwr = fitted(plant_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         longev.lwr = fitted(plant_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         # mean_life_expect.lwr = fitted(plant_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         gen_time.lwr =fitted(plant_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         seed_size.lwr =fitted(plant_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         k_entropy.lwr =fitted(plant_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         d_entropy.lwr =fitted(plant_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
          imperfect_trans.lwr =fitted(plant_models[[8]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3]) %>%
-  mutate(observed_max_age.upr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         max_age_99.upr = fitted(plant_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         R0.upr = fitted(plant_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         longev.upr = fitted(plant_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         mean_life_expect.upr = fitted(plant_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         gen_time.upr =fitted(plant_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         seed_size.upr =fitted(plant_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+  mutate(#observed_max_age.upr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         max_age_99.upr = fitted(plant_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         R0.upr = fitted(plant_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         longev.upr = fitted(plant_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         #mean_life_expect.upr = fitted(plant_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         gen_time.upr =fitted(plant_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         seed_size.upr =fitted(plant_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         k_entropy.upr =fitted(plant_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         d_entropy.upr =fitted(plant_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
          imperfect_trans.upr =fitted(plant_models[[8]], newdata = newdata,re_formula = NA, allow_new_levels = TRUE,  probs = c(0.075, 0.975))[,4]) %>% 
   pivot_longer(cols = c(-row_id, -plant_label.x), names_to = c("name", "interval"), names_sep = "\\.") %>% 
   pivot_wider(id_cols = c(row_id,plant_label.x, name), names_from = interval, values_from = value) %>% 
   mutate(name_label = case_when(name == "observed_max_age" ~ "Obs. Max Age", name == "max_age_99" ~ "99th Percentile Max Age", name == "R0" ~ "R0",
                                 name == "longev" ~ "Longevity", name == "mean_life_expect" ~ "Mean Life Expectancy",
-                                name == "gen_time" ~ "Generation Time", name == "seed_size" ~ "Seed Length (mm)", name == "imperfect_trans" ~ "Imperfect Transmission Rate")) 
+                                name == "gen_time" ~ "Generation Time", name == "seed_size" ~ "Seed Length (mm)", 
+                                name == "k_entropy" ~ "Keyfitz Entropy", name == "d_entropy" ~ "Demetrius Entropy",  name == "imperfect_trans" ~ "Imperfect Transmission Rate")) 
 
 # Changing the name of species plot labelling purposes
 species_list <- c("A. perennans", "E. villosus", "E. virginicus", "F. subverticillata", "L. arundinaceae", "P. alsodes", "P. sylvestris")
@@ -1585,8 +1594,29 @@ ss_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "seed_size"))+
   theme(axis.title.x = element_text(size=10),
         legend.text = element_text(face = "italic"))+
   labs(x = "Seed Length (mm)", y = "", color = "Host Species")
-
 # ss_plant_plot
+
+k_entropy_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "k_entropy"))+
+  geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
+  geom_line(aes(y = fit, x = x))+
+  geom_point(data = traits_df, aes(y = cv_effect, x = k_entropy, color = species), size = 3)+
+  scale_color_manual(values = species_colors)+
+  theme_classic()+
+  theme(axis.title.x = element_text(size=10),
+        legend.text = element_text(face = "italic"))+
+  labs(x = "Keyfitz Entropy", y = "", color = "Host Species")
+# k_entropy_plant_plot
+
+d_entropy_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "d_entropy"))+
+  geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
+  geom_line(aes(y = fit, x = x))+
+  geom_point(data = traits_df, aes(y = cv_effect, x = d_entropy, color = species), size = 3)+
+  scale_color_manual(values = species_colors)+
+  theme_classic()+
+  theme(axis.title.x = element_text(size=10),
+        legend.text = element_text(face = "italic"))+
+  labs(x = "Demetrius Entropy", y = "", color = "Host Species")
+# d_entropy_plant_plot
 
 it_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "imperfect_trans"))+
   geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
@@ -1597,15 +1627,15 @@ it_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "imperfect_tran
   theme(axis.title.x = element_text(size=10),
         legend.text = element_text(face = "italic"))+
   labs(x = "Imperfect Transmission Rate", y = "", color = "Host Species")
-it_plant_plot
+# it_plant_plot
 
-stoch_demo_fig3 <- ma99_plant_plot + ss_plant_plot +
+stoch_demo_fig4 <- ma99_plant_plot + ss_plant_plot +
   plot_layout(nrow = 1, guides = "collect") + plot_annotation(tag_levels = "A") 
-ggsave(stoch_demo_fig3, filename = "StochDemo_fig3.png", width = 6, height = 2.5)
+ggsave(stoch_demo_fig4, filename = "StochDemo_fig4new.png", width = 6, height = 2.5)
 
 
 
-lh_plant_plot <- ma99_plant_plot + R0_plant_plot + longev_plant_plot + gt_plant_plot + ss_plant_plot +
+lh_plant_plot <- ma99_plant_plot + R0_plant_plot + longev_plant_plot + gt_plant_plot + ss_plant_plot + k_entropy_plant_plot + d_entropy_plant_plot +
   plot_layout(nrow = 2, guides = "collect") + plot_annotation(tag_levels = "A") 
 ggsave(lh_plant_plot, filename = "lh_plant_plot.png", width = 8.5, height = 4)
 
@@ -1620,36 +1650,42 @@ plant_posterior6 <- as.array(plant_models[[6]])
 plant_posterior7 <- as.array(plant_models[[7]])
 plant_posterior8 <- as.array(plant_models[[8]])
 
+# plant_posterior1_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior1)) %>% 
+#   mutate(trait = "Max Obs. Age") %>% rename(posterior = plant_posterior1) %>% 
+#   filter(variable == "b_observed_max_age")
 plant_posterior1_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior1)) %>% 
-  mutate(trait = "Max Obs. Age") %>% rename(posterior = plant_posterior1) %>% 
-  filter(variable == "b_observed_max_age")
-plant_posterior2_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior2)) %>% 
-  mutate(trait = "99th Perc. Max Age") %>% rename(posterior = plant_posterior2) %>% 
+  mutate(trait = "99th Perc. Max Age") %>% rename(posterior = plant_posterior1) %>% 
   filter(variable == "b_max_age_99")
-plant_posterior3_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior3)) %>% 
-  mutate(trait = "R0") %>% rename(posterior = plant_posterior3) %>% 
+plant_posterior2_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior2)) %>% 
+  mutate(trait = "R0") %>% rename(posterior = plant_posterior2) %>% 
   filter(variable == "b_R0")
-plant_posterior4_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior4)) %>% 
-  mutate(trait = "Longevity") %>% rename(posterior = plant_posterior4) %>% 
+plant_posterior3_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior3)) %>% 
+  mutate(trait = "Longevity") %>% rename(posterior = plant_posterior3) %>% 
   filter(variable == "b_longev")
-plant_posterior5_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior5)) %>% 
-  mutate(trait = "Mean Life Expectancy") %>% rename(posterior = plant_posterior5) %>% 
-  filter(variable == "b_mean_life_expect")
-plant_posterior6_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior6)) %>% 
-  mutate(trait = "Generation Time") %>% rename(posterior = plant_posterior6) %>% 
+# plant_posterior4_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior4)) %>% 
+#   mutate(trait = "Mean Life Expectancy") %>% rename(posterior = plant_posterior4) %>% 
+#   filter(variable == "b_mean_life_expect")
+plant_posterior4_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior4)) %>% 
+  mutate(trait = "Generation Time") %>% rename(posterior = plant_posterior4) %>% 
   filter(variable == "b_gen_time")
-plant_posterior7_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior7)) %>% 
-  mutate(trait = "Seed Size") %>% rename(posterior = plant_posterior7) %>% 
+plant_posterior5_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior5)) %>% 
+  mutate(trait = "Seed Size") %>% rename(posterior = plant_posterior5) %>% 
   filter(variable == "b_seed_size")
+plant_posterior6_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior6)) %>% 
+  mutate(trait = "Keyfitz Entropy") %>% rename(posterior = plant_posterior6) %>% 
+  filter(variable == "b_k_entropy")
+plant_posterior7_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior7)) %>% 
+  mutate(trait = "Demetrius Entropy") %>% rename(posterior = plant_posterior7) %>% 
+  filter(variable == "b_d_entropy")
 plant_posterior8_df <- as_tibble(cubelyr::as.tbl_cube(plant_posterior8)) %>% 
-  mutate(trait = "Imperfect Transmission Rate") %>% rename(posterior = plant_posterior8) %>% 
+  mutate(trait = "Imperfect Transmission") %>% rename(posterior = plant_posterior8) %>% 
   filter(variable == "b_imperfect_trans")
 
 
-plant_posterior_df <- rbind(plant_posterior2_df, plant_posterior3_df, plant_posterior4_df, plant_posterior6_df, plant_posterior7_df, plant_posterior8_df) %>% 
+plant_posterior_df <- rbind(plant_posterior1_df, plant_posterior2_df, plant_posterior3_df, plant_posterior4_df, plant_posterior5_df, plant_posterior6_df, plant_posterior7_df, plant_posterior8_df) %>% 
   mutate(if_positive = case_when(posterior>0 ~ TRUE,
                                  posterior<0 ~ FALSE)) %>% 
-  mutate(trait = factor(trait, levels = c("Max Obs. Age", "99th Perc. Max Age", "R0", "Longevity", "Mean Life Expectancy", "Generation Time","Seed Size","Imperfect Transmission Rate"))) %>% 
+  mutate(trait = factor(trait, levels = c("99th Perc. Max Age", "R0", "Longevity","Generation Time","Seed Size", "Keyfitz Entropy", "Demetrius Entropy", "Imperfect Transmission Rate"))) %>% 
   filter(trait != "Mean Life Expectancy", trait != "Max Obs. Age", trait != "Imperfect Transmission Rate")
 
 # calculating the probability of positive slopes for the MS
@@ -1678,7 +1714,7 @@ lh_plant_slopes_plot <- ggplot(data = plant_posterior_df)+
         axis.text.y = element_blank())+
         # axis.text.x = element_text(vjust = 1.5, hjust = 1.5, angle = 45))+
   labs(x = "Slope Estimate",  y = "") + guides(fill = "none")
-lh_plant_slopes_plot
+# lh_plant_slopes_plot
 ggsave(lh_plant_slopes_plot, filename = "lh_plant_slopes_plot.png", height = 5, width = 3.5)
 
 
@@ -1686,9 +1722,17 @@ ggsave(lh_plant_slopes_plot, filename = "lh_plant_slopes_plot.png", height = 5, 
 #   plot_layout(nrow = 1, widths = c(2,1)) + plot_annotation(tag_levels = "A")
 # ggsave(lh_plant_plot_combo, filename = "lh_plant_plot_combo.png", width = 10, height = 8)
 
+#### Calculating the phylogenetic signal for each####
 
+hyp <- "sd_plant_label__Intercept^2 / (sd_plant_label__Intercept^2 + sigma^2) = 0"
+pagels_lambda <- list()
+for(t in 1:8){
+pagels_lambda[[t]] <-  hypothesis(plant_models[[t]], hyp, class = NULL)
+}
 
-# Now fitting models for the endophyte phylogeny
+saveRDS(pagels_lambda, "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_pagels_lambdas.rds")
+
+#### Now fitting models for the endophyte phylogeny #####
 epichloe_models <- list()
 # epichloe_models[[1]] <- brm(cv_effect|mi(cv_effect_sd) ~ observed_max_age + (1|gr(epichloe_label, cov = A)),
 #                          data = traits_df,
@@ -1704,7 +1748,7 @@ epichloe_models <- list()
 #                          iter = mcmc_pars$iter,
 #                          warmup = mcmc_pars$warmup,
 #                          save_pars = save_pars(latent = TRUE))
-epichloe_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(epichloe_label, cov = A)),
+epichloe_models[[1]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = Ae),
@@ -1718,7 +1762,7 @@ epichloe_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(epic
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
-epichloe_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(epichloe_label, cov = A)),
+epichloe_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = Ae),
@@ -1732,7 +1776,8 @@ epichloe_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(epichloe_lab
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
-epichloe_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(epichloe_label, cov = A)),
+
+epichloe_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = Ae),
@@ -1760,7 +1805,7 @@ epichloe_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(epichloe
 #                          iter = mcmc_pars$iter,
 #                          warmup = mcmc_pars$warmup,
 #                          save_pars = save_pars(latent = TRUE))
-epichloe_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(epichloe_label, cov = A)),
+epichloe_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = Ae),
@@ -1774,7 +1819,7 @@ epichloe_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(epichl
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
-epichloe_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(epichloe_label, cov = A)),
+epichloe_models[[5]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
                          data2 = list(A = Ae),
@@ -1788,6 +1833,37 @@ epichloe_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(epich
                          iter = mcmc_pars$iter,
                          warmup = mcmc_pars$warmup,
                          save_pars = save_pars(latent = TRUE))
+
+epichloe_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ k_entropy + (1|gr(epichloe_label, cov = A)),
+                         data = traits_df,
+                         family = gaussian(),
+                         data2 = list(A = Ae),
+                         prior = c(
+                           prior(normal(0, .1), "b"),
+                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0,.1), class = "sd", lb = 0),
+                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                         control = list(adapt_delta = 0.999,
+                                        max_treedepth = 20),
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         save_pars = save_pars(latent = TRUE))
+epichloe_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ d_entropy + (1|gr(epichloe_label, cov = A)),
+                         data = traits_df,
+                         family = gaussian(),
+                         data2 = list(A = Ae),
+                         prior = c(
+                           prior(normal(0, .1), "b"),
+                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0,.1), class = "sd", lb = 0),
+                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                         control = list(adapt_delta = 0.999,
+                                        max_treedepth = 20),
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         save_pars = save_pars(latent = TRUE))
+
+
 epichloe_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr(epichloe_label, cov = A)),
                          data = traits_df,
                          family = gaussian(),
@@ -1814,35 +1890,42 @@ newdata_epichloe_fit <- newdata %>%
   select(-plant_label) %>% 
   rename_with(.fn = str_c, pattern = ".x")  %>% 
   mutate(row_id = row_number()) %>% 
-  mutate(observed_max_age.fit = fitted(epichloe_models[[1]], newdata, re_formula = NA, allow_new_levels = TRUE)[,1],
-         max_age_99.fit = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-         R0.fit = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-         longev.fit = fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-         mean_life_expect.fit = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-         gen_time.fit =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
-         seed_size.fit =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+  mutate(#observed_max_age.fit = fitted(epichloe_models[[1]], newdata, re_formula = NA, allow_new_levels = TRUE)[,1],
+         max_age_99.fit = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         R0.fit = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         longev.fit = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         #mean_life_expect.fit = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         gen_time.fit =fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         seed_size.fit =fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         k_entropy.fit =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
+         d_entropy.fit =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA,allow_new_levels = TRUE)[,1],
          imperfect_trans.fit =fitted(epichloe_models[[8]], newdata = newdata, re_effects = NA,allow_new_levels = TRUE)[,1]) %>% 
-  mutate(observed_max_age.lwr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         max_age_99.lwr = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         R0.lwr = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         longev.lwr = fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         mean_life_expect.lwr = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         gen_time.lwr =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
-         seed_size.lwr =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+  mutate(#observed_max_age.lwr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         max_age_99.lwr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         R0.lwr = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         longev.lwr = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         #mean_life_expect.lwr = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         gen_time.lwr =fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         seed_size.lwr =fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         k_entropy.lwr =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
+         d_entropy.lwr =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3],
          imperfect_trans.lwr =fitted(epichloe_models[[8]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,3]) %>%
-  mutate(observed_max_age.upr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         max_age_99.upr = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         R0.upr = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         longev.upr = fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         mean_life_expect.upr = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         gen_time.upr =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
-         seed_size.upr =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+  mutate(#observed_max_age.upr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         max_age_99.upr = fitted(epichloe_models[[1]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         R0.upr = fitted(epichloe_models[[2]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         longev.upr = fitted(epichloe_models[[3]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         #mean_life_expect.upr = fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         gen_time.upr =fitted(epichloe_models[[4]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         seed_size.upr =fitted(epichloe_models[[5]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         k_entropy.upr =fitted(epichloe_models[[6]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
+         d_entropy.upr =fitted(epichloe_models[[7]], newdata = newdata, re_formula = NA, allow_new_levels = TRUE, probs = c(0.075, 0.975))[,4],
          imperfect_trans.upr =fitted(epichloe_models[[8]], newdata = newdata,re_formula = NA, allow_new_levels = TRUE,  probs = c(0.075, 0.975))[,4]) %>% 
   pivot_longer(cols = c(-row_id, -epichloe_label.x), names_to = c("name", "interval"), names_sep = "\\.") %>% 
   pivot_wider(id_cols = c(row_id,epichloe_label.x, name), names_from = interval, values_from = value) %>% 
   mutate(name_label = case_when(name == "observed_max_age" ~ "Obs. Max Age", name == "max_age_99" ~ "99th Percentile Max Age", name == "R0" ~ "R0",
                                 name == "longev" ~ "Longevity", name == "mean_life_expect" ~ "Mean Life Expectancy",
-                                name == "gen_time" ~ "Generation Time", name == "seed_size" ~ "Seed Length (mm)", name == "imperfect_trans" ~ "Imperfect Transmission Rate")) 
+                                name == "gen_time" ~ "Generation Time", name == "seed_size" ~ "Seed Length (mm)", 
+                                name == "k_entropy" ~ "Keyfitz Entropy", name == "d_entropy" ~ "Demetrius Entropy", name == "imperfect_trans" ~ "Imperfect Transmission Rate")) 
 
 
 
@@ -1924,6 +2007,28 @@ ss_epichloe_plot <- ggplot(data = filter(newdata_epichloe_fit, name == "seed_siz
   labs(x = "Seed Length (mm)", y = "", color = "Host Species")
 # ss_epichloe_plot
 
+k_entropy_epichloe_plot <- ggplot(data = filter(newdata_epichloe_fit, name == "k_entropy"))+
+  geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
+  geom_line(aes(y = fit, x = x))+
+  geom_point(data = traits_df, aes(y = cv_effect, x = k_entropy, color = species), size = 3)+
+  scale_color_manual(values = species_colors)+
+  theme_classic()+
+  theme(axis.title.x = element_text(size=10),
+        legend.text = element_text(face = "italic"))+
+  labs(x = "Keyfitz Entropy", y = "", color = "Host Species")
+# k_entropy_epichloe_plot
+
+d_entropy_epichloe_plot <- ggplot(data = filter(newdata_epichloe_fit, name == "d_entropy"))+
+  geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
+  geom_line(aes(y = fit, x = x))+
+  geom_point(data = traits_df, aes(y = cv_effect, x = d_entropy, color = species), size = 3)+
+  scale_color_manual(values = species_colors)+
+  theme_classic()+
+  theme(axis.title.x = element_text(size=10),
+        legend.text = element_text(face = "italic"))+
+  labs(x = "Demetrius Entropy", y = "", color = "Host Species")
+# d_entropy_epichloe_plot
+
 # it_epichloe_plot <- ggplot(data = filter(newdata_epichloe_fit, name == "imperfect_trans"))+
 #   geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
 #   geom_line(aes(y = fit, x = x))+
@@ -1933,11 +2038,12 @@ ss_epichloe_plot <- ggplot(data = filter(newdata_epichloe_fit, name == "seed_siz
 #   theme(axis.title.x = element_text(size=10),
 #         legend.text = element_text(face = "italic"))+
 #   labs(x = "Imperfect Transmission Rate", y = "", color = "Host Species")
-# # it_epichloe_plot
+# it_epichloe_plot
 
-lh_epichloe_plot <- ma99_epichloe_plot + R0_epichloe_plot + longev_epichloe_plot + gt_epichloe_plot + ss_epichloe_plot +
+lh_epichloe_plot <- ma99_epichloe_plot + R0_epichloe_plot + longev_epichloe_plot + gt_epichloe_plot + ss_epichloe_plot + k_entropy_epichloe_plot + d_entropy_epichloe_plot+
   plot_layout(nrow = 2, guides = "collect") + plot_annotation(tag_levels = "A") 
 ggsave(lh_epichloe_plot, filename = "lh_epichloe_plot.png", width = 8.5, height = 4)
+
 
 
 # Histograms of the slope estimates
@@ -1950,36 +2056,42 @@ epichloe_posterior6 <- as.array(epichloe_models[[6]])
 epichloe_posterior7 <- as.array(epichloe_models[[7]])
 epichloe_posterior8 <- as.array(epichloe_models[[8]])
 
+# epichloe_posterior1_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior1)) %>% 
+#   mutate(trait = "Max Obs. Age") %>% rename(posterior = epichloe_posterior1) %>% 
+#   filter(variable == "b_observed_max_age")
 epichloe_posterior1_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior1)) %>% 
-  mutate(trait = "Max Obs. Age") %>% rename(posterior = epichloe_posterior1) %>% 
-  filter(variable == "b_observed_max_age")
-epichloe_posterior2_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior2)) %>% 
-  mutate(trait = "99th Perc. Max Age") %>% rename(posterior = epichloe_posterior2) %>% 
+  mutate(trait = "99th Perc. Max Age") %>% rename(posterior = epichloe_posterior1) %>% 
   filter(variable == "b_max_age_99")
-epichloe_posterior3_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior3)) %>% 
-  mutate(trait = "R0") %>% rename(posterior = epichloe_posterior3) %>% 
+epichloe_posterior2_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior2)) %>% 
+  mutate(trait = "R0") %>% rename(posterior = epichloe_posterior2) %>% 
   filter(variable == "b_R0")
-epichloe_posterior4_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior4)) %>% 
-  mutate(trait = "Longevity") %>% rename(posterior = epichloe_posterior4) %>% 
+epichloe_posterior3_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior3)) %>% 
+  mutate(trait = "Longevity") %>% rename(posterior = epichloe_posterior3) %>% 
   filter(variable == "b_longev")
-epichloe_posterior5_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior5)) %>% 
-  mutate(trait = "Mean Life Expectancy") %>% rename(posterior = epichloe_posterior5) %>% 
-  filter(variable == "b_mean_life_expect")
-epichloe_posterior6_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior6)) %>% 
-  mutate(trait = "Generation Time") %>% rename(posterior = epichloe_posterior6) %>% 
+# epichloe_posterior5_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior5)) %>% 
+#   mutate(trait = "Mean Life Expectancy") %>% rename(posterior = epichloe_posterior5) %>% 
+#   filter(variable == "b_mean_life_expect")
+epichloe_posterior4_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior4)) %>% 
+  mutate(trait = "Generation Time") %>% rename(posterior = epichloe_posterior4) %>% 
   filter(variable == "b_gen_time")
-epichloe_posterior7_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior7)) %>% 
-  mutate(trait = "Seed Size") %>% rename(posterior = epichloe_posterior7) %>% 
+epichloe_posterior5_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior5)) %>% 
+  mutate(trait = "Seed Size") %>% rename(posterior = epichloe_posterior5) %>% 
   filter(variable == "b_seed_size")
+epichloe_posterior6_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior6)) %>% 
+  mutate(trait = "Keyfitz Entropy") %>% rename(posterior = epichloe_posterior6) %>% 
+  filter(variable == "b_k_entropy")
+epichloe_posterior7_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior7)) %>% 
+  mutate(trait = "Demetrius Entropy") %>% rename(posterior = epichloe_posterior7) %>% 
+  filter(variable == "b_d_entropy")
 epichloe_posterior8_df <- as_tibble(cubelyr::as.tbl_cube(epichloe_posterior8)) %>% 
   mutate(trait = "Imperfect Transmission Rate") %>% rename(posterior = epichloe_posterior8) %>% 
   filter(variable == "b_imperfect_trans")
 
 
-epichloe_posterior_df <- rbind(epichloe_posterior2_df, epichloe_posterior3_df, epichloe_posterior4_df, epichloe_posterior6_df, epichloe_posterior7_df, epichloe_posterior8_df) %>% 
+epichloe_posterior_df <- rbind(epichloe_posterior1_df, epichloe_posterior2_df, epichloe_posterior3_df, epichloe_posterior4_df, epichloe_posterior5_df, epichloe_posterior6_df, epichloe_posterior7_df, epichloe_posterior8_df) %>% 
   mutate(if_positive = case_when(posterior>0 ~ TRUE,
                                  posterior<0 ~ FALSE)) %>% 
-  mutate(trait = factor(trait, levels = c("Max Obs. Age", "99th Perc. Max Age", "R0", "Longevity", "Mean Life Expectancy", "Generation Time","Seed Size","Imperfect Transmission Rate"))) %>% 
+  mutate(trait = factor(trait, levels = c("Max Obs. Age", "99th Perc. Max Age", "R0", "Longevity", "Mean Life Expectancy", "Generation Time","Seed Size","Keyfitz Entropy", "Demetrius Entropy", "Imperfect Transmission Rate"))) %>% 
   filter(trait != "Mean Life Expectancy", trait != "Max Obs. Age", trait != "Imperfect Transmission Rate")
 
 # calculating the probability of positive slopes for the MS
@@ -2021,10 +2133,109 @@ ggsave(lh_slopes_plot, filename = "lh_slopes_plot.png", height = 5, width = 6)
 
 
 
+#### Calculating the phylogenetic signal for each####
+
+hyp <- "sd_epichloe_label__Intercept^2 / (sd_epichloe_label__Intercept^2 + sigma^2) = 0"
+pagels_lambda <- list()
+for(t in 1:8){
+  pagels_lambda[[t]] <-  hypothesis(epichloe_models[[t]], hyp, class = NULL)
+}
+
+saveRDS(pagels_lambda, "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_pagels_lambdas.rds")
+
+
+pagels_lambda[[1]]
+
+
+########################################################################
+#######  Making a plot of the model posteriors #########################
+########################################################################
+parameter_key <- c("b_Intercept" = expression(paste(alpha)), 
+                   "b_max_age_99" = expression(paste(beta, "- Max Age")),  "b_R0" = expression(paste(beta, "- R0")), 
+                   "b_longev" = expression(paste(beta, "- Longevity")),  "b_gen_time" = expression(paste(beta, "- Generation Time")), 
+                   "b_seed_size" = expression(paste(beta, "- Seed Size")),  "b_k_entropy" = expression(paste(beta, "- K Entropy")),
+                   "b_d_entropy" = expression(paste(beta, "- D Entropy")),
+                   "r_plant_label[Agrostis_hyemalis,Intercept]" = expression(paste(pi[h], "- AGPE")), "r_plant_label[Elymus_hystrix,Intercept]" = expression(paste(pi[h], "- ELRI")),
+                   "r_plant_label[Elymus_virginicus,Intercept]" = expression(paste(pi[h], "- ELVI")), "r_plant_label[Festuca_arundinacea,Intercept]" = expression(paste(pi[h], "- LOAR")),
+                   "r_plant_label[Festuca_subverticillata,Intercept]" = expression(paste(pi[h], "- FESU")), "r_plant_label[Poa_alsodes,Intercept]" = expression(paste(pi[h], "- POAL")),
+                   "r_plant_label[Poa_sylvestris,Intercept]" = expression(paste(pi[h], "- POSY")),
+                   "sd_plant_label__Intercept" = expression(paste(sigma[pi])),
+                   "sigma" = expression(paste(sigma)))
+                   
+
+ma99_posteriors_plant_plot <- mcmc_areas(plant_models[[1]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "99th perc. Max Age") + scale_y_discrete(labels = parameter_key, limits=rev)
+# ma99_posteriors_plant_plot
+
+R0_posteriors_plant_plot <- mcmc_areas(plant_models[[2]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "R0") + scale_y_discrete(labels = parameter_key, limits=rev)
+# R0_posteriors_plant_plot
+
+longev_posteriors_plant_plot <- mcmc_areas(plant_models[[3]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "Longevity") + scale_y_discrete(labels = parameter_key, limits=rev)
+# longev_posteriors_plant_plot
+
+gen_time_posteriors_plant_plot <- mcmc_areas(plant_models[[4]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "Generation Time") + scale_y_discrete(labels = parameter_key, limits=rev)
+# gen_time_posteriors_plant_plot
+
+seedsize_posteriors_plant_plot <- mcmc_areas(plant_models[[5]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "Seed Size") + scale_y_discrete(labels = parameter_key, limits=rev)
+# seedsize_posteriors_plant_plot
+
+k_entropy_posteriors_plant_plot <- mcmc_areas(plant_models[[6]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "Keyfitz Entropy") + scale_y_discrete(labels = parameter_key, limits=rev)
+# k_entropy_posteriors_plant_plot
+
+d_entropy_posteriors_plant_plot <- mcmc_areas(plant_models[[7]], prob = 0.8, regex_pars = c("b", "sd", "sd_plant_label_intercept", "sigma")) + theme_minimal() +labs(title = "Demetrius Entropy") + scale_y_discrete(labels = parameter_key, limits=rev)
+# d_entropy_posteriors_plant_plot
+
+lh_allposteriors_plant_plot <- ma99_posteriors_plant_plot + R0_posteriors_plant_plot + longev_posteriors_plant_plot + gen_time_posteriors_plant_plot + seedsize_posteriors_plant_plot + k_entropy_posteriors_plant_plot + d_entropy_posteriors_plant_plot +
+  plot_layout(nrow = 2)
+
+ggsave(lh_allposteriors_plant_plot, filename = "lh_allposteriors_plant_plot.png", width = 10, height = 8)
 
 
 
-####3
+epichloe_parameter_key <- c("b_Intercept" = expression(paste(alpha)), 
+                   "b_max_age_99" = expression(paste(beta, "- Max Age")),  "b_R0" = expression(paste(beta, "- R0")), 
+                   "b_longev" = expression(paste(beta, "- Longevity")),  "b_gen_time" = expression(paste(beta, "- Generation Time")), 
+                   "b_seed_size" = expression(paste(beta, "- Seed Size")),  "b_k_entropy" = expression(paste(beta, "- K Entropy")),
+                   "b_d_entropy" = expression(paste(beta, "- D Entropy")),
+                   "r_epichloe_label[Epichloe_amarillans_ATCC_200744_ex._Agrostis_hyemalis,Intercept]" = expression(paste(pi[h], "- AGPE")), "r_epichloe_label[Epichloe_elymi_ATCC_201555_ex._Elymus_villosus,Intercept]" = expression(paste(pi[h], "- ELRI")),
+                   "r_epichloe_label[Epichloe_amarillans_E1087_ex._Elymus_virginicus,Intercept]" = expression(paste(pi[h], "- ELVI")), "r_epichloe_label[Epichloe_coenophiala_ATCC_90664_tubBty_ex._Schedonorus_arundinaceus_6x,Intercept]" = expression(paste(pi[h], "- LOAR")),
+                   "r_epichloe_label[Epichloe_sp._FalTG1_e507_tubBbo_ex._Festuca_altissima,Intercept]" = expression(paste(pi[h], "- FESU")), "r_epichloe_label[Epichloe_sp._PauTG1_e55_tubBty_ex._Poa_autumnalis,Intercept]" = expression(paste(pi[h], "- POAL")),
+                   "r_epichloe_label[Epichloe_typhina_subsp._poae_e1097_ex._Poa_sylvestris,Intercept]" = expression(paste(pi[h], "- POSY")),
+                   "sd_epichloe_label__Intercept" = expression(paste(sigma[pi])),
+                   "sigma" = expression(paste(sigma)))
+
+ma99_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[1]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma"))  + theme_minimal() +labs(title = "99th perc. Max Age") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# ma99_posteriors_epichloe_plot
+
+R0_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[2]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "R0") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# R0_posteriors_epichloe_plot
+
+longev_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[3]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "Longevity") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# longev_posteriors_epichloe_plot
+
+gen_time_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[4]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "Generation Time") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# gen_time_posteriors_epichloe_plot
+
+seedsize_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[5]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "Seed Size") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# seedsize_posteriors_epichloe_plot
+
+k_entropy_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[6]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "Keyfitz Entropy") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# k_entropy_posteriors_epichloe_plot
+
+d_entropy_posteriors_epichloe_plot <- mcmc_areas(epichloe_models[[7]], prob = 0.8, regex_pars = c("b", "sd", "sd_epichloe_label_intercept", "sigma")) + theme_minimal() +labs(title = "Demetrius Entropy") + scale_y_discrete(labels = epichloe_parameter_key, limits=rev)
+# d_entropy_posteriors_epichloe_plot
+
+lh_allposteriors_epichloe_plot <- ma99_posteriors_epichloe_plot + R0_posteriors_epichloe_plot + longev_posteriors_epichloe_plot + gen_time_posteriors_epichloe_plot + seedsize_posteriors_epichloe_plot + k_entropy_posteriors_epichloe_plot + d_entropy_posteriors_epichloe_plot +
+  plot_layout(nrow = 2)
+
+ggsave(lh_allposteriors_epichloe_plot, filename = "lh_allposteriors_epichloe_plot.png", width = 10, height = 8)
+
+lh_allposteriors_plot <- lh_allposteriors_plant_plot/lh_allposteriors_epichloe_plot+
+  plot_layout(nrow = 2) +plot_annotation(tag_levels = "A")
+
+ggsave(lh_allposteriors_plot, filename = "lh_allposteriors_plot.png", width = 13, height = 16)
+
+
+########
 
 library(ggridges)
 ggplot(data = posterior_df)+
