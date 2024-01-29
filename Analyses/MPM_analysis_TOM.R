@@ -421,7 +421,44 @@ lambda_sd_summary <- lambda_sd_df %>%
          mean_e2 = mean(e2),
          lambda_diff = mean_e2-mean_e1,
          perc_diff = (lambda_diff/mean_e1)*100)
-  
+
+##############################################################################
+###### Plotting the observed lambda values ##################################
+##############################################################################
+
+#Making the yearly lambda into a nice dataframe
+dimnames(lambda_year_obs) <- list(Year = c(2009:2021), species = paste0("s",1:8), Endo = c("S-", "S+"), Iteration= paste0("i",1:n_draws))
+
+lambda_year_obs_cube <- cubelyr::as.tbl_cube(lambda_year_obs)
+
+
+lambda_year_obs_df <- as_tibble(lambda_year_obs_cube) %>%  
+  mutate(Species = case_when(species == "s1" ~ "Agrostis perennans",
+                             species == "s2" ~ "Elymus villosus",
+                             species == "s3" ~ "Elymus virginicus",
+                             species == "s4" ~ "Festuca subverticillata",
+                             species == "s5" ~ "Lolium arundinaceum",
+                             species == "s6" ~ "Poa alsodes",
+                             species == "s7" ~ "Poa sylvestris",
+                             species == "s8" ~ "Species Mean")) %>% 
+  filter(species != "s8") %>% 
+  group_by(Year, Species, Endo) %>% 
+  dplyr::summarize(lambda_mean = mean(lambda_year_obs),
+                   lambda_lwr = quantile(lambda_year_obs, probs = c(.1)),
+                   lambda_upr = quantile(lambda_year_obs, probs = c(.9)))
+
+
+lambda_timeseries_plot <- ggplot(data = lambda_year_obs_df)+
+  geom_hline(yintercept = 1, linetype = "dashed", color = "darkgrey")+
+  geom_ribbon(aes(x = Year, ymin = lambda_lwr, ymax = lambda_upr, fill = Endo), alpha = .25)+
+  geom_point(aes(x = Year, y = lambda_mean, color = Endo)) +
+  geom_line(aes(x = Year, y = lambda_mean, color = Endo),alpha = .8)+
+  facet_wrap(~Species, scales = "free", nrow = 4) + labs(y = expression(lambda[t]))+
+  scale_fill_manual(values = c("#FDC800", "#0082EA"))+
+  scale_color_manual(values = c("#FDC800", "#0082EA"))+
+  theme_classic() + theme(strip.background = element_blank(), strip.text = element_text(face = "italic", size = rel(1.2)), axis.title = element_text(size = rel(1.2)))
+# lambda_timeseries_plot
+ggsave(lambda_timeseries_plot, filename = "lambda_timeseries_plot.png", width = 10, height = 10)
 
 # decomposition analysis --------------------------------------------------
 ## stochastic simulation of lambda_S, with mean/var effects on/off in combination
@@ -1176,6 +1213,41 @@ meanspecies_change <- meanspecies_calcs %>%
   group_by(Species) %>% 
   summarize(perc_change_full = (max(`Full Effect`)- min(`Full Effect`))/min(`Full Effect`)*100,
             perc_change_var = (max(`Variance only`)- min(`Variance only`))/min(`Variance only`)*100)
+
+
+
+################################################################################################
+######### Plotting the actual LambdaS values for each species and endophyte status######
+################################################################################################
+dimnames(lambdaS_obs) <- list(Endophyte= c("S-","Mean only","Variance only","S+"), Species = c(species_list, "Species Mean"), Iteration = paste0("i", 1:500))
+lambdaS_obs_cube <- cubelyr::as.tbl_cube(lambdaS_obs)
+lambdaS_obs_df <- as_tibble(lambdaS_obs_cube) %>% 
+  filter(Endophyte %in% c("S-", "S+")) %>% 
+  filter(Species != "Species Mean") %>% 
+  group_by(Species, Endophyte) %>% 
+  summarize(lambdaS_median = median(lambdaS_obs),
+            lambdaS_upr = quantile(lambdaS_obs, probs = c(.975)),
+            lambdaS_lwr = quantile(lambdaS_obs, probs = c(.025)))
+
+
+lambdaS_plot <- ggplot(data = lambdaS_obs_df)+
+  geom_hline(yintercept = 1, linetype = "dashed", color = "darkgrey")+
+  geom_point(aes(x = Endophyte, y = lambdaS_median, color= Endophyte), size = 2) +
+  geom_linerange(aes(x = Endophyte, ymin = lambdaS_lwr, ymax = lambdaS_upr, color = Endophyte), linewidth = 1)+
+  scale_fill_manual(values = c("#FDC800", "#0082EA"))+
+  scale_color_manual(values = c("#FDC800", "#0082EA"))+
+  facet_wrap(~Species, scales = "free_x", nrow = 4)+ labs(y = expression(lambda[S]), x = "Endophyte Status")+
+  theme_classic() + theme(strip.background = element_blank(), strip.text = element_text(face = "italic", size = rel(1)), axis.title = element_text(size = rel(1.2)))
+
+lambdaS_plot
+ggsave(lambdaS_plot, filename = "lambdaS_plot.png", width = 6, height = 10)
+
+
+
+
+
+
+
 
 
 

@@ -118,7 +118,7 @@ for(i in 1:length(post_draws)){
       lambda_mean[s,e,i] <- lambda(bigmatrix(make_params(species=s,
                                                          endo_mean=(e-1),
                                                          endo_var=(e-1),
-                                                         original = 0, # should be =1 to represent recruit
+                                                         original = 1, # should be =1 to represent recruit
                                                          draw=post_draws[i],
                                                          max_size=max_size,
                                                          rfx=F,
