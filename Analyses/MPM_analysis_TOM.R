@@ -968,11 +968,15 @@ ggsave(sim_boxplots, filename = "sim_boxplots.png", width = 10, height = 6)
 mean_lambdaT_em_summary <- mean_lambdaT_combo_em %>% 
   group_by(Trt) %>% 
   summarize(mean_lambda = mean(lambda))
+((mean_lambdaT_em_summary[1,2]-mean_lambdaT_em_summary[4,2])/mean_lambdaT_em_summary[4,2])*100
+
 100-mean_lambdaT_em_summary[4,2]/mean_lambdaT_em_summary[1,2]*100
 
 sd_lambdaT_em_summary <- sd_lambdaT_combo_em %>% 
   group_by(Trt) %>% 
   summarize(mean_sd_lambda = mean(sd_lambda))
+((sd_lambdaT_em_summary[1,2]-sd_lambdaT_em_summary[4,2])/sd_lambdaT_em_summary[4,2])*100
+
 100-sd_lambdaT_em_summary[4,2]/sd_lambdaT_em_summary[1,2]*100
 
 # calculate cross species mean and the posterior means

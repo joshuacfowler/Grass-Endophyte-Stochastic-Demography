@@ -134,6 +134,7 @@ for(i in 1:length(post_draws)){
                                              extension = 100)$MPMmat) # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
     lambda_mean[8,e,i] <- mean(lambda_mean[1:7,e,i])
   }
+  }
 }
 # saving lambda_mean with 500 post draws to dropbox
 saveRDS(lambda_mean, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
@@ -155,7 +156,10 @@ for(s in 1:8){
 lambda_means
 
 #calculating the percent increase for each species
-lambda_means_percentdiff <- 100-(lambda_means[,1]/lambda_means[,2]*100)
+lambda_means_percentchange <- (lambda_means[,2]-lambda_means[,1])/(lambda_means[,1])*100
+lambda_means_percentdiff <- ((lambda_means[,2]-lambda_means[,1])/((lambda_means[,2]+lambda_means[,1])/2))*100
+
+lambda_means_foldsdiff <- (lambda_means[,2]/lambda_means[,1])
 
 ## now do variance in lambda 
 
@@ -231,10 +235,15 @@ for(s in 1:8){
 }
 
 # calcualating the percent different in standard deviation
-lambda_sds_percentdiff <- 100 - (lambda_sds[,1]/lambda_sds[,2])*100
+lambda_sds_percentdiff <- ((lambda_sds[,2]-lambda_sds[,1])/(lambda_sds[,1]))*100
 # calcualating the percent different in variance
-lambda_vars_percentdiff <- 100 - (lambda_vars[,1]/lambda_vars[,2])*100
-lambda_cvs_percentdiff <- 100 - (lambda_cvs[,1]/lambda_cvs[,2])*100
+lambda_vars_percentdiff <- ((lambda_vars[,2]-lambda_vars[,1])/(lambda_vars[,1]))*100
+lambda_cvs_percentchange <- ((lambda_cvs[,2]-lambda_cvs[,1])/(lambda_cvs[,1]))*100
+
+lambda_cvs_percentdiff <- ((lambda_cvs[,2]-lambda_cvs[,1])/((lambda_cvs[,2]+lambda_cvs[,1])/2))*100
+
+lambda_cvs_folddiff <- lambda_cvs[,1]/lambda_cvs[,2]
+
 
 # Making plots of yearly lambdas
 yearly_lambda <- array(dim = c(13,7,2))
