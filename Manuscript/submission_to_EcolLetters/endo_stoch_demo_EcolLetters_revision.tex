@@ -311,38 +311,35 @@
 
 
 \section*{Introduction}
-Global climate change involves heterogenous changes in environmental variability, including changes to precipitation patterns and increases in frequency of extreme weather events \cite{seneviratne2012changes, bathiany2018climate, ipcc_2021}.
-Yet, the ecological consequences of increasing variability are less well understood than those of changing climate means, such as long-term warming or drying. 
+Global climate change involves heterogenous changes in environmental variability, including increases in frequency of extreme weather events and in frequency of ``whiplash events'' that alternate between climate extremes \cite{seneviratne2012changes, bathiany2018climate, ipcc_2021}.\footnote{Add citation -- https://www.nature.com/articles/s41558-018-0140-y}
+Yet, the ecological consequences of changing variability are less well understood than those of changing climate means, such as long-term warming or drying. 
 Incorporating environmental variability into forecasts of population dynamics can improve predictions of the future \cite{clark2005environmental}.
 
 Classic theory predicts that long-term population growth rates (equivalently, population mean fitness) will decline under increased environmental stochasticity because the costs of bad years outweigh the benefits of good years -- a consequence of nonlinear averaging \cite{lewontin_population_1969,tuljapurkar_population_1982}.
-For example, in unstructured populations, the long-term stochastic growth rate in a fluctuating environment ($\lambda_s$) will always be lower than the arithmetic mean growth rate ($\overline{\lambda}$) by an amount proportional to the environmental variance ($\sigma^2$): 
+For example, in unstructured populations, the long-term stochastic growth rate in a fluctuating environment ($\lambda_S$) will always be lower than the arithmetic mean growth rate ($\overline{\lambda}$) by an amount proportional to the environmental variance ($\sigma^2$): 
 \begin{equation}
 log(\lambda_s)  \approx log(\overline{\lambda}) - \frac{\sigma^2}{2\overline{\lambda}^2}
 \end{equation}
 
 \noindent Populations structured by size or stage similarly experience costs of temporal variability \cite{cohen1979comparative, tuljapurkar2013population}.
-There are accordingly two pathways to increase population viability in a variable environment: increase the arithmetic mean of growth rate and/or dampen temporal fluctuation in growth rates, also called ``demographic buffering''.
+There are accordingly two pathways to increase population viability in a variable environment: increase the arithmetic mean growth rate and/or dampen temporal fluctuation in growth rates, also called ``demographic buffering''.
 
-Both the inherent characteristics of species and the external properties of their environment can buffer demographic fluctuations. 
-These inherent characteristics include life history traits \cite{pfister1998patterns}, negative correlations among vital rates \cite{compagnoni2016effect}, and transient shifts in population structure \cite{ellis2013role}. 
+Both inherent characteristics of species and properties of the environments they experience can buffer demographic fluctuations. 
+Inherent characteristics include life history traits \cite{pfister1998patterns}, trade-offs among vital rates \cite{compagnoni2016effect}, and transient shifts in population structure \cite{ellis2013role}. 
 For example, theory predicts that long-lived species, those on the slow end of the slow-fast life history continuum, will be less sensitive to environmental variability than short-lived species \cite{murphy1968pattern}, a pattern which has empirical support across plants \cite{davison2019stochastic,compagnoni2021herbaceous} and animals \cite{le2022life,morris2008longevity}.
 Demographic variance is also determined by external abiotic factors, such as the magnitude of environmental variability \cite{rodriguez2021limits} or the degree of environmental autocorrelation \cite{tuljapurkar1980population,fieberg2001stochastic}.
-These complex interplay of these factors determines the risks of extinction faced by populations \cite{menges2000applications} and underlies management strategies promoting ecosystem resilience \cite{kuparinen2016fishing}. 
-Yet little is known about how biotic interactions influence demographic variability or contribute to demographic buffering \cite{hilde_demographic_2020}. 
+The complex interplay of these factors determines the risks of extinction faced by populations \cite{menges2000applications} and underlies management strategies promoting ecosystem resilience \cite{kuparinen2016fishing}. 
+Yet, little is known about how inter-specific interactions influence demographic variability or contribute to demographic buffering \cite{hilde_demographic_2020}. 
 
-
-Most research on biotic interactions has focused on effects on mean demographic performance, yet species interactions also have the potential to influence demographic variance.
-Inter-specific interactions that dampen variance in sensitive vital rates, such as parental care of juveniles in birds  \cite{dybala2013dependent} and in primates \cite{colchero2021evidence} can improve fitness. Inter-specific interactions are pervasive and have this same potential.
 Most multicellular organisms host symbiotic microbes that affect growth and performance \cite{rodriguez2009fungal,mcfall2013animals}, and many of these are vertically transmitted from maternal hosts to offspring \cite{funkhouser2013mom}.
 Vertical transmission links the fitness of hosts and symbionts in a feedback loop that selects for mutual benefits \cite{fine1975vectors}.
 Many vertically-transmitted microbes are mutualistic and protect hosts from stressful environmental conditions including drought, extreme temperatures, or natural enemies \cite{russell2006costs, kivlin2013fungal}. 
 Some of the best studied examples include bacterial symbionts of insects that provide their hosts with thermal tolerance through the production of heat-shock proteins \cite{dunbar2007aphid}, and fungal symbionts of plants that produce anti-herbivore and drought-protective compounds \cite{reyna2012detection,saikkonen2013chemical,neyaz2022localization}.
 However, these diverse protective symbioses are context-dependent: the magnitude of benefits depends on environmental conditions \cite{chamberlain2014context,catford2022addressing} and thus will vary temporally in a stochastic environment \cite{jordano1994spatial}. 
-We hypothesized that context-dependent benefits from symbionts may buffer hosts against variability through strong benefits during harsh periods and neutral or even costly outcomes during benign periods, reducing the impacts of host exposure to extremes and dampening inter-annual variance relative to non-symbiotic hosts (Fig. 1).
-Variance buffering is a previously unexplored mechanism by which symbionts may benefit their hosts instead of or in addition to elevating average fitness, the focus of most previous research. 
+We hypothesized that context-dependent benefits from symbionts may buffer hosts against variability through strong benefits during harsh periods and neutral or even costly outcomes during benign periods, reducing the impacts of host exposure to extremes and dampening inter-annual variance relative to non-symbiotic hosts (Fig. \ref{}\footnote{Reference new figure}).
+Variance buffering is a previously unexplored mechanism by which symbionts may benefit their hosts instead of or in addition to elevating average fitness (Fig. \ref{}\footnote{Reference new figure}), the focus of most previous research. 
 
-To test the hypothesis that context-dependent benefits of symbiosis buffer hosts from the fitness costs of environmental stochasticity, we used a combination of long-term field experiments and stochastic demographic modeling.
+To test the hypothesis that context-dependent benefits of symbiosis buffer hosts from the fitness costs of temporal environmental stochasticity, we used a combination of long-term field experiments and stochastic demographic modeling.
 We used cool-season grasses and \emph{Epichlo\"{e}} fungal endophytes as a tractable experimental model in which non-symbiotic plants can be derived from naturally symbiotic plants through heat treatment, providing a contrast of symbiont effects that controls for the confounding influence of host genetic background. 
 \emph{Epichlo\"{e}} endophytes are specialized symbionts growing intercellularly in the aboveground tissue of  $\sim30$\% of $C_{3}$ grass species \cite{leuchtmann1992systematics}.
 These fungi are primarily transmitted vertically from maternal plants through seeds \cite{cheplick2009ecology}.
@@ -351,7 +348,7 @@ They produce a variety of alkaloids that can protect host plants from natural en
 Over 14 years (2007--2021), we collected longitudinal demographic data on the survival, growth, reproduction, and recruitment of all plants within replicated endophyte-symbiotic and endophyte-free populations at our field site in southern Indiana, USA. 
 Through taxonomic replication (seven host-symbiont species pairs) we aimed to understand whether host life history traits could explain inter-specific variation in the magnitude of demographic buffering through symbiosis. 
 We used this long-term data to parameterize stochastic population projection models in a hierarchical Bayesian framework. 
-Specifically, we  (1) quantified the effect of symbiosis on the mean and variance of host vital rates (survival, growth and reproduction) and fitness, (2) evaluated the relationship between host life history traits and the magnitude of symbiont-mediated variance buffering, (3) determined the relative contribution of symbiont-mediated mean and variance effects to host fitness, and (4) projected how increased environmental stochasticity (expected under future climates) changes the importance of variance buffering as a pathway of host-symbiont mutualism. 
+Specifically, we  (1) quantified the effect of symbiosis on the mean and variance of host vital rates (survival, growth and reproduction) and fitness, (2) evaluated the relationship between host life history traits and the magnitude of symbiont-mediated variance buffering, (3) determined the relative contributions of symbiont-mediated mean and variance effects to host fitness, and (4) projected how increased environmental stochasticity (expected under future climates) changes the importance of variance buffering as a pathway of host-symbiont mutualism. 
 
 \section*{Materials and Methods}
 	\subsection*{Study site and species}
@@ -366,10 +363,10 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	The heat treatment created symbiont-free plants by warming seeds to temperatures at which the fungus becomes inviable but the host seeds can still germinate.
 	Both heat-treated and untreated seeds were surface sterilized with bleach to remove epiphyllous microbes, cold stratified for up to 4 weeks, then germinated in a growth chamber before transfer to the greenhouse at Indiana University where they grew for $\sim$ 8 weeks. 
 	We confirmed endophyte status by staining thin sections of inner leaf sheath with aniline blue and examining tissue for fungal hyphae at 200X magnification \cite{bacon2018stains}. 
-	We established experimental populations with vegetatively propagated clones of similar sizes (plants ranging from one to six tillers across species). 
-	By starting the experiment with plants of similar sizes and the same number of unique genotypes, we aimed to limit any potential effects of heat treatments on initial plant growth \cite{rudgers2009benefits}.
+	We established experimental populations with vegetatively propagated clones of similar sizes (ranging from one to six tillers). 
+	By starting the experiment with plants of similar sizes and the same number of unique genotypes, we aimed to limit any potential effects of heat treatments on initial plant growth \cite{rudgers2009benefits}.\footnote{I don't remember if this was always here but it actually makes no sense to me, and I think (?) a reviewer said something similar. I think nothing is lost if we cut this sentence.}
 	
-	During the fall of 2007 and spring of 2008, we established 10 3x3 m. plots for \emph{A. perennans}, \emph{E. villosus}, \emph{E. virginicus}, \emph{F. subverticillata}, and \emph{L. arundinaceum}  and 18 plots for \emph{P. alsodes} and \emph{P. sylvestris}.
+	During the fall of 2007 and spring of 2008, we established 10 3x3 m plots for \emph{A. perennans}, \emph{E. villosus}, \emph{E. virginicus}, \emph{F. subverticillata}, and \emph{L. arundinaceum}  and 18 plots for \emph{P. alsodes} and \emph{P. sylvestris}.
 	Half of the plots were randomly assigned to be planted with either symbiotic (S+) or symbiont-free (S-) plants, and initiated with 20 evenly spaced individuals labeled with aluminum tags.
 	In spring 2008, we placed plastic deer net fencing around each plot to limit deer herbivory and disturbance; damaged fences were regularly replaced.
 	
@@ -377,7 +374,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	Each summer (2008--2021) we censused all individuals in each plot for survival, growth and reproduction, and added new recruits to the census.
 	Plots contained 13.3 individuals/$m^2$ on average over the course of the experiment. 
 	Each census year was a sample of inter-annual climatic variation (n = 14 years, comprising 13 demographic transition years).
-	We censused each species during its peak fruiting stage (May: \emph{Poa alsodes}, \emph{Poa sylvestris}; June: \emph{Festuca subverticillata}; July: \emph{Elymus villosus}, \emph{Elymus virginicus}, \emph{Lolium arundinaceum}; September: \emph{Agrostis perennans}), such that the censuses were pre-breeding and new recruits came from the previous years' seed production.
+	We censused each species during its peak fruiting stage (May: \emph{Poa alsodes}, \emph{Poa sylvestris}; June: \emph{Festuca subverticillata}; July: \emph{Elymus villosus}, \emph{Elymus virginicus}, \emph{Lolium arundinaceum}; September: \emph{Agrostis perennans}), such that the censuses were pre-breeding and new recruits came from the previous years' seed production\footnote{Could reference life cycle figure here.}.
 	Leaf litter was cleared out of each plot prior to the census, to aid in locating plants.
 	For each plant remaining from the previous year, we determined survival, measured its size as a count of tillers, and collected reproductive data as counts of reproductive tillers and seed-bearing spikelets on all reproductive tillers to a maximum of three. 
 	We also tagged all unmarked individuals that were recruits from the previous years' seed production and collected the same demographic data. 
@@ -387,8 +384,8 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	%For each individual, our data recorded their transitions in size and reproduction from one year to the next. 
 	In total across 14 years, the dataset included demographic information for 16,789 individual host-plants and 31,216 transition-year observations.
 	
-	We expected plots to maintain their endophyte status (symbiotic or symbiont-free) because these fungal symbionts are almost exclusively vertically transmitted, and plots were spaced a minimum of 5 m apart, limiting seed dispersal or horizontal transmission of the symbiont between plots. 
-	However, we regularly confirmed endophyte treatment throughout the lifetime of the experiment by opportunistically taking subsets of seeds from reproductive individuals and scoring them for their endophyte status with microscopy as above.
+	We expected plots to maintain their endophyte status (S+ or S-) because these fungal symbionts are almost exclusively vertically transmitted, and plots were spaced a minimum of 5 m apart, limiting seed dispersal or horizontal transmission of the symbiont between plots. 
+	We regularly confirmed endophyte treatment throughout the lifetime of the experiment by opportunistically taking subsets of seeds from reproductive individuals and scoring them for their endophyte status with microscopy as above.
 	Overall, these scores reflected 98\% faithfulness of recruits to their expected endophyte status across species and plots (Fig. S23; Supplement data). 
 	Additionally, we have rarely observed fungal stromata, the fruiting bodies by which \emph{Epichlo\"e} are potentially transmitted horizontally, provided the fly vector is also present \cite{bultman1995mutualistic}. 
 	For \emph{A. perennans}, \emph{F. subverticillata}, \emph{L. arundinaceum}, and \emph{P. alsodes}, we never observed stromata. 
@@ -396,12 +393,12 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	For these species, stromata have only been observed irregularly across years on 35, 4, and 6 plants respectively, making up $< 0.3$\% of all censused plants.
 	
 	\subsection*{Vital rate modeling}
-	Equipped with these demographic data, we fit statistical models for adult survival, seedling survival, adult growth, seedling growth, flowering (yes or no), fertility of flowering plants (number of flowering tillers), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production.
+	Equipped with these demographic data, we fit statistical models for adult survival, seedling survival, adult growth, seedling growth, reproductive status (flowering or vegetative), fertility of flowering plants (number of inflorescences), production of seed-bearing spikelets (number per inflorescence), the average number of seeds per spikelet, and the recruitment of seedlings from the preceding year's seed production.
 	We fit these vital rates as generalized linear mixed models in a hierarchical Bayesian framework using RStan \cite{rstan2022} which allowed us to isolate endophyte effects on vital rate means and variances, borrow strength across species for some variance components, and propagate uncertainty from the individual-level vital rates to population projection models \cite{elderd2016quantifying}. 
-	Each size-structured vital rate model included year effects specific to each species and endophyte-status as well as random plot effects shared across species. 
-	The models included the same linear predictor, including two key sets of parameters: one which described the effect of endophyte symbiosis on the mean of that vital rate specific to each species, and another which described the inter-annual variance in the vital rate for symbiotic and symbiont-free plants of each species. 
-	The species- and endophyte-status specific random year effects allowed us to quantify the effect of endophytes on inter-annual variance for each vital rate. 
-	Other parameters accounted for size structure in the data (defined as the number of tillers) as well as the difference between originally transplanted plants and those which recruited naturally into the plots.
+	Each size-structured vital rate model included year effects specific to each species and endophyte status as well as random plot variance shared across species. 
+	All models included the same linear predictor, including two key parameters for each species: one which described the effect of endophyte symbiosis on the mean of that vital rate, and another which described the inter-annual variance in the vital rate for symbiotic and symbiont-free plants. 
+	The species- and endophyte status- specific random year effects allowed us to quantify the effect of endophytes on inter-annual variance for each vital rate. 
+	Other parameters accounted for size structure in the data (defined as the number of tillers) as well as the difference between originally transplanted plants (raised in a greenhouse) and those which recruited naturally into the plots.
 	Preliminary analyses indicated similar model fits between models including linear and quadradatic terms, and so we proceeded with only linear effects. 
 	Full details of the vital rate modeling are included in the \emph{Supporting Information Supplemental Methods}.
 	All parameters were given vague priors \cite{gabry2019visualization}.
@@ -411,9 +408,11 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	We graphically checked vital rate model fit with posterior predictive checks comparing simulated and observed data (Fig. S29-S39).
 	
 	\subsection*{Stochastic population model}
-	We parameterized stochastic matrix projection models using the fitted statistical vital rate models. Each matrix projection model included two state variables: $r_{t}$ (the number of newly recruited individuals in year $t$ which we assume to be non-reproductive), and $\textbf{n}_{t}$ (a vector including all non-seedling individuals of sizes $x\in\{1,2,...U\} $, ranging from one to the maximum number of tillers $U$. 
+	We parameterized a stochastic matrix projection model for each host species using the fitted statistical vital rate models. 
+	Each matrix projection model included two state variables: $r_{t}$ (the number of newly recruited individuals in year $t$ which we assume to be non-reproductive), and $\textbf{n}_{t}$ (a vector including all non-seedling individuals of sizes $x\in\{1,2,...U\}$ ranging from one to the maximum number of tillers $U$). 
 	We use these two state variables to avoid having to assume demographic equivalence between seedling and non-seedling one-tiller plants. 
-	We used the same model structure for each species and endophyte status (not shown in model notation for readability). See Fig. S21 for a generalized life cycle graph.
+	We used the same model structure, corresponding to a pre-breeding census, for each species and endophyte status (not shown in model notation for readability). 
+	See Fig. S21 for a generalized life cycle graph.
 
 	The number of recruits in year $t+1$ is given by:
 	
@@ -423,7 +422,7 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 			r_{t+1} = \sum_{x=1}^{U} P(x; \pmb{\tau}_{P})F(x; \pmb{\tau}_{F})K(x; \pmb{\tau}_{K})DR(\pmb{\tau}_{R}) n^x_{t}\\
 		\end{aligned}
 	\end{equation}
-	The total number of seeds produced by a maternal plant of size $x$ is the product of the size-specific probability of flowering $P$, the number of reproductive tillers $F$, the number of spikelets per inflorescence $K$, and the number of seeds per spikelet $D$. 
+	The total number of seeds produced by a maternal plant of size $x$ is the product of the size-specific probability of flowering $P$, the number of inflorescences conditional on flowering $F$, the number of spikelets per inflorescence $K$, and the number of seeds per spikelet $D$. 
 	Multiplying by the probability of transitioning from seed to seedling $R$ gives a per-capita rate of seedling production, which is multiplied by the number of plants of size $x$ ($n^x_{t}$, the $x$\textsuperscript{th} element of \textbf{$n_{t}$}) and summed over all sizes. 
 	Each function also depends on the species- and endophyte-specific year random effects for that vital rate ($\pmb{\tau}$, a vector of year-specific values derived from the statistical models). 
 	
@@ -442,12 +441,18 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	
 	Each of the vital rate functions in Eqns. \ref{eq:MPM_F} and \ref{eq:MPM_T} have separate intercepts and year random effects for symbiotic and symbiont-free populations, allowing us to calculate the effect of endophyte symbiosis on the mean, variance, and coefficient of variation (CV) of $\lambda$, the dominant eigenvalue of the year- and endophyte-specific projection matrix. 
 	This model treats climate drivers implictly through year-specific random effects. 
-	We also developed a climate-explicit version with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate. A full description of climate-explicit methods can be found in the \emph{Supporting Information Supplemental Methods}.
+	We also developed a climate-explicit version with the addition of parameters defining the relationship between either annual or growing season drought index and each vital rate.
+	A full description of climate-explicit methods can be found in the \emph{Supporting Information Supplemental Methods}.
 	
+	To calculate stochastic population growth rates ($\lambda_s$) for each host species and endophyte status we simulated population dynamics for 1000 years by randomly sampling from the 13 annual transition matrices, discarding the first 100 years to minimize the influence of initial conditions. 
+	Sampling observed transition matrices (rather than independently sampling regression coefficients) produces models that realistically capture inter-annual variation by preserving correlations between vital rates \cite{metcalf2015statistical}.
+	We tallied the total population size at each time step as  $N_{t} = r_{t} + \sum_{x=1}^{U}n^x_{t}$ and calculated the stochastic growth rate as $log(\lambda_s) = E[log(\frac{N_{t}}{N_{t+1}})]$ \cite{caswell2001matrix,rees2009integral}.
+	We calculated the total effect of endophyte symbiosis as the difference in $\lambda_s$ between S+ and S- populations. 
+	We propagated uncertainty from the vital rate models to the calculation of $\lambda_s$ using 500 draws from the posterior distribution of model parameters.
+	 
 	\subsection*{Life History Analysis}
-	
 	We collected metrics describing each host species' life history to test the relationship between pace of life and variance buffering (Table S2). 
-	Using the Rage package \cite{jones2022rcompadre}, we calculated $R_0$, longevity, generation time, Keyfitz entropy, and Demetrius entrooy from the mean transition matrix for symbiont-free populations.
+	Using the Rage package \cite{jones2022rcompadre}, we calculated $R_0$, longevity, generation time, Keyfitz entropy, and Demetrius entropy from the mean transition matrix for symbiont-free populations.\footnote{I think a brief description of each of these is necessary, especially the two entropies, which most readers will not have seen before.}
 	We recorded seed size as the average lemma length from the Flora of North America \cite{FloraNAonline}. 
 	We also calculated the 99th percentile of maximum observed age for symbiont-free plants from the census data for each species.
 	Next, we fit Bayesian phylogenetic mixed-effects models using the brms package \cite{Burkner2017brms} to test the relationship between each life history trait and the effect of symbiosis on the CV of $\lambda$ (a measure of variance buffering) while controlling for phylogenetic non-independence between host and symbiont species.
@@ -472,31 +477,25 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 	Here, $V_{EST}$ is the variance buffering effect for host species $h$, estimated from the posterior mean ($V_{MEAN}$) and standard deviation ($V_{SD}$), propogating uncertainty associated with the effect of symbiosis.
 	The model includes an intercept ($\alpha$) and a slope ($\beta$) defining the relationship between the variance buffering effect and the life history trait. 
 	The residual standard deviation is given by ($\sigma$). 
-	We used weakly informative prios to aid model convergence.
+	We used weakly informative priors to aid model convergence.
 	Each prior was centered at zero, except for the residual standard deviation, which we centered at the standard deviation of the estimated variance buffering effect, $.04$.
 	The phylogenetic random effect ($\pi$), which is modeled as a multivariate normal distribution, has a between-species standard deviation ($\sigma_{\pi}$) structured by the phylogenetic covariance matrix \textbf{A}.
 	We ran each MCMC sampling chain for 8000 warmup iterations and 2000 sampling iterations. 
 	We assessed model convergence as described for the vital rate models.
 	
 	\subsection*{Mean-variance decomposition}
-	To calculate stochastic population growth rates ($\lambda_s$) for each host species and endophyte status we simulated population dynamics for 1000 years by randomly sampling from the 13 annual transition matrices, discarding the first 100 years to minimize the influence of initial conditions. 
-	Sampling observed transition matrices produces models that realistically capture inter-annual variation by preserving correlations between vital rates \cite{metcalf2015statistical}.
-	We tallied the total population size at each time step as  $N_{t} = r_{t} + \sum_{x=1}^{U}n^x_{t}$ and calculated the stochastic growth rate as $log(\lambda_s) = E[log(\frac{N_{t}}{N_{t+1}})]$ \cite{caswell2001matrix,rees2009integral}.
-	We calculated the total effect of endophyte symbiosis as the difference in $\lambda_s$ between S+ and S- populations. 
-	We propagated uncertainty from the vital rate models to the calculation of $\lambda_s$ using 500 draws from the posterior distribution of model parameters. 
-	
 	We decomposed the total endophyte effect on $\lambda_s$ into contributions from effects on vital rate means, variances, and their interaction. 
-	Specifically, we repeated the calculation of $\lambda_s$ for two additional ``treatments'': (1) endophyte effects on mean vital rates only, with inter-annual variances shared between S+ and S- at the S- reference level for all vital rates, and (2) endophyte effects on vital rate variances only, with vital rate means shared between S+ and S- at the S- reference level. 
+	Specifically, we repeated the calculation of S+ and S- $\lambda_s$ described above for two additional ``treatments'': (1) endophyte effects on mean vital rates only, with inter-annual variances shared between S+ and S- at the S- reference level for all vital rates, and (2) endophyte effects on vital rate variances only, with vital rate means shared between S+ and S- at the S- reference level. 
 	The combination of all four $\lambda_s$ treatments (S+ vital rate means and variances, S- means and variances, S+ means with S- variances, S- means with S+ variances) allowed us to quantify to what extent the overall effect of symbiosis derives from changes in vital rates means, variances, and their interaction. 
-	The interaction occurs because the variance penalty to stochastic growth is proportional to the arithmetic mean of annual growth rates (see Eq. 1) such that variance is more detrimental for populations with lower average growth rates. 
-	To quantify how mean and variance effects of symbionts on mean and variance arise through effects on different vital rates, we performed an additional decomposition described in the \emph{Supporting Information Supplemental Methods}.
+	The interaction occurs because the variance penalty to stochastic growth is proportional to the arithmetic mean of annual growth rates (as in Eq. 1, for example) such that variance is more detrimental for populations with lower average growth rates. 
+	To quantify how mean and variance effects of symbionts arise through effects on different vital rates, we performed an additional decomposition described in the \emph{Supporting Information Supplemental Methods} that isolates symbiont effects on growth and survival from their effects on fertility and recruitment.
 %	For each contribution element (variance buffering, mean effects, and their interaction), we calculated a cross-species mean to assess the overall contributions (Fig. 5).
 
-	To create scenarios of increased variance relative to that observed during the study period, we repeated the stochastic growth rate decomposition, but sampling only subsets of the 13 observed annual transition matrices. 
+	We simulated scenarios of increased variance relative to that observed during the study period by sampling subsets of the 13 observed annual transition matrices. 
 	We created two scenarios of increased environmental variance by sampling the transition matrices associated with the set of either six or two most extreme $\lambda$ values. 
-	These extreme $\lambda$ values represent the best and worst years experienced by the plants, using the S- populations as the reference condition. 
+	These extreme $\lambda$ values represent the best and worst years for S- populations, the reference condition. 
 	%By sampling away from an average year in both directions, the mean value of annual growth rates remained similar across treatments ($\bar{\lambda}$ averaged across species: All years = 0.71; six extreme years = 0.71; two extreme years = 0.73; Fig. S21A), while the standard deviation more than doubled ($sd(\lambda)$ averaged across species: All years = 0.25; six extreme years = 0.34; two extreme years = 0.54 ; Fig. S21B), representing elevated environmental fluctuations.\footnote{I am not suggesting any changes but this sentence lets the cat out of the bag that the predicted growth rates are rapidly declining, which we will likely be asked to address.}
-	By sampling away from an average year in both directions, the six- and two- years scenarios increased the standard deviation of yearly host growth rates by $1.3$ and $2.1$ times, respectively, without changing mean growth rates ($<2.3$\% difference in $\overline{\lambda}$ between simulation treatments, Fig. S50).
+	By sampling away from an average year in both directions, the six- and two- years scenarios increased the standard deviation of annual host growth rates by $1.3$ and $2.1$ times, respectively, without changing mean growth rates ($<2.3$\% difference in $\overline{\lambda}$ between simulation treatments, Fig. S50).
 	We performed the same mean-variance decomposition for these scenarios as for the ambient conditions (all 13 years sampled) for all host species described above. 
 
 \section*{Results}
@@ -505,16 +504,16 @@ Specifically, we  (1) quantified the effect of symbiosis on the mean and varianc
 Across the 14 census years, endophytes reduced inter-annual variance for 66\% ($37$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate standard deviation: $-0.15$) (Fig. 2A; Fig. S6 - Fig. S18). 
 Endophytes also increased mean vital rates for the majority ($36$/$56$) of host species-vital rate combinations (average Cohen's D for effects on vital rate mean: $0.15$), and benefits were particularly strong for host survival, plant growth and recruitment (Fig. 2A; Fig. S1 - Fig. S5).
 The magnitude of mean and variance effects differed among host species and vital rates. 
-Symbiont effects on vital rate variance are as large and even exceed effects on vital rate means for certain species.
+Symbiont effects on vital rate variance were as large and even exceeded effects on vital rate means for certain species.
 For example, endophytes modestly increased mean adult survival (Fig. 2C) and strongly reduced variance in survival (Fig. 2D) for \emph{Festuca subverticillata}, while for \emph{Poa alsodes}, variance buffering was more apparent in seedling growth and inflorescence production (Fig 2E). 
-Interestingly, certain vital rates showed costs of endophyte symbiosis. 
+Additionally, some vital rates showed costs of endophyte symbiosis. 
 Symbiotic individuals of \emph{A. perennans} grew larger than those without endophytes (Fig. 2B), yet endophytes also reduced this species' mean recruitment rates (Fig. 2A). 
-Similarly, variance was increased for certain species' vital rates, such as in seedling growth for \emph{Elymus villosus} and \emph{Festuca subverticillata} (Fig. 2A).
+Similarly, endophytes increased variance for certain species' vital rates, such as in seedling growth for \emph{Elymus villosus} and \emph{Festuca subverticillata} (Fig. 2A).
 
 
-Because not all vital rates contribute equally to fitness, we used stochastic matrix models to integrate the diverse effects on vital rates described above into comprehensive measures for the arithmetic mean and variance of year-to-year fitness ($\lambda_{t}$) and the long-run stochastic growth rate, a geometric average, that integrates both mean and variance ($\lambda_{S}$). 
+Because not all vital rates contribute equally to fitness, we used stochastic matrix models to integrate the diverse effects on vital rates described above into comprehensive measures for the arithmetic mean and variance of year-to-year fitness ($\lambda_{t}$).\footnote{The methods and results sections are inconsistent in their use of $\lambda$ vs $\lambda_t$. I think we could use either but either way tighten this up.} 
 On average across host species, the mean fitness of S+ populations increased by more than $10\%$ ($>92$\% confidence that endophytes increased $\overline{\lambda}$) and inter-annual variability in fitness was $26\%$ lower ($>86$\% confidence that endophytes decreased the coefficient of variation of $\lambda_{t}$) than S- populations (Fig. 3).
-For some host species, the CV of $\lambda_{t}$ declined by more than $62$\% (\emph{P. alsodes}, \emph{F. subverticillata}), a greater than two-fold reduction, while for others, endophyte effects on variance were substantially smaller ($5$\% lower for \emph{E. villosus}, $13$\% lower for \emph{A. perennans}), or even positive ($37$\% increase for \emph{E. virginicus}).
+For some host species, the CV of $\lambda_{t}$ declined by more than $62$\% (\emph{P. alsodes}, \emph{F. subverticillata}), while for others, endophyte effects on variance were substantially smaller ($5$\% lower for \emph{E. villosus}, $13$\% lower for \emph{A. perennans}), or even positive ($37$\% increase for \emph{E. virginicus}).
 
 
 \subsection*{Faster life histories predict stronger symbiont-mediated variance buffering}
@@ -522,12 +521,11 @@ In support of the prediction that hosts with long lifespans, which are intrinsic
 Bayesian phylogenetic mixed-effects models, controlling for species' relatedness, indicated that variance buffering was stronger for host species with shorter lifespan (Fig. 4A; 75\% probability of positive relationship with empirically observed maximum plant age) and smaller seeds (Fig. 4B; 73\% probability of positive relationship with seed length).
 Other life history traits similarly had positive, but weaker, support for the prediction that faster life history traits correlate with stronger variance buffering (Fig. S57-S59). 
 Models indicate moderate phylogenetic signal in the effect of variance buffering (average Pagel's $\lambda$ of 0.26 and of 0.63 from models including host and symbiont phylogenetic covariance respectively).
-Conclusions about the role of symbiont-mediated demographic buffering in life history evolution are constrained by the narrow range of closely related species in the grass sub-family Pooidae and their co-evolving symbionts. 
+Conclusions about the role of symbiont-mediated demographic buffering in life history evolution are constrained by the narrow range of closely related species in the grass sub-family Pooidae and their co-evolving symbionts.\footnote{This last sentence feels discussiony, though I am not sure if there is a natural place to put it there.}
 
 
 \subsection*{Contributions from variance buffering are weak relative to mean effects}
-To evaluate the relative importance of mean fitness benefits and variance buffering as alternative pathways of mutualism, we decomposed  the overall effect of the symbiosis on the stochastic growth rate $\lambda_{S}$ using simulations from the population models in four configurations.
-These included either the full symbiosis effect (both mean and variance buffering effects), mean effects alone, variance effects alone, or neither mean nor variance effects. 
+To evaluate the relative importance of mean fitness benefits and variance buffering as alternative pathways of mutualism, we decomposed  the overall effect of the symbiosis on the stochastic growth rate $\lambda_{S}$ using simulations that included either the full symbiosis effect (both mean and variance buffering effects), mean effects alone, variance effects alone, or neither mean nor variance effects. 
 Overall, the full effect of symbiosis on $\lambda_{S}$, averaged across host species, provided strong evidence of grass-endophyte mutualism (99\% certainty of a positive total effect on $\lambda_s$) (Fig. 5; see Fig. S52 for individual host species).
 Contributions to this full effect derived from both mean and variance buffering effects, as well as a slightly negative interaction (i.e., the combined influence of mean and variance effects was smaller than the sum of their individual effects). 
 Endophytes' contributions to  $\lambda_{S}$ from mean effects were four times greater, averaged across species, than contributions from variance buffering (Fig. 5), suggesting that, under the regime of environmental variability represented by our 14-year study, dampened fluctuations in fitness via variance buffering was a far less important element of the benefits of symbiosis than increased mean fitness. 
@@ -538,16 +536,15 @@ The one exception was the host species \emph{P. sylvestris}, for which our analy
 
 
 \subsection*{Variance buffering strengthens under increased environmental variability}
-
-To simulate increased variability, we repeated the decomposition of $\lambda_{S}$ for two alternative forecast scenarios, randomly sampling transition matrices that represented either the six most extreme years experienced by each species or the two most extreme years, subsets of the thirteen transition matrices across the 14-year study period. 
-Increased variability elicited stronger mutualistic benefits of endophyte symbiosis (Fig. 5) than ambient variability (overall effect of the symbiosis increased by $>130\%$, a 2.3 fold increase).
+To simulate increased variability, we repeated the decomposition of $\lambda_{S}$ for two alternative forecast scenarios, randomly sampling transition matrices that represented either the six or two most extreme years, subsets of the thirteen transition matrices across the 14-year study period. 
+Increased variability elicited stronger mutualistic benefits of endophyte symbiosis than ambient variability (Fig. 5; overall effect of the symbiosis increased by $>130\%$, a 2.3 fold increase).
 This increase was driven by increased contributions from the variance buffering mechanism (from a $24\%$ contribution in the ambient scenario to a $66$\% contribution in the most variable scenario) rather than from greater mean effects.
 In the most variable scenario, the relative importance of mean and variance effects reversed, with variance buffering contributions that were 1.5 times greater than contributions from mean benefits, averaged across species (Fig. 5). 
 
 
 \section*{Discussion}
-Across seven host species, eight vital rates, 14 years, and 16,789 individual plants, our analysis provided the first empirical evidence of symbiont-mediated demographic buffering. 
-Our analysis of taxonomically-replicated, long-term field experiments that manipulated the presence/absence of fungal symbionts in plants demonstrated for the first time that heritable microbes can commonly benefit hosts not only through improved mean fitness -- the focus of most previous research -- but also through buffering against environmental variance. 
+Across seven host species, eight vital rates, 14 years, and 16,789 individual plants, our analysis provided the first empirical evidence of demographic buffering conferred by microbial symbionts. 
+Our analysis of taxonomically-replicated, long-term field experiments that manipulated the presence/absence of fungal symbionts in plants demonstrated that heritable microbes can commonly benefit hosts not only through improved mean fitness -- the focus of most previous research -- but also through buffering against environmental variance. 
 When mean and variance effects of symbionts were considered together, none of the host-symbiont pairings were antagonistic (i.e., with endophytes that both decreased mean fitness and increased variance) (Fig. 3C), suggesting that variation across host species and vital rates in mean and variance effects may reflect alternative strategies that yield similar net benefits of endophyte symbiosis.
 These alternative strategies may explain the long-term stability of these mutualisms
 
