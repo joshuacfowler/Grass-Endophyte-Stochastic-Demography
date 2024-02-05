@@ -61,13 +61,33 @@ tompath <- "C:/Users/tm9/Dropbox/EndodemogData/"
 joshpath <- "~/Dropbox/EndodemogData/"
 path<-joshpath
 
+# surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
+# surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+# grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
+# grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
+# flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
+# fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
+# spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+# seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
+# stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
+
+# surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
+# surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling_quad.rds"))
+# grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
+# grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG_quad.rds"))
+# flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw_quad.rds"))
+# fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG_quad.rds"))
+# spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb_quad.rds"))
+# seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
+# stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
+
 surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
-surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds"))
 grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
-grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
-flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
-fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
-spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG_quad_origin.rds"))
+flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw_quad_origin.rds"))
+fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG_quad_origin.rds"))
+spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds"))
 seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
 stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
 
@@ -81,26 +101,48 @@ stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds"))
 # seedmean_fit <- readRDS(url("https://www.dropbox.com/s/3ma5yc8iusu8bh0/endo_spp_seed_mean.rds?dl=1"))
 # stos_fit <- readRDS(url("https://www.dropbox.com/s/nf50hd76iw3hucw/endo_spp_s_to_s.rds?dl=1"))
 
-surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,
-                                                                   tau_year, tau_plot))
+# surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,
+#                                                                    tau_year, tau_plot))
+# surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,
+#                                                            tau_year, tau_plot))
+# grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+#                                                                     tau_year, tau_plot,
+#                                                        sigma))
+# grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
+#                                                        tau_year, tau_plot,
+#                                                        sigma))
+# flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+#                                                        tau_year, tau_plot))
+# fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+#                                                       tau_year, tau_plot))
+# spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+#                                                                          tau_year, tau_plot,
+#                                                          phi))
+# seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
+# recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
+#                                                           tau_year, tau_plot))
+
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
+                                                      tau_year, tau_plot))
 surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,
-                                                           tau_year, tau_plot))
-grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
-                                                                    tau_year, tau_plot,
-                                                       sigma))
-grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
+                                                                    tau_year, tau_plot))
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                        tau_year, tau_plot,
                                                        sigma))
-flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
-                                                       tau_year, tau_plot))
-fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
+                                                                     tau_year, tau_plot,
+                                                                     sigma))
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                       tau_year, tau_plot))
-spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
-                                                                         tau_year, tau_plot,
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
+                                                       tau_year, tau_plot))
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
+                                                         tau_year, tau_plot,
                                                          phi))
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
 recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
                                                           tau_year, tau_plot))
+
 # dim(surv_par$tau_year)
 # plot(surv_par$tau_year[,1,1,], grow_par$tau_year[,1,1,], col = levels(as_factor(grow_par$tau_year[1,1,1,])))
 #############################################################################################
@@ -131,15 +173,17 @@ for(i in 1:length(post_draws)){
                                                          spike_par=spike_par,
                                                          seed_par=seed_par,
                                                          recruit_par=recruit_par), 
+                                             quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                              extension = 100)$MPMmat) # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
     lambda_mean[8,e,i] <- mean(lambda_mean[1:7,e,i])
   }
   }
 }
 # saving lambda_mean with 500 post draws to dropbox
-saveRDS(lambda_mean, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
-lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
-
+# saveRDS(lambda_mean, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
+# lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
+saveRDS(lambda_mean, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean_quad.rds")
+lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean_quad.rds")
 
 
 # Mean endophyte difference and quantiles
@@ -187,6 +231,7 @@ for(i in 1:length(post_draws)){
                                                              spike_par=spike_par,
                                                              seed_par=seed_par,
                                                              recruit_par=recruit_par),
+                                                 quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                                  extension = 100)$MPMmat) # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
       }
       lambda_var[s,e,i] <- sd(lambda_hold[,s,e,i]) # we calulate the standard deviation here
@@ -195,10 +240,15 @@ for(i in 1:length(post_draws)){
   }
 }
 #saving the yearly lambdas and the sd of lambdas to dropbox
-saveRDS(lambda_hold, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
-saveRDS(lambda_var, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
-lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
-lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
+# saveRDS(lambda_hold, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
+# saveRDS(lambda_var, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
+# lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
+# lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
+
+saveRDS(lambda_hold, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold_quad.rds")
+saveRDS(lambda_var, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var_quad.rds")
+lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold_quad.rds")
+lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var_quad.rds")
 
 
 
@@ -323,7 +373,7 @@ lambda_mean_df <- as_tibble(lambda_mean_cube) %>%
                            Species == "s5" ~ "Lolium arundinaceum",
                            Species == "s6" ~ "Poa alsodes",
                            Species == "s7" ~ "Poa sylvestris",
-                           Species == "s8" ~ "Species Mean"))
+                           Species == "s8" ~ "Species Mean")) 
 
 meanlambda_plot <- ggplot(data = lambda_mean_df) +
   geom_hline(yintercept = 0, col = "black") + 
@@ -384,7 +434,8 @@ lambda_cv_df <- as_tibble(lambda_cv_cube) %>%
                              Species == "s5" ~ "Lolium arundinaceum",
                              Species == "s6" ~ "Poa alsodes",
                              Species == "s7" ~ "Poa sylvestris",
-                             Species == "s8" ~ "Species Mean"))
+                             Species == "s8" ~ "Species Mean")) %>% 
+  filter(lambda_diff>-500) # There is one really weird iteration
 
 lambdavar_plot <- ggplot(data = lambda_cv_df) +
   geom_hline(yintercept = 0, col = "black") + 
@@ -393,7 +444,7 @@ lambdavar_plot <- ggplot(data = lambda_cv_df) +
   stat_summary(aes(y = lambda_diff, x = species), fun = mean,geom = "point", size = 3) +
   geom_point(data = lambda_cv_diff_df, aes(y = mean, x = species, color = species), lwd = 2) +
   scale_color_manual(values = c("#dbdb42", "#b8e3a0", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84", "#A9A9A9")) +
-  coord_flip(ylim = c(-.75,.25)) +  #There's a few iterations out at -1.5
+  coord_flip(ylim = c(-2,.3)) +  #There's a few iterations out at -1.5
   labs(y = expression(paste("Symbiosis Effect on ", "CV(",lambda,")")),
        x = "",
        color = "Species")+
@@ -407,7 +458,7 @@ ggsave(lambdavar_plot, filename = "lambdavar_plot_coefficientofvariation.png", w
 
 endo_lambdaeffects_plot <-  meanlambda_plot +lambdavar_plot + plot_layout(nrow = 1, guides = "collect")
 endo_lambdaeffects_plot
-ggsave(endo_lambdaeffects_plot, filename = "endo_lambdaeffects_plot.png", width = 12, height = 6)
+ggsave(endo_lambdaeffects_plot, filename = "endo_lambdaeffects_plot_quad_origin.png", width = 12, height = 6)
 
 
 
@@ -526,7 +577,7 @@ meanvar_biplot <- ggplot(data = lambda_join_df) +
   # geom_point(aes(x = meanlambda_diff, y = varlambda_diff, color = species), alpha = .5) +
   geom_point(data = summarylambda_join_df, aes(x = avg_meandiff, y = avg_vardiff, color = species), lwd  = 3) +
   geom_label_repel(data = summarylambda_join_df, aes(x = avg_meandiff, y = (avg_vardiff), label = species), fontface = "italic", lwd  = 3) +
-  xlim(-.05,.17) + ylim(-.26,.05)+
+  # xlim(-.05,.17) + ylim(-.26,.05)+
   # xlim(-.05,.2) + ylim(-.08,.05)+
   scale_color_manual(values = c("#dbdb42", "#b8e3a0", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84", "#A9A9A9")) +
   xlab(expression(paste("Effect on ", bar(lambda)))) +
