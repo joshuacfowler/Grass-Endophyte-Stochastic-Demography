@@ -67,7 +67,8 @@ LTREB_data_forsurv <- LTREB_full %>%
   filter(!is.na(surv_t1)) %>% 
   filter(!is.na(logsize_t)) %>% 
   filter(!is.na(endo_01)) %>%  # There are a few LOAR that don't have a plot level endo assigned
-  filter(origin_01 == 1 & year_t != birth | origin_01 == 0)  # filtering out first year germinants (including those that are bigger than 1 tiller)
+  filter(origin_01 == 1 & year_t != birth | origin_01 == 0) %>%   # filtering out first year germinants (including those that are bigger than 1 tiller) 
+  mutate(origin_index = origin_01+1)
 dim(LTREB_data_forsurv)
 
 LTREB_surv_seedling <- LTREB_full %>% 
@@ -91,7 +92,8 @@ table(LTREB_surv_big_seedling$year_t,LTREB_surv_big_seedling$size_t, LTREB_surv_
 LTREB_data_forflw <- LTREB_full %>% 
   filter(!is.na(FLW_STAT_T1)) %>% 
   filter(!is.na(logsize_t1)) %>% 
-  filter(!is.na(endo_01))
+  filter(!is.na(endo_01)) %>% 
+  mutate(origin_index = origin_01+1)
 dim(LTREB_data_forflw)
 
 
@@ -99,7 +101,8 @@ LTREB_data_forgrow <- LTREB_full %>%
   filter(!is.na(logsize_t)) %>% 
   filter(!is.na(size_t1)) %>% 
   filter(!is.na(endo_01)) %>% 
-  filter(origin_01 == 1 & year_t != birth | origin_01 == 0)  # filtering out first year germinants (including those that are bigger than 1 tiller)
+  filter(origin_01 == 1 & year_t != birth | origin_01 == 0) %>%   # filtering out first year germinants (including those that are bigger than 1 tiller)
+  mutate(origin_index = origin_01+1)
 dim(LTREB_data_forgrow)
 
 LTREB_grow_seedling <- LTREB_full %>%
@@ -115,7 +118,8 @@ dim(LTREB_grow_seedling)
 LTREB_data_forfert <- LTREB_full %>% 
   filter(!is.na(FLW_COUNT_T1)) %>% 
   filter(FLW_COUNT_T1 > 0) %>% 
-  filter(!is.na(logsize_t1))
+  filter(!is.na(logsize_t1)) %>% 
+  mutate(origin_index = origin_01+1)
 dim(LTREB_data_forfert)
 
 LTREB_data_forspike <- LTREB_full %>%
@@ -133,7 +137,9 @@ LTREB_data_forspike <- LTREB_full %>%
        value.name = "spike_count_t1") %>% 
   rename(spikelet_id = variable) %>% 
   filter(!is.na(spike_count_t1)) %>% 
-  mutate(spike_count_t1 = as.integer(spike_count_t1))
+  mutate(spike_count_t1 = as.integer(spike_count_t1)) %>% 
+  mutate(origin_index = origin_01+1)
+
 
 # Looking at the data coverage across years, 
 # and if there are differences between Shaun data and the data since 2018
@@ -230,6 +236,7 @@ LTREB_data_forspike <- LTREB_full %>%
 surv_data_list <- list(y = LTREB_data_forsurv$surv_t1,
                        logsize = LTREB_data_forsurv$logsize_t,
                        origin_01 = LTREB_data_forsurv$origin_01,
+                       origin_index = LTREB_data_forsurv$origin_index,
                        endo_01 = as.integer(LTREB_data_forsurv$endo_01),
                        endo_index = as.integer(LTREB_data_forsurv$endo_index),
                        spp = as.integer(LTREB_data_forsurv$species_index),
@@ -239,7 +246,8 @@ surv_data_list <- list(y = LTREB_data_forsurv$surv_t1,
                        nSpp = length(unique(LTREB_data_forsurv$species_index)),
                        nYear = max(unique(LTREB_data_forsurv$year_t_index)),
                        nPlot = max(unique(LTREB_data_forsurv$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forsurv$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forsurv$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forsurv$origin_01)))
 str(surv_data_list)
 
 seed_surv_data_list <- list(y = LTREB_surv_seedling$surv_t1,
@@ -261,6 +269,7 @@ str(seed_surv_data_list)
 flw_data_list <- list(y = LTREB_data_forflw$FLW_STAT_T1,
                       logsize = LTREB_data_forflw$logsize_t1,
                       origin_01 = LTREB_data_forflw$origin_01,
+                      origin_index = LTREB_data_forflw$origin_index,
                       endo_01 = as.integer(LTREB_data_forflw$endo_01),
                       endo_index = as.integer(LTREB_data_forflw$endo_index),
                       spp = as.integer(LTREB_data_forflw$species_index),
@@ -270,12 +279,14 @@ flw_data_list <- list(y = LTREB_data_forflw$FLW_STAT_T1,
                       nSpp = length(unique(LTREB_data_forflw$species_index)),
                       nYear = max(unique(LTREB_data_forflw$year_t_index)),
                       nPlot = length(unique(LTREB_data_forflw$plot_index)),
-                      nEndo =   length(unique(LTREB_data_forflw$endo_01)))
+                      nEndo =   length(unique(LTREB_data_forflw$endo_01)),
+                      nOrigin =   length(unique(LTREB_data_forflw$origin_01)))
 str(flw_data_list)
 
 grow_data_list <- list(y = as.integer(LTREB_data_forgrow$size_t1),
                        logsize = LTREB_data_forgrow$logsize_t,
                        origin_01 = as.integer(LTREB_data_forgrow$origin_01),
+                       origin_index = as.integer(LTREB_data_forgrow$origin_index),
                        endo_01 = as.integer(LTREB_data_forgrow$endo_01),
                        endo_index = as.integer(LTREB_data_forgrow$endo_index),
                        spp = as.integer(LTREB_data_forgrow$species_index),
@@ -285,11 +296,13 @@ grow_data_list <- list(y = as.integer(LTREB_data_forgrow$size_t1),
                        nSpp = length(unique(LTREB_data_forgrow$species_index)),
                        nYear = max(unique(LTREB_data_forgrow$year_t_index)),
                        nPlot = max(unique(LTREB_data_forgrow$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forgrow$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forgrow$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forgrow$origin_01)))
 str(grow_data_list)
 seed_grow_data_list <- list(y = as.integer(LTREB_grow_seedling$size_t1),
                        logsize = LTREB_grow_seedling$logsize_t,
                        origin_01 = as.integer(LTREB_grow_seedling$origin_01),
+                       origin_index = as.integer(LTREB_grow_seedling$origin_01 + 1),
                        endo_01 = as.integer(LTREB_grow_seedling$endo_01),
                        endo_index = as.integer(LTREB_grow_seedling$endo_index),
                        spp = as.integer(LTREB_grow_seedling$species_index),
@@ -307,6 +320,7 @@ str(seed_grow_data_list)
 fert_data_list <- list(y = as.integer(LTREB_data_forfert$FLW_COUNT_T1),
                        logsize = LTREB_data_forfert$logsize_t1,
                        origin_01 = LTREB_data_forfert$origin_01,
+                       origin_index = LTREB_data_forfert$origin_index,
                        endo_01 = as.integer(LTREB_data_forfert$endo_01),
                        endo_index = as.integer(LTREB_data_forfert$endo_index),
                        spp = as.integer(LTREB_data_forfert$species_index),
@@ -316,7 +330,8 @@ fert_data_list <- list(y = as.integer(LTREB_data_forfert$FLW_COUNT_T1),
                        nSpp = length(unique(LTREB_data_forfert$species_index)),
                        nYear = max(unique(LTREB_data_forfert$year_t_index)),
                        nPlot = max(unique(LTREB_data_forfert$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forfert$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forfert$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forfert$origin_01)))
 str(fert_data_list)
 
 
@@ -325,6 +340,7 @@ spike_data_list <- list(nYear = max(unique(LTREB_data_forspike$year_t_index)),
                         nPlot = max(unique(LTREB_data_forspike$plot_index)),
                         nSpp = length(unique(LTREB_data_forspike$species)),
                         nEndo=length(unique(LTREB_data_forspike$endo_01)),
+                        nOrigin =   length(unique(LTREB_data_forspike$origin_01)),
                         N = nrow(LTREB_data_forspike),
                         year_t = as.integer(LTREB_data_forspike$year_t_index),
                         plot = as.integer(LTREB_data_forspike$plot_index),
@@ -332,7 +348,8 @@ spike_data_list <- list(nYear = max(unique(LTREB_data_forspike$year_t_index)),
                         y = LTREB_data_forspike$spike_count_t1,
                         logsize = LTREB_data_forspike$logsize_t1,
                         endo_01 = LTREB_data_forspike$endo_01,
-                        origin_01 = LTREB_data_forspike$origin_01)
+                        origin_01 = LTREB_data_forspike$origin_01,
+                        origin_index = LTREB_data_forspike$origin_index)
 str(spike_data_list)
 
 #########################################################################################################
@@ -359,6 +376,31 @@ sm_surv <- stan(file = "Analyses/endo_spp_surv_flw.stan", data = surv_data_list,
                 thin = mcmc_pars$thin)
 saveRDS(sm_surv, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
 
+
+sm_surv_quad <- stan(file = "Analyses/endo_spp_surv_flw-quadratic.stan", data = surv_data_list,
+                iter = mcmc_pars$iter,
+                warmup = mcmc_pars$warmup,
+                chains = mcmc_pars$chains, 
+                thin = mcmc_pars$thin)
+saveRDS(sm_surv_quad, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad.rds")
+
+sm_surv_quad_origin <- stan(file = "Analyses/endo_spp_surv_flw-quadratic_origin.stan", data = surv_data_list,
+                     iter = mcmc_pars$iter,
+                     warmup = mcmc_pars$warmup,
+                     chains = mcmc_pars$chains, 
+                     thin = mcmc_pars$thin)
+saveRDS(sm_surv_quad_origin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
+
+
+sm_surv_quadXorigin <- stan(file = "Analyses/endo_spp_surv_flw-quadraticXorigin.stan", data = surv_data_list,
+                            iter = mcmc_pars$iter,
+                            warmup = mcmc_pars$warmup,
+                            chains = mcmc_pars$chains, 
+                            thin = mcmc_pars$thin)
+saveRDS(sm_surv_quadXorigin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds")
+
+
+
 sm_seed_surv <- stan(file = "Analyses/seedling_surv.stan", data = seed_surv_data_list,
                      iter = mcmc_pars$iter,
                      warmup = mcmc_pars$warmup,
@@ -372,6 +414,31 @@ sm_flw <- stan(file = "Analyses/endo_spp_surv_flw.stan", data = flw_data_list,
                chains = mcmc_pars$chains, 
                thin = mcmc_pars$thin)
 saveRDS(sm_flw, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+
+
+sm_flw_quad <- stan(file = "Analyses/endo_spp_surv_flw-quadratic.stan", data = flw_data_list,
+               iter = mcmc_pars$iter,
+               warmup = mcmc_pars$warmup,
+               chains = mcmc_pars$chains, 
+               thin = mcmc_pars$thin)
+saveRDS(sm_flw_quad, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad.rds")
+sm_flw_quad <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad.rds")
+
+
+sm_flw_quad_origin <- stan(file = "Analyses/endo_spp_surv_flw-quadratic_origin.stan", data = flw_data_list,
+                    iter = mcmc_pars$iter,
+                    warmup = mcmc_pars$warmup,
+                    chains = mcmc_pars$chains, 
+                    thin = mcmc_pars$thin)
+saveRDS(sm_flw_quad_origin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
+
+sm_flw_quadXorigin <- stan(file = "Analyses/endo_spp_surv_flw-quadraticXorigin.stan", data = flw_data_list,
+                           iter = mcmc_pars$iter,
+                           warmup = mcmc_pars$warmup,
+                           chains = mcmc_pars$chains, 
+                           thin = mcmc_pars$thin)
+saveRDS(sm_flw_quadXorigin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quadXorigin.rds")
+
 
 # Negative binomial growth model, we are using the pig for better fit
 # sm_grow <- stan(file = "Analyses/endo_spp_grow_fert.stan", data = grow_data_list,
@@ -387,6 +454,30 @@ sm_grow_pig <- stan(file = "Analyses/endo_spp_grow_fert_PIG.stan", data = grow_d
                     chains = mcmc_pars$chains, 
                     thin = mcmc_pars$thin)
 saveRDS(sm_grow_pig, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+
+sm_grow_pig_quad <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadratic.stan", data = grow_data_list,
+                    iter = mcmc_pars$iter,
+                    warmup = mcmc_pars$warmup,
+                    chains = mcmc_pars$chains, 
+                    thin = mcmc_pars$thin)
+saveRDS(sm_grow_pig_quad, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad.rds")
+sm_grow_pig_quad <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad.rds")
+
+
+sm_grow_pig_quad_origin <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadratic_origin.stan", data = grow_data_list,
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         chains = mcmc_pars$chains, 
+                         thin = mcmc_pars$thin)
+saveRDS(sm_grow_pig_quad_origin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad_origin.rds")
+
+
+sm_grow_pig_quadXorigin <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadraticXorigin.stan", data = grow_data_list,
+                                iter = mcmc_pars$iter,
+                                warmup = mcmc_pars$warmup,
+                                chains = mcmc_pars$chains, 
+                                thin = mcmc_pars$thin)
+saveRDS(sm_grow_pig_quadXorigin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quadXorigin.rds")
 
 # Negative binomial seedling growth model. We are going with the PIG cause it fits better and this model has some sampling issues
 # sm_seed_grow <- stan(file = "Analyses/seedling_grow.stan", data = seed_grow_data_list,
@@ -437,6 +528,30 @@ sm_fert_pig <- stan(file = "Analyses/endo_spp_grow_fert_PIG.stan", data = fert_d
                     thin = mcmc_pars$thin)
 saveRDS(sm_fert_pig, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig.rds")
 
+sm_fert_pig_quad <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadratic.stan", data = fert_data_list,
+                    iter = mcmc_pars$iter,
+                    warmup = mcmc_pars$warmup,
+                    chains = mcmc_pars$chains, 
+                    thin = mcmc_pars$thin)
+saveRDS(sm_fert_pig_quad, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quad.rds")
+
+sm_fert_pig_quad_origin <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadratic_origin.stan", data = fert_data_list,
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         chains = mcmc_pars$chains, 
+                         thin = mcmc_pars$thin)
+saveRDS(sm_fert_pig_quad_origin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quad_origin.rds")
+
+
+sm_fert_pig_quadXorigin <- stan(file = "Analyses/endo_spp_grow_fert_PIG-quadraticXorigin.stan", data = fert_data_list,
+                                iter = mcmc_pars$iter,
+                                warmup = mcmc_pars$warmup,
+                                chains = mcmc_pars$chains, 
+                                thin = mcmc_pars$thin)
+saveRDS(sm_fert_pig_quadXorigin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quadXorigin.rds")
+
+
+
 
 # Fitting spikelet data as a poisson, this converges without errors mostly sampling with the increased treedepth
 # sm_spike_pois <- stan(file = "Analyses/endo_spp_spike_poisson.stan", data = spike_data_list,
@@ -454,6 +569,32 @@ sm_spike_nb <- stan(file = "Analyses/endo_spp_spike_nb.stan", data = spike_data_
                       chains = mcmc_pars$chains, 
                       thin = mcmc_pars$thin)
 saveRDS(sm_spike_nb, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+
+
+sm_spike_nb_quad <- stan(file = "Analyses/endo_spp_spike_nb-quadratic.stan", data = spike_data_list,
+                    iter = mcmc_pars$iter,
+                    warmup = mcmc_pars$warmup,
+                    chains = mcmc_pars$chains, 
+                    thin = mcmc_pars$thin)
+saveRDS(sm_spike_nb_quad, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad.rds")
+
+
+sm_spike_nb_quad_origin <- stan(file = "Analyses/endo_spp_spike_nb-quadratic_origin.stan", data = spike_data_list,
+                         iter = mcmc_pars$iter,
+                         warmup = mcmc_pars$warmup,
+                         chains = mcmc_pars$chains, 
+                         thin = mcmc_pars$thin)
+saveRDS(sm_spike_nb_quad_origin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds")
+
+
+sm_spike_nb_quadXorigin <- stan(file = "Analyses/endo_spp_spike_nb-quadraticXorigin.stan", data = spike_data_list,
+                                iter = mcmc_pars$iter,
+                                warmup = mcmc_pars$warmup,
+                                chains = mcmc_pars$chains, 
+                                thin = mcmc_pars$thin)
+saveRDS(sm_spike_nb_quadXorigin, file = "~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quadXorigin.rds")
+
+
 
 #########################################################################################################
 # Model Diagnostics ------------------------------
@@ -518,7 +659,11 @@ color_scheme_set(endophyte_color_scheme)
 # color_scheme_view()
 
 #### survival ppc ####
-surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
+surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds")
+
 predS <- rstan::extract(surv_fit, pars = c("p"))$p
 n_post_draws <- 500
 post_draws <- sample.int(dim(predS)[1], n_post_draws)
@@ -526,8 +671,16 @@ y_s_sim <- matrix(NA,n_post_draws,length(surv_data_list$y))
 for(i in 1:n_post_draws){
   y_s_sim[i,] <- rbinom(n=length(surv_data_list$y), size=1, prob = invlogit(predS[post_draws[i],]))
 }
-saveRDS(y_s_sim, file = "yrep_survivalmodel.rds")
-y_s_sim <- readRDS(file = "yrep_survivalmodel.rds")
+# saveRDS(y_s_sim, file = "yrep_survivalmodel.rds")
+# saveRDS(y_s_sim, file = "yrep_survivalmodel_quad.rds")
+# saveRDS(y_s_sim, file = "yrep_survivalmodel_quad_origin.rds")
+saveRDS(y_s_sim, file = "yrep_survivalmodel_quadXorigin.rds")
+
+# y_s_sim <- readRDS(file = "yrep_survivalmodel.rds")
+# y_s_sim <- readRDS(file = "yrep_survivalmodel_quad.rds")
+# y_s_sim <- readRDS(file = "yrep_survivalmodel_quad_origin.rds")
+y_s_sim <- readRDS(file = "yrep_survivalmodel_quadXorigin.rds")
+
 # ppc_dens_overlay(surv_data_list$y, y_s_sim)
 surv_densplot <- ppc_dens_overlay(surv_data_list$y, y_s_sim) + theme_classic() + labs(title = "Adult Survival", x = "Survival status", y = "Density")
 surv_densplot
@@ -575,7 +728,11 @@ seedsurv_moments
 # ggsave(seedsurv_moments, filename = "seedsurv_momentsplot.png", width = 4, height = 4)
 
 #### flowering ppc ####
-flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+# flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+# flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad.rds")
+# flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
+flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quadXorigin.rds")
+
 predF <- rstan::extract(flow_fit, pars = c("p"))$p
 n_post_draws <- 500
 post_draws <- sample.int(dim(predF)[1], n_post_draws)
@@ -583,8 +740,15 @@ y_f_sim <- matrix(NA,n_post_draws,length(flw_data_list$y))
 for(i in 1:n_post_draws){
   y_f_sim[i,] <- rbinom(n=length(flw_data_list$y), size=1, prob = invlogit(predF[post_draws[i],]))
 }
-saveRDS(y_f_sim, file = "yrep_floweringmodel.rds")
-y_f_sim <- readRDS(file = "yrep_floweringmodel.rds")
+# saveRDS(y_f_sim, file = "yrep_floweringmodel.rds")
+# saveRDS(y_f_sim, file = "yrep_floweringmodel_quad.rds")
+# saveRDS(y_f_sim, file = "yrep_floweringmodel_quad_origin.rds")
+saveRDS(y_f_sim, file = "yrep_floweringmodel_quadXorigin.rds")
+
+# y_f_sim <- readRDS(file = "yrep_floweringmodel.rds")
+# y_f_sim <- readRDS(file = "yrep_floweringmodel_quad.rds")
+# y_f_sim <- readRDS(file = "yrep_floweringmodel_quad_origin.rds")
+y_f_sim <- readRDS(file = "yrep_floweringmodel_quadXorigin.rds")
 
 # ppc_dens_overlay(flw_data_list$y, y_f_sim)
 flw_densplot <- ppc_dens_overlay(flw_data_list$y, y_f_sim) + theme_classic() + labs(title = "Flowering", x = "Flowering status", y = "Density")
@@ -606,6 +770,7 @@ flw_size_ppc <- size_moments_ppc(data = LTREB_data_forflw,
                                   sim = y_f_sim, 
                                   n_bins = 2, 
                                   title = "Flowering")
+flw_size_ppc
 ggsave(flw_size_ppc, filename = "flw_size_ppc.png", width = 4, height = 4)
 
 
@@ -648,9 +813,14 @@ ZTNB_growth_size_ppc <- size_moments_ppc(data = LTREB_data_forgrow,
 # ggsave(ZTNB_growth_size_ppc, filename = "ZTNB_growth_size_pcc.png", width = 4, height = 4)
 
 #growth PIG distribution
-grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad_origin.rds")
+grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quadXorigin.rds")
+
+
 # pairs(grow_fit, pars = c("beta0"))
-grow_par <- rstan::extract(grow_fit, pars = c("predG","beta0","betasize","betaendo","betaorigin","tau_year","tau_plot","theta", "sigma"))
+grow_par <- rstan::extract(grow_fit, pars = c("predG","tau_year","tau_plot","theta", "sigma"))
 predG <- grow_par$predG
 theta <- grow_par$theta
 n_post_draws <- 500
@@ -672,8 +842,17 @@ for(i in 1:n_post_draws){
                             prob = prob_v / prob_t )
   }
 }
-saveRDS(y_g_sim, file = "yrep_growthPIGmodel.rds")
-y_g_sim <- readRDS(file = "yrep_growthPIGmodel.rds")
+# saveRDS(y_g_sim, file = "yrep_growthPIGmodel.rds")
+# saveRDS(y_g_sim, file = "yrep_growthPIGmodel_quad.rds")
+# saveRDS(y_g_sim, file = "yrep_growthPIGmodel_quad_origin.rds")
+saveRDS(y_g_sim, file = "yrep_growthPIGmodel_quadXorigin.rds")
+
+
+# y_g_sim <- readRDS(file = "yrep_growthPIGmodel.rds")
+# y_g_sim <- readRDS(file = "yrep_growthPIGmodel_quad.rds")
+# y_g_sim <- readRDS(file = "yrep_growthPIGmodel_quad_origin.rds")
+y_g_sim <- readRDS(file = "yrep_growthPIGmodel_quadXorigin.rds")
+
 
 # Posterior predictive check
 ppc_dens_overlay(grow_data_list$y, y_g_sim)
@@ -701,6 +880,7 @@ PIG_growth_size_ppc <- size_moments_ppc(data = LTREB_data_forgrow,
                                          sim = y_g_sim, 
                                          n_bins = 6, 
                                          title = "Growth PIG")
+PIG_growth_size_ppc
 ggsave(PIG_growth_size_ppc, filename = "PIG_growth_size_pcc.png", width = 4, height = 4)
 
 
@@ -713,7 +893,7 @@ predseedG <- s_grow_par$lambda
 phiseedG <- s_grow_par$phi
 odseedG <- s_grow_par$od
 
-n_post_draws <- 100
+n_post_draws <- 500
 post_draws <- sample.int(dim(predseedG)[1], n_post_draws)
 y_seed_g_sim <- matrix(NA,n_post_draws,length(seed_grow_data_list$y))
 for(i in 1:n_post_draws){
@@ -824,10 +1004,15 @@ mcmc_trace(fert_fit,pars=c("betaendo[1]","betaendo[2]","betaendo[3]"
                            ,"betaendo[7]"))
 
 
-# Fert fit with Poisson inverse Gaussian
+# Fert fit with Poisson inverse Gaussian - fits much better
 
-fert_fit_pig <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig.rds")
-fert_par <- rstan::extract(fert_fit_pig, pars = c("predG","beta0","betasize","betaendo","betaorigin","tau_year","tau_plot","theta", "sigma"))
+# fert_fit_pig <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig.rds")
+# fert_fit_pig <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quad.rds")
+# fert_fit_pig <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quad_origin.rds")
+fert_fit_pig <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_pig_quadXorigin.rds")
+
+
+fert_par <- rstan::extract(fert_fit_pig, pars = c("predG","tau_year","tau_plot","theta", "sigma"))
 predG <- fert_par$predG
 theta <- fert_par$theta
 n_post_draws <- 500
@@ -849,8 +1034,17 @@ for(i in 1:n_post_draws){
                             prob = prob_v / prob_t )
   }
 }
-saveRDS(y_fert_sim, file = "yrep_fertilityPIGmodel.rds")
-y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel.rds")
+# saveRDS(y_fert_sim, file = "yrep_fertilityPIGmodel.rds")
+# saveRDS(y_fert_sim, file = "yrep_fertilityPIGmodel_quad.rds")
+# saveRDS(y_fert_sim, file = "yrep_fertilityPIGmodel_quad_origin.rds")
+saveRDS(y_fert_sim, file = "yrep_fertilityPIGmodel_quadXorigin.rds")
+
+
+# y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel.rds")
+# y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel_quad.rds")
+# y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel_quad_origin.rds")
+y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel_quadXorigin.rds")
+
 
 
 # Posterior predictive check
@@ -873,8 +1067,9 @@ ggsave(fert_moments, filename = "fert_momentsplot_withPIG.png", width = 4, heigh
 fert_size_ppc <- size_moments_ppc(data = LTREB_data_forfert,
                                   y_name = "FLW_COUNT_T1",
                                   sim = y_fert_sim, 
-                                  n_bins = 3, 
+                                  n_bins = 5, 
                                   title = "Inflorescence Count")
+fert_size_ppc
 ggsave(fert_size_ppc, filename = "fert_size_ppc.png", width = 4, height = 4)
 
 
@@ -910,8 +1105,13 @@ mcmc_trace(spike_fit,pars=c("betaendo[1]","betaendo[2]","betaendo[3]"
                            ,"betaendo[7]"))
 
 # looking at the negative binomial fit, fits really nicely
-spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
-spike_par <- rstan::extract(spike_fit, pars = c("lambda","beta0","betasize","betaendo","betaorigin","tau_year","tau_plot", "phi", "od"))
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad.rds")
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds")
+spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quadXorigin.rds")
+
+
+spike_par <- rstan::extract(spike_fit, pars = c("lambda","tau_year","tau_plot", "phi", "od"))
 predSpike <- spike_par$lambda
 phiSpike <- spike_par$phi
 odSpike <- spike_par$od
@@ -924,8 +1124,16 @@ for(i in 1:n_post_draws){
     y_spike_sim[i,j] <- sample(x = 1:max(spike_data_list$y), size = 1, replace = T, prob = dnbinom(1:max(spike_data_list$y), mu = exp(predSpike[post_draws[i],j]), size = odSpike[post_draws[i],j]))
   }
 }
-saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel.rds")
-y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel.rds")
+# saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel.rds")
+# saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel_quad.rds")
+# saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel_quad_origin.rds")
+saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel_quadXorigin.rds")
+
+
+# y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel.rds")
+# y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad.rds")
+y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad_origin.rds")
+
 
 ppc_dens_overlay(spike_data_list$y, y_spike_sim)
 ppc_dens_overlay(spike_data_list$y, y_spike_sim) + xlim(0,250) + ggtitle("Spikelet Count")
@@ -940,6 +1148,19 @@ kurt_spike_plot <- ppc_stat(spike_data_list$y, y_spike_sim, stat = "Lkurtosis")
 spike_moments <- mean_spike_plot+sd_spike_plot+skew_spike_plot+kurt_spike_plot+ plot_annotation(title = "Spikelets per Infl. ZTNB")
 spike_moments
 ggsave(spike_moments, filename = "spike_momentsplot.png", width = 4, height = 4)
+
+
+
+# Now we can look at the binned size fit for fertility
+spike_size_ppc <- size_moments_ppc(data = LTREB_data_forspike,
+                                  y_name = "spike_count_t1",
+                                  sim = y_spike_sim, 
+                                  n_bins = 5, 
+                                  title = "Spikelet Count")
+spike_size_ppc
+ggsave(spike_size_ppc, filename = "fert_size_ppc.png", width = 4, height = 4)
+
+
 
 #########################################################################################################
 # Plots for all species all vital rates and model fits ------------------------------

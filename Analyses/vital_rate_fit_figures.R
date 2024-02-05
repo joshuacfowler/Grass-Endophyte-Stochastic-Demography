@@ -260,32 +260,53 @@ source("Analyses/MPM_functions.R")
 #############################################################################################
 
 # The stan objects for each vital rate
+# surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+# grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+# flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+# fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG.rds")
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+# seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
+# stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
+
+# surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad.rds")
+# grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad.rds")
+# flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad.rds")
+# fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG_quad.rds")
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad.rds")
+# seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
+# stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
+
+
 surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
-surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
 grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
-grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
-flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
-fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG.rds")
-spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad_origin.rds")
+flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
+fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG_quad_origin.rds")
+spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds")
 seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
 stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
 
 # Pulling out the actual parameters
-surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                       tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
 surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,
                                                                     tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
-grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                        tau_year, tau_plot,
                                                        sigma, sigma_year, sigma0, sigmaendo))
 grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
                                                                      tau_year, tau_plot,
                                                                      sigma, sigma_year, sigma0, sigmaendo))
-flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                       tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
-fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                        tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
-spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
                                                          tau_year, tau_plot,
                                                          phi, sigma_year, sigma0, sigmaendo))
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
@@ -293,13 +314,13 @@ recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
                                                           tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
 
 # Saved y_rep values from the script "vital_rate_analysis.R", "seed_means.R" and "seed_to_seedling.R"
-y_s_sim <- readRDS(file = "yrep_survivalmodel.rds")
+y_s_sim <- readRDS(file = "yrep_survivalmodel_quad_origin.rds")
 y_seed_s_sim <- readRDS(file = "yrep_seedlingsurvivalmodel.rds")
-y_f_sim <- readRDS(file = "yrep_floweringmodel.rds")
-y_g_sim <- readRDS(file = "yrep_growthPIGmodel.rds")
+y_f_sim <- readRDS(file = "yrep_floweringmodel_quad_origin.rds")
+y_g_sim <- readRDS(file = "yrep_growthPIGmodel_quad_origin.rds")
 y_seed_g_sim <- readRDS(file = "yrep_seedlinggrowthPIGmodel.rds")
-y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel.rds")
-y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel.rds")
+y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel_quad_origin.rds")
+y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad_origin.rds")
 y_seedmean_sim <- readRDS(file = "yrep_seedmeanmodel.rds")
 y_recruit_sim <- readRDS(file = "yrep_stosmodel.rds")
 
@@ -511,7 +532,7 @@ H"
 survbyspecies_densplot <- wrap_plots(A = (AGPE_surv_densplot), B = (ELRI_surv_densplot), C = (ELVI_surv_densplot), D = (FESU_surv_densplot), E = (LOAR_surv_densplot), G = (POAL_surv_densplot), H = (POSY_surv_densplot),
 design = fm_layout, guides = "collect") + plot_annotation(title = "Adult Survival", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
-ggsave(survbyspecies_densplot, filename = "survbyspecies_densplot.png", width = 8, height = 10)
+ggsave(survbyspecies_densplot, filename = "survbyspecies_densplot_quad_origin.png", width = 8, height = 10)
 
 
 # Seedling Survival
@@ -556,7 +577,7 @@ POSY_flw_densplot <- filterspecies_densplot(data = LTREB_data_forflw, data_list 
 flwbyspecies_densplot <- wrap_plots(A = (AGPE_flw_densplot), B = (ELRI_flw_densplot), C = (ELVI_flw_densplot), D = (FESU_flw_densplot), E = (LOAR_flw_densplot), G = (POAL_flw_densplot), H = (POSY_flw_densplot),
                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Flowering Probability", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
-ggsave(flwbyspecies_densplot, filename = "flwbyspecies_densplot.png", width = 8, height = 10)
+ggsave(flwbyspecies_densplot, filename = "flwbyspecies_densplot_quad_origin.png", width = 8, height = 10)
 
 
 
@@ -581,7 +602,7 @@ POSY_grow_densplot <- filterspecies_densplot(data = LTREB_data_forgrow, data_lis
 growbyspecies_densplot <- wrap_plots(A = (AGPE_grow_densplot), B = (ELRI_grow_densplot), C = (ELVI_grow_densplot), D = (FESU_grow_densplot), E = (LOAR_grow_densplot), G = (POAL_grow_densplot), H = (POSY_grow_densplot),
                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Adult Growth", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
-ggsave(growbyspecies_densplot, filename = "growbyspecies_densplot.png", width = 8, height = 10)
+ggsave(growbyspecies_densplot, filename = "growbyspecies_densplott_quad_origin.png", width = 8, height = 10)
 
 
 
@@ -627,7 +648,7 @@ POSY_fert_densplot <- filterspecies_densplot(data = LTREB_data_forfert, data_lis
 fertbyspecies_densplot <- wrap_plots(A = (AGPE_fert_densplot), B = (ELRI_fert_densplot), C = (ELVI_fert_densplot), D = (FESU_fert_densplot), E = (LOAR_fert_densplot), G = (POAL_fert_densplot), H = (POSY_fert_densplot),
                                     design = fm_layout, guides = "collect") + plot_annotation(title = "Fertility", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
-ggsave(fertbyspecies_densplot, filename = "fertbyspecies_densplot.png", width = 8, height = 10)
+ggsave(fertbyspecies_densplot, filename = "fertbyspecies_densplot_quad_origin.png", width = 8, height = 10)
 
 
 # Spikelet Count
@@ -649,7 +670,7 @@ POSY_spike_densplot <- filterspecies_densplot(data = LTREB_data_forspike, data_l
 spikebyspecies_densplot <- wrap_plots(A = (AGPE_spike_densplot), B = (ELRI_spike_densplot), C = (ELVI_spike_densplot), D = (FESU_spike_densplot), E = (LOAR_spike_densplot), G = (POAL_spike_densplot), H = (POSY_spike_densplot),
                                      design = fm_layout, guides = "collect") + plot_annotation(title = "Spikelet Production", subtitle = "Vital rate fits and moments with 500 posterior draws")
 
-ggsave(spikebyspecies_densplot, filename = "spikebyspecies_densplot.png", width = 8, height = 10)
+ggsave(spikebyspecies_densplot, filename = "spikebyspecies_densplot_quad_origin.png", width = 8, height = 10)
 
 # Spikelet Count
 # Need to rename the outcome variable because I had used seed in the past, and this function, I'm using 'y' for every other vital rate.
@@ -765,6 +786,33 @@ size_moments_ppc <- function(data,y_name,sim, n_bins, title = NA){
   return(size_ppc_plot)
 }
 
+filterspecies_size_moments_ppc <- function(data, species = NA, sim,n_bins, y_name, title = NA){
+  require(tidyverse); require(bayesplot); require(patchwork)
+  filtered_data <- data[data$species == species,]
+    
+  # sim_list <- as.list(data.frame(t(sim)))
+  # filtered_sim_list <- lapply(sim_list, function(x) x[data$species == species])
+  # 
+  # filtered_sim <- matrix(unlist(filtered_sim_list), ncol = length(filtered_data$y_name))
+  # min_x <- min(filtered_sim)
+  
+
+  
+  # size_ppc_plot <- size_moments_ppc(data = filtered_data,
+  #                                      y_name = y_name,
+  #                                      sim = filtered_sim_list, 
+  #                                      n_bins = n_bins, 
+  #                                      title = title)
+  return(filtered_data)
+}
+
+PIG_growth_size_ppc <- filterspecies_size_moments_ppc(data = LTREB_data_forgrow,
+                                        y_name = "size_t1",
+                                        sim = y_g_sim, 
+                                        n_bins = 2, 
+                                        species = "ELRI",
+                                        title = "Adult Growth")
+
 PIG_growth_size_ppc <- size_moments_ppc(data = LTREB_data_forgrow,
                                         y_name = "size_t1",
                                         sim = y_g_sim, 
@@ -826,7 +874,7 @@ size_ppc_plot <- wrap_plots(A = wrap_elements(PIG_growth_size_ppc), B =  wrap_el
 
 
 # size_ppc_plot
-ggsave(size_ppc_plot, filename = "size_ppc_plot.png", width = 10, height = 13)
+ggsave(size_ppc_plot, filename = "size_ppc_plott_quad_origin.png", width = 10, height = 13)
 
 
 
@@ -858,7 +906,7 @@ sigmayear_species_key <- c("sigma_year[1,1]" = "AGPE E-", "sigma_year[1,2]" = "A
 mean_species_key <- c("betaendo[1]" = "AGPE", "betaendo[2]" = "ELRI", "betaendo[3]" = "ELVI", "betaendo[4]" = "FESU", "betaendo[5]" = "LOAR", "betaendo[6]" = "POAL", "betaendo[7]" = "POSY")
 sd_species_key <- c("sigmaendo[1]" = "AGPE", "sigmaendo[2]" = "ELRI", "sigmaendo[3]" = "ELVI", "sigmaendo[4]" = "FESU", "sigmaendo[5]" = "LOAR", "sigmaendo[6]" = "POAL", "sigmaendo[7]" = "POSY")
 
-#posterriors of variance for all vital rates
+#posteriors of variance for all vital rates
 surv_sigmayear_posteriors <-  mcmc_areas(surv_fit, prob = 0.8, regex_pars = c("sigma_year"))+labs(title = "Adult Survival", subtitle = "Vital rate SD with 80% credible intervals") + scale_y_discrete(labels = sigmayear_species_key)
 seedsurv_sigmayear_posteriors <-  mcmc_areas(surv_fit_seedling, prob = 0.8, regex_pars = c("sigma_year"))+labs(title = "Seedling Survival", subtitle = "Vital rate SD with 80% credible intervals") + scale_y_discrete(labels = sigmayear_species_key)
 grow_sigmayear_posteriors <- mcmc_areas(grow_fit, prob = 0.8, regex_pars = c("sigma_year"))+labs(title = "Adult Growth", subtitle = "Vital rate SD with 80% credible intervals") + scale_y_discrete(labels = sigmayear_species_key)
@@ -873,7 +921,7 @@ vital_rate_sd_posteriors <- surv_sigmayear_posteriors +seedsurv_sigmayear_poster
 ggsave(vital_rate_sd_posteriors, filename = "vital_rate_sd_posteriors.png", width = 12, height = 30)
 
 
-# effect of endophytte on mean (betaendo)
+# effect of endophyte on mean (betaendo)
 surv_endomean_posteriors <-  mcmc_areas(surv_fit, prob = 0.8, regex_pars = c("betaendo"))+labs(title = "Adult Survival", subtitle = "Endophyte effect on mean with 80% credible intervals") + scale_y_discrete(labels = mean_species_key)
 seedsurv_endomean_posteriors <-  mcmc_areas(surv_fit_seedling, prob = 0.8, regex_pars = c("betaendo"))+labs(title = "Seedling Survival", subtitle = "Endophyte effect on mean with 80% credible intervals") + scale_y_discrete(labels = mean_species_key)
 grow_endomean_posteriors <- mcmc_areas(grow_fit, prob = 0.8, regex_pars = c("betaendo"))+labs(title = "Adult Growth", subtitle = "Endophyte effect on mean with 80% credible intervals") + scale_y_discrete(labels = mean_species_key)
@@ -1189,20 +1237,20 @@ survyear_mean <- growyear_mean <- flwyear_mean <- spikeyear_mean <- fertyear_mea
 
 
 sx<-function(x,params){
-  invlogit(params$surv_int + params$surv_slope*log(x))
+  invlogit(params$surv_int + params$surv_slope*log(x) + params$surv_slope_2*(log(x)^2))
 }
 gx <- function(x,params){
-  exp(params$grow_int + params$grow_slope*log(x))
+  exp(params$grow_int + params$grow_slope*log(x)+ params$grow_slope_2*(log(x)^2))
 }
 flwx <- function(x,params){
-  invlogit(params$flow_int + params$flow_slope*log(x))
+  invlogit(params$flow_int + params$flow_slope*log(x)+ params$flow_slope_2*(log(x)^2))
 }
 fertx <- function(x,params){
-  exp(params$fert_int + params$fert_slope*log(x))
+  exp(params$fert_int + params$fert_slope*log(x)+ params$fert_slope_2*(log(x)^2))
 }
 
 spikex <- function(x,params){
-  exp(params$spike_int + params$spike_slope*log(x))
+  exp(params$spike_int + params$spike_slope*log(x)+ params$spike_slope_2*(log(x)^2))
 }
 
 for(i in 1:length(post_draws)){
@@ -1640,9 +1688,9 @@ neat_names <- function(df_raw, vr){
 
 surv_sizebin <- bin_by_size_t(filter(LTREB_data_forsurv,origin_01==0),vr = surv_t1, nbins = 40)
 # seedsurv_sizebin <- bin_by_size_t(filter(LTREB_surv_seedling,origin_01==0),vr = surv_t1, nbins = 40)
-grow_sizebin <- bin_by_size_t(filter(LTREB_data_forgrow,origin_01==0),vr = size_t1, nbins = 40)
+grow_sizebin <- bin_by_size_t(filter(LTREB_data_forgrow,origin_01==0),vr = size_t1, nbins = 10)
 # seedgrow_sizebin <- bin_by_size_t(filter(LTREB_grow_seedling,origin_01==0), vr = size_t1, nbins = 40)
-flw_sizebin <- bin_by_size_t1(filter(LTREB_data_forflw,origin_01==0), vr = FLW_STAT_T1,nbins = 40)
+flw_sizebin <- bin_by_size_t1(filter(LTREB_data_forflw,origin_01==0), vr = FLW_STAT_T1,nbins = 20)
 fert_sizebin <- bin_by_size_t1(filter(LTREB_data_forfert,origin_01==0),vr = FLW_COUNT_T1, nbins = 40)
 spike_sizebin <- bin_by_size_t1(filter(LTREB_data_forspike,origin_01==0), vr = spike_count_t1, nbins = 40)
 
@@ -1685,7 +1733,7 @@ surv_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Adult Survival",subtitle = "Data from Original plants only", y = "Survival Probability", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size")
 # surv_meanplot
-ggsave(surv_meanplot, filename = "surv_meanplot.png", width = 8, height = 12)
+ggsave(surv_meanplot, filename = "surv_meanplot_quad_origin.png", width = 8, height = 12)
 
 surv_yearplot <- ggplot()+
   geom_point(data = surv_yearsizebin, aes(x = mean_size, y = mean_vr, size = samplesize, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -1706,7 +1754,7 @@ surv_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Adult Survival",subtitle = "Data from Original plants only", y = "Survival Probability", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size", col = "Year")
 # surv_yearplot
-ggsave(surv_yearplot, filename = "surv_yearplot.png", width = 16, height = 17)
+ggsave(surv_yearplot, filename = "surv_yearplot_quad_origin.png", width = 16, height = 17)
 
 grow_meanplot <- ggplot()+
   # geom_point(data = grow_neatdata, aes(x = logsize_t, y = size_t1, shape = Endo, col = Species), alpha = .1) +
@@ -1729,7 +1777,7 @@ grow_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Adult Growth",subtitle = "Data from Original plants only", y = "# of Tillers", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size")
 # grow_meanplot
-ggsave(grow_meanplot, filename = "grow_meanplot.png", width = 8, height = 12)
+ggsave(grow_meanplot, filename = "grow_meanplot_quad_origin.png", width = 8, height = 12)
 
 grow_yearplot <- ggplot()+
   # geom_point(data = grow_neatdata, aes(x = logsize_t, y = size_t1, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -1751,7 +1799,7 @@ grow_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Adult Growth",subtitle = "Data from Original plants only",  y = "# of Tillers", x = expression("log(# of tillers)"[" year t"]), col = "Year",size = "Sample Size")
 # grow_yearplot
-ggsave(grow_yearplot, filename = "grow_yearplot.png", width = 16, height = 17)
+ggsave(grow_yearplot, filename = "grow_yearplot_quad_origin.png", width = 16, height = 17)
 
 flw_meanplot <- ggplot()+
   geom_point(data = flw_sizebin, aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = Species), alpha = .7) +
@@ -1773,7 +1821,7 @@ flw_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Flowering",subtitle = "Data from Original plants only", y = "Flowering Probability", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # flw_meanplot
-ggsave(flw_meanplot, filename = "flw_meanplot.png", width = 8, height = 12)
+ggsave(flw_meanplot, filename = "flw_meanplot_quad_origin.png", width = 8, height = 12)
 
 
 flw_yearplot <- ggplot()+
@@ -1795,7 +1843,7 @@ flw_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Flowering",subtitle = "Data from Original plants only", y = "Flowering Probability", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # flw_yearplot
-ggsave(flw_yearplot, filename = "flw_yearplot.png", width = 16, height = 17)
+ggsave(flw_yearplot, filename = "flw_yearplot_quad_origin.png", width = 16, height = 17)
 
 fert_meanplot <- ggplot()+
   geom_point(data = fert_sizebin, aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = Species), alpha = .7) +
@@ -1817,7 +1865,7 @@ fert_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Fertility",subtitle = "Data from Original plants only", y = "# of Repro. Tillers", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # fert_meanplot
-ggsave(fert_meanplot, filename = "fert_meanplot.png", width = 8, height = 12)
+ggsave(fert_meanplot, filename = "fert_meanplot_quad_origin.png", width = 8, height = 12)
 
 fert_yearplot <- ggplot()+
   geom_point(data = fert_yearsizebin, aes(x = mean_size, y = mean_vr, size = samplesize, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -1839,7 +1887,7 @@ fert_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Fertility",subtitle = "Data from Original plants only",  y = "# of Repro. Tillers", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # fert_yearplot
-ggsave(fert_yearplot, filename = "fert_yearplot.png",width = 16, height = 17)
+ggsave(fert_yearplot, filename = "fert_yearplot_quad_origin.png",width = 16, height = 17)
 
 
 spike_meanplot <- ggplot()+
@@ -1863,7 +1911,7 @@ spike_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Spikes/Infl.",subtitle = "Data from Original plants only", y = "Spikelet/Infl.", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # spike_meanplot
-ggsave(spike_meanplot, filename = "spike_meanplot.png", width = 8, height = 12)
+ggsave(spike_meanplot, filename = "spike_meanplot_quad_origin.png", width = 8, height = 12)
 
 spike_yearplot <- ggplot()+
   # geom_point(data = spike_neatdata, aes(x = logsize_t, y = spike_count_t1, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -1886,7 +1934,7 @@ spike_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Spikes/Infl.",subtitle = "Data from Original plants only", y = "Spikelet/Infl.", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # spike_yearplot
-ggsave(spike_yearplot, filename = "spike_yearplot.png",width = 16, height = 17)
+ggsave(spike_yearplot, filename = "spike_yearplot_quad_origin.png",width = 16, height = 17)
 
 
 # meaneffect_fitplot <- surv_meanplot+grow_meanplot+flw_meanplot+fert_meanplot+spike_meanplot + 
@@ -2389,7 +2437,7 @@ recruit_spikeyear_mean_df <- as_tibble(recruit_spikeyear_mean) %>%
 # Bin Data by size and then by year for plotting for only recruit data
 
 
-recruit_surv_sizebin <- bin_by_size_t(filter(LTREB_data_forsurv, origin_01 == 1),vr = surv_t1, nbins = 40)
+recruit_surv_sizebin <- bin_by_size_t(filter(LTREB_data_forsurv, origin_01 == 1),vr = surv_t1, nbins = 20)
 recruit_grow_sizebin <- bin_by_size_t(filter(LTREB_data_forgrow, origin_01 == 1),vr = size_t1, nbins = 40)
 recruit_flw_sizebin <- bin_by_size_t1(filter(LTREB_data_forflw, origin_01 == 1), vr = FLW_STAT_T1,nbins = 40)
 recruit_fert_sizebin <- bin_by_size_t1(filter(LTREB_data_forfert, origin_01 == 1),vr = FLW_COUNT_T1, nbins = 40)
@@ -2430,7 +2478,7 @@ recruit_surv_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Adult Survival",subtitle = "Data from Recruit plants only", y = "Survival Probability", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size")
 # recruit_surv_meanplot
-ggsave(recruit_surv_meanplot, filename = "recruit_surv_meanplot.png", width = 8, height = 12)
+ggsave(recruit_surv_meanplot, filename = "recruit_surv_meanplot_quad_origin.png", width = 8, height = 12)
 
 
 
@@ -2453,7 +2501,7 @@ recruit_surv_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Adult Survival", subtitle = "Data from Recruit plants only", y = "Survival Probability", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size", col = "Year")
 # surv_yearplot
-ggsave(recruit_surv_yearplot, filename = "recruit_surv_yearplot.png", width = 16, height = 17)
+ggsave(recruit_surv_yearplot, filename = "recruit_surv_yearplot_quad_origin.png", width = 16, height = 17)
 
 
 recruit_grow_meanplot <- ggplot()+
@@ -2477,7 +2525,7 @@ recruit_grow_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Adult Growth", subtitle = "Data from Recruit plants only", y = "# of Tillers", x = expression("log(# of tillers)"[" year t"]), size = "Sample Size")
 # recruit_grow_meanplot
-ggsave(recruit_grow_meanplot, filename = "recruit_grow_meanplot.png", width = 8, height = 12)
+ggsave(recruit_grow_meanplot, filename = "recruit_grow_meanplot_quad_origin.png", width = 8, height = 12)
 
 
 
@@ -2501,7 +2549,7 @@ recruit_grow_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Adult Growth", subtitle = "Data from Recruit plants only",  y = "# of Tillers", x = expression("log(# of tillers)"[" year t"]), col = "Year",size = "Sample Size")
 # recruit_grow_yearplot
-ggsave(recruit_grow_yearplot, filename = "recruit_grow_yearplot.png", width = 16, height = 17)
+ggsave(recruit_grow_yearplot, filename = "recruit_grow_yearplot_quad_origin.png", width = 16, height = 17)
 
 
 
@@ -2526,7 +2574,7 @@ recruit_flw_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Flowering", subtitle = "Data from Recruit plants only", y = "Flowering Probability", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # recruit_flw_meanplot
-ggsave(recruit_flw_meanplot, filename = "recruit_flw_meanplot.png", width = 8, height = 12)
+ggsave(recruit_flw_meanplot, filename = "recruit_flw_meanplot_quad_origin.png", width = 8, height = 12)
 
 
 recruit_flw_yearplot <- ggplot()+
@@ -2548,7 +2596,7 @@ recruit_flw_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Flowering",subtitle = "Data from Recruit plants only", y = "Flowering Probability", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # flw_yearplot
-ggsave(recruit_flw_yearplot, filename = "recruit_flw_yearplot.png", width = 16, height = 17)
+ggsave(recruit_flw_yearplot, filename = "recruit_flw_yearplot_quad_origin.png", width = 16, height = 17)
 
 recruit_fert_meanplot <- ggplot()+
   geom_point(data = recruit_fert_sizebin, aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = Species), alpha = .7) +
@@ -2570,7 +2618,7 @@ recruit_fert_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Fertility",subtitle = "Data from Recruit plants only", y = "# of Repro. Tillers", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # fert_meanplot
-ggsave(recruit_fert_meanplot, filename = "recruit_fert_meanplot.png", width = 8, height = 12)
+ggsave(recruit_fert_meanplot, filename = "recruit_fert_meanplot_quad_origin.png", width = 8, height = 12)
 
 recruit_fert_yearplot <- ggplot()+
   geom_point(data = recruit_fert_yearsizebin, aes(x = mean_size, y = mean_vr, size = samplesize, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -2592,7 +2640,7 @@ recruit_fert_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Fertility", subtitle = "Data from Recruit plants only", y = "# of Repro. Tillers", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # fert_yearplot
-ggsave(recruit_fert_yearplot, filename = "recruit_fert_yearplot.png",width = 16, height = 17)
+ggsave(recruit_fert_yearplot, filename = "recruit_fert_yearplot_quad_origin.png",width = 16, height = 17)
 
 
 recruit_spike_meanplot <- ggplot()+
@@ -2616,7 +2664,7 @@ recruit_spike_meanplot <- ggplot()+
   guides(fill = "none", col = "none", alpha = guide_legend(order = 1), linetype = guide_legend(order = 1), shape = guide_legend(order = 1), size = guide_legend(order = 2))+
   labs(title = "Spikes/Infl.",subtitle = "Data from Recruit plants only", y = "Spikelet/Infl.", x = expression("log(# of tillers)"[" year t+1"]), size = "Sample Size")
 # spike_meanplot
-ggsave(recruit_spike_meanplot, filename = "recruit_spike_meanplot.png", width = 8, height = 12)
+ggsave(recruit_spike_meanplot, filename = "recruit_spike_meanplot_quad_origin.png", width = 8, height = 12)
 
 recruit_spike_yearplot <- ggplot()+
   # geom_point(data = spike_neatdata, aes(x = logsize_t, y = spike_count_t1, col = as.factor(Year), shape = Endo), alpha = .4) +
@@ -2639,7 +2687,7 @@ recruit_spike_yearplot <- ggplot()+
   guides(fill = "none",shape = guide_legend(order = 2, ncol = 1),linetype = guide_legend(order = 2, ncol = 1), color = guide_legend(order = 1, ncol = 2), size = guide_legend(order = 3))+
   labs(title = "Spikes/Infl.",subtitle = "Data from Recruit plants only", y = "Spikelet/Infl.", x = expression("log(# of tillers)"[" year t+1"]), col = "Year", size = "Sample Size")
 # spike_yearplot
-ggsave(recruit_spike_yearplot, filename = "recruit_spike_yearplot.png",width = 16, height = 17)
+ggsave(recruit_spike_yearplot, filename = "recruit_spike_yearplot_quad_origin.png",width = 16, height = 17)
 
 
 
@@ -2653,6 +2701,42 @@ ggsave(recruit_spike_yearplot, filename = "recruit_spike_yearplot.png",width = 1
 
 
 ######## making a heatmap of each vital rate for degree of buffering #####
+
+
+surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
+surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
+grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG.rds")
+spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
+stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds")
+
+
+# Pulling out the actual parameters
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,
+                                                      tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
+surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,
+                                                                    tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+                                                       tau_year, tau_plot,
+                                                       sigma, sigma_year, sigma0, sigmaendo))
+grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
+                                                                     tau_year, tau_plot,
+                                                                     sigma, sigma_year, sigma0, sigmaendo))
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+                                                      tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+                                                       tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+                                                         tau_year, tau_plot,
+                                                         phi, sigma_year, sigma0, sigmaendo))
+seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
+recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
+                                                          tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
+
+
 # First I'm making dataframes for the endophytes effects on mean and variance
 #surv
 dimnames(surv_par$sigmaendo) <- list(Draw = paste0("i",1:dim(surv_par$sigma_year)[1]), Species = species_list)
