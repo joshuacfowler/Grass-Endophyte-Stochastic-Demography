@@ -60,7 +60,7 @@ make_params <- function(species,endo_mean,endo_var,LTRE=F, endo_mean_U, endo_mea
   #survival
   params$surv_int <- surv_par$beta0[draw,species] + 
     endo_mean_U * surv_par$betaendo[draw,species] + 
-    original * surv_par$betaorigin[draw,species] +
+    original * surv_par$betaorigin[draw] +
     rfx_surv
   params$surv_spei <- spei_surv
   params$surv_slope <- surv_par$betasize[draw,species]
@@ -75,7 +75,7 @@ make_params <- function(species,endo_mean,endo_var,LTRE=F, endo_mean_U, endo_mea
   #growth
   params$grow_int <- grow_par$beta0[draw,species] + 
     endo_mean_U * grow_par$betaendo[draw,species] + 
-    original * grow_par$betaorigin[draw,species] +
+    original * grow_par$betaorigin[draw] +
     rfx_grow
   params$grow_spei <- spei_grow
   params$grow_slope <- grow_par$betasize[draw,species] 
@@ -92,7 +92,7 @@ make_params <- function(species,endo_mean,endo_var,LTRE=F, endo_mean_U, endo_mea
   #flowering
   params$flow_int <- flow_par$beta0[draw,species] + 
     endo_mean_F * flow_par$betaendo[draw,species] + 
-    original * flow_par$betaorigin[draw,species] +
+    original * flow_par$betaorigin[draw] +
     spei_flow + rfx_flow
   params$flow_spei <- spei_flow
   params$flow_slope <- flow_par$betasize[draw,species]  
@@ -101,7 +101,7 @@ make_params <- function(species,endo_mean,endo_var,LTRE=F, endo_mean_U, endo_mea
   #fertility
   params$fert_int <- fert_par$beta0[draw,species] +
    endo_mean_F * fert_par$betaendo[draw,species] +
-   original * fert_par$betaorigin[draw,species] +
+   original * fert_par$betaorigin[draw] +
    rfx_fert
   params$fert_spei <- spei_fert
   params$fert_slope <- fert_par$betasize[draw,species]
@@ -111,7 +111,7 @@ make_params <- function(species,endo_mean,endo_var,LTRE=F, endo_mean_U, endo_mea
   #spikelets
   params$spike_int <- spike_par$beta0[draw,species]  +
     endo_mean_F * spike_par$betaendo[draw,species] +
-    original * spike_par$betaorigin[draw,species] +
+    original * spike_par$betaorigin[draw] +
     rfx_spike
   params$spike_spei <- spei_spike
   params$spike_slope <- spike_par$betasize[draw,species]  
@@ -189,7 +189,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   
   params <- c()
   #survival
-  params$surv_int <- surv_par$beta0[draw,species] + 
+  params$surv_int <- surv_par$beta0[draw,species,original+1] + 
     endo_mean_U * surv_par$betaendo[draw,species] + 
     rfx_surv
   params$surv_spei <- spei_surv
@@ -203,7 +203,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   params$surv_sdlg_spei <- spei_surv_sdlg
   
   #growth
-  params$grow_int <- grow_par$beta0[draw,species] + 
+  params$grow_int <- grow_par$beta0[draw,species,original+1] + 
     endo_mean_U * grow_par$betaendo[draw,species] + 
     rfx_grow
   params$grow_spei <- spei_grow
@@ -219,7 +219,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   params$grow_sdlg_sigma <- grow_sdlg_par$sigma[draw] 
   
   #flowering
-  params$flow_int <- flow_par$beta0[draw,species] + 
+  params$flow_int <- flow_par$beta0[draw,species,original+1] + 
     endo_mean_F * flow_par$betaendo[draw,species] + 
     spei_flow + rfx_flow
   params$flow_spei <- spei_flow
@@ -227,7 +227,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   params$flow_slope_2 <- flow_par$betasize_2[draw,species,original+1]  
   
   #fertility
-  params$fert_int <- fert_par$beta0[draw,species] +
+  params$fert_int <- fert_par$beta0[draw,species,original+1] +
     endo_mean_F * fert_par$betaendo[draw,species] +
     rfx_fert
   params$fert_spei <- spei_fert
@@ -236,7 +236,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   
   
   #spikelets
-  params$spike_int <- spike_par$beta0[draw,species]  +
+  params$spike_int <- spike_par$beta0[draw,species,original+1]  +
     endo_mean_F * spike_par$betaendo[draw,species] +
     rfx_spike
   params$spike_spei <- spei_spike
