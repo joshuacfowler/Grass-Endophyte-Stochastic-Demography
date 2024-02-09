@@ -13,6 +13,7 @@ library(Rage) # for gen time, longevity etc.
 library(actuar)
 library(rstan)
 library(brms)
+library(bayesplot)
 
 library(ape) # for phylogenetic contrasts
 
@@ -62,16 +63,26 @@ source("Analyses/MPM_functions.R")
 ####### Read in Stan vital rate model outputs ------------------
 #############################################################################################
 
+# surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
+# surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+# grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
+# grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
+# flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
+# fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
+# spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+# seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
+# stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
+
+
 surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
-surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds"))
 grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
-grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
-flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
-fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
-spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG_quadXorigin.rds"))
+flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw_quadXorigin.rds"))
+fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG_quadXorigin.rds"))
+spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb_quadXorigin.rds"))
 seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
 stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
-
 # surv_fit_seedling <- readRDS(url("https://www.dropbox.com/s/vf1mju5u4c4fs3t/endo_seedling_surv.rds?dl=1"))
 # surv_fit <- readRDS(url("https://www.dropbox.com/s/00bor35inv5dypd/endo_spp_surv_woseedling.rds?dl=1"))
 # grow_fit_seedling <- readRDS(url("https://www.dropbox.com/s/m0mw5z29slpm4p7/endo_seedling_grow_PIG_10000iterations.rds?dl=1"))
@@ -82,21 +93,21 @@ stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds"))
 # seedmean_fit <- readRDS(url("https://www.dropbox.com/s/3ma5yc8iusu8bh0/endo_spp_seed_mean.rds?dl=1"))
 # stos_fit <- readRDS(url("https://www.dropbox.com/s/nf50hd76iw3hucw/endo_spp_s_to_s.rds?dl=1"))
 
-surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,
                                                       tau_year, tau_plot))
 surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,
                                                                     tau_year, tau_plot))
-grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                        tau_year, tau_plot,
                                                        sigma))
 grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,
                                                                      tau_year, tau_plot,
                                                                      sigma))
-flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                       tau_year, tau_plot))
-fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                        tau_year, tau_plot))
-spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                          tau_year, tau_plot,
                                                          phi))
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
@@ -123,7 +134,7 @@ d_entropy <- array(dim = c(7,2,n_draws))
 for(i in 1:length(post_draws)){
   for(e in 1:2){
     for(s in 1:7){
-      gen_time[s,e,i] <- gen_time(matU = bigmatrix(make_params(species=s,
+      gen_time[s,e,i] <- gen_time(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -139,8 +150,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Tmat,
-                                  matR = bigmatrix(make_params(species=s,
+                                  matR = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -156,8 +168,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Fmat)
-      longev[s,e,i] <- longevity(matU = bigmatrix(make_params(species=s,
+      longev[s,e,i] <- longevity(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                                         endo_mean=(e-1),
                                                                         endo_var=(e-1),
                                                                         original = 0, # should be =1 to represent recruit
@@ -173,8 +186,9 @@ for(i in 1:length(post_draws)){
                                                                         spike_par=spike_par,
                                                                         seed_par=seed_par,
                                                                         recruit_par=recruit_par), 
+                                                  quadratic = 1,
                                                             extension = 100)$Tmat, start = 1, lx_crit = 0.05)
-      mean_life_expect[s,e,i] <- life_expect_mean(matU = bigmatrix(make_params(species=s,
+      mean_life_expect[s,e,i] <- life_expect_mean(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                               endo_mean=(e-1),
                                                               endo_var=(e-1),
                                                               original = 0, # should be =1 to represent recruit
@@ -190,8 +204,9 @@ for(i in 1:length(post_draws)){
                                                               spike_par=spike_par,
                                                               seed_par=seed_par,
                                                               recruit_par=recruit_par), 
+                                                              quadratic = 1,
                                                   extension = 100)$Tmat, start = 1)
-      var_life_expect[s,e,i] <- life_expect_var(matU = bigmatrix(make_params(species=s,
+      var_life_expect[s,e,i] <- life_expect_var(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                                                endo_mean=(e-1),
                                                                                endo_var=(e-1),
                                                                                original = 0, # should be =1 to represent recruit
@@ -207,8 +222,9 @@ for(i in 1:length(post_draws)){
                                                                                spike_par=spike_par,
                                                                                seed_par=seed_par,
                                                                                recruit_par=recruit_par), 
+                                                                 quadratic = 1,
                                                                    extension = 100)$Tmat, start = 1)
-      R0[s,e,i] <- net_repro_rate(matU = bigmatrix(make_params(species=s,
+      R0[s,e,i] <- net_repro_rate(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                                          endo_mean=(e-1),
                                                                          endo_var=(e-1),
                                                                          original = 0, # should be =1 to represent recruit
@@ -224,8 +240,9 @@ for(i in 1:length(post_draws)){
                                                                          spike_par=spike_par,
                                                                          seed_par=seed_par,
                                                                          recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                              extension = 100)$Tmat,
-                                            matR = bigmatrix(make_params(species=s,
+                                            matR = bigmatrix(make_params_quadXorigin(species=s,
                                                                          endo_mean=(e-1),
                                                                          endo_var=(e-1),
                                                                          original = 0, # should be =1 to represent recruit
@@ -241,8 +258,9 @@ for(i in 1:length(post_draws)){
                                                                          spike_par=spike_par,
                                                                          seed_par=seed_par,
                                                                          recruit_par=recruit_par), 
+                                                             quadratic = 1,
                                                              extension = 100)$Fmat)
-      repro_age[s,e,i] <- mature_age(matU = bigmatrix(make_params(species=s,
+      repro_age[s,e,i] <- mature_age(matU = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -258,8 +276,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                      quadratic = 1,
                                                    extension = 100)$Tmat,
-                                  matR = bigmatrix(make_params(species=s,
+                                  matR = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -275,8 +294,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Fmat)
-      k_entropy[s,e,i] <- entropy_k(lx = bigmatrix(make_params(species=s,
+      k_entropy[s,e,i] <- entropy_k(lx = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -292,8 +312,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Tmat) 
-      d_entropy[s,e,i] <- entropy_d(lx = bigmatrix(make_params(species=s,
+      d_entropy[s,e,i] <- entropy_d(lx = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -309,8 +330,9 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Tmat,
-                                    mx = bigmatrix(make_params(species=s,
+                                    mx = bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
                                                                endo_var=(e-1),
                                                                original = 0, # should be =1 to represent recruit
@@ -326,28 +348,48 @@ for(i in 1:length(post_draws)){
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
                                                                recruit_par=recruit_par), 
+                                                   quadratic = 1,
                                                    extension = 100)$Fmat) 
     }
   }
 }
 
 #saving the generation time calculation and calculating mean for each species
-saveRDS(gen_time, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time.rds")
-saveRDS(longev, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev.rds")
-saveRDS(mean_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect.rds")
-saveRDS(var_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
-saveRDS(R0, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
-saveRDS(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age.rds")
-saveRDS(k_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
-saveRDS(d_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
+# saveRDS(gen_time, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time.rds")
+# saveRDS(longev, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev.rds")
+# saveRDS(mean_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect.rds")
+# saveRDS(var_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
+# saveRDS(R0, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
+# saveRDS(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age.rds")
+# saveRDS(k_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
+# saveRDS(d_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
 
-gen_time <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time.rds")
-longev <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev.rds")
-mean_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect.rds")
-var_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
-R0 <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
-k_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
-d_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
+
+saveRDS(gen_time, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time_quadXorigin.rds")
+saveRDS(longev, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev_quadXorigin.rds")
+saveRDS(mean_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect_quadXorigin.rds")
+saveRDS(var_life_expect, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect_quadXorigin.rds")
+saveRDS(R0, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0_quadXorigin.rds")
+saveRDS(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age_quadXorigin.rds")
+saveRDS(k_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy_quadXorigin.rds")
+saveRDS(d_entropy, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy_quadXorigin.rds")
+
+# gen_time <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time.rds")
+# longev <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev.rds")
+# mean_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect.rds")
+# var_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect.rds")
+# R0 <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0.rds")
+# k_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy.rds")
+# d_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy.rds")
+
+gen_time <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/gen_time_quadXorigin.rds")
+longev <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/longev_quadXorigin.rds")
+mean_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/mean_life_expect_quadXorigin.rds")
+var_life_expect <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/var_life_expect_quadXorigin.rds")
+R0 <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/R0_quadXorigin.rds")
+k_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/k_entropy_quadXorigin.rds")
+d_entropy <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/d_entropy_quadXorigin.rds")
+
 
 # repro_age <- read_rds(repro_age, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/repro_age.rds")
 
@@ -397,10 +439,15 @@ for(s in 1:7){
 
 
 # reading in lambda_mean and lambda_var with 500 post draws from dropbox, derived from MPM_analysis script
-lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
+# lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
+# 
+# lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
+# lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
 
-lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
-lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
+lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean_quadXorigin.rds")
+
+lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold_quadXorigin.rds")
+lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var_quadXorigin.rds")
 
 # Mean endophyte difference and quantiles
 lambda_means <- matrix(NA,8,2)
@@ -440,11 +487,19 @@ for(s in 1:8){
   lambda_var_diff[s,1] = mean(lambda_var[s,2,]^2 - lambda_var[s,1,]^2)
   lambda_var_diff[s,2:7] = quantile(lambda_var[s,2,]^2 - lambda_var[s,1,]^2,probs=c(0.05,0.125,0.25,0.75,0.875,0.95))
   
-  lambda_cv_diff[s,1] = mean(lambda_cv[s,2,] - lambda_cv[s,1,])
+  lambda_cv_diff[s,1] = median(lambda_cv[s,2,] - lambda_cv[s,1,])
   lambda_cv_diff[s,2:7] = quantile(lambda_cv[s,2,] - lambda_cv[s,1,],probs=c(0.05,0.125,0.25,0.75,0.875,0.95))
   lambda_cv_diff[s,8] = sd(lambda_cv[s,2,] - lambda_cv[s,1,])
   
 }
+
+# dropping some (seven) outlier posteriors from POAL 
+POAL_posterior <- lambda_cv[6,2,]-lambda_cv[6,1,]
+POAL_posterior <- POAL_posterior[POAL_posterior>=-5]
+
+hist(POAL_posterior)
+lambda_cv_diff[6,8] <- sd(POAL_posterior)
+
 #seed length measurements taken from Rudgers et al. 2009. from Flora of North America
 seed_size <- c(1.75,7.25,8,3.75,7,3.45,2.6)
 #imperfect transmission measurements from LTREB proposal, filling in LOAR with 100 for now, and POSY rate seems really low though?
@@ -1320,9 +1375,9 @@ plant_models[[1]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(plant_l
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(0.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1334,9 +1389,9 @@ plant_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(plant_label, co
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1348,9 +1403,9 @@ plant_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(plant_label
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"), 
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1376,9 +1431,9 @@ plant_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(plant_lab
                        data2 = list(A = A),
                        prior = c(
                          prior(normal(0, .1), "b"),
-                         prior(normal(0, .5), "Intercept"),
+                         prior(normal(0, .1), "Intercept"),
                          prior(normal(0,.1), class = "sd", lb = 0),
-                         prior(normal(.04,.01), class = "sigma", lb = 0)),
+                         prior(normal(.05,.01), class = "sigma", lb = 0)),
                        control = list(adapt_delta = 0.999,
                                       max_treedepth = 20),
                        iter = mcmc_pars$iter,
@@ -1390,9 +1445,9 @@ plant_models[[5]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(plant_la
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1404,9 +1459,9 @@ plant_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ k_entropy + (1|gr(plant_la
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1418,9 +1473,9 @@ plant_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ d_entropy + (1|gr(plant_la
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1435,9 +1490,9 @@ plant_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr(pl
                          data2 = list(A = A),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1446,8 +1501,8 @@ plant_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr(pl
 
 
 
-saveRDS(plant_models, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_lh_models.rds")
-plant_models <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_lh_models.rds")
+saveRDS(plant_models, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_lh_models_quadXorigin.rds")
+plant_models <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/plant_lh_models_quadXorigin.rds")
 
 print(plant_models[[4]])
 # pp_check(plant_models[[7]], ndraws = 100)
@@ -1549,7 +1604,7 @@ R0_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "R0"))+
   theme(axis.title.x = element_text(size=10),
         legend.text = element_text(face = "italic"))+
   labs(x = "R0", y = "", color = "Host Species")
-# R0_plant_plot
+R0_plant_plot
 
 longev_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "longev"))+
   geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
@@ -1714,7 +1769,7 @@ lh_plant_slopes_plot <- ggplot(data = plant_posterior_df)+
         axis.text.y = element_blank())+
         # axis.text.x = element_text(vjust = 1.5, hjust = 1.5, angle = 45))+
   labs(x = "Slope Estimate",  y = "") + guides(fill = "none")
-# lh_plant_slopes_plot
+lh_plant_slopes_plot
 ggsave(lh_plant_slopes_plot, filename = "lh_plant_slopes_plot.png", height = 5, width = 3.5)
 
 
@@ -1754,9 +1809,9 @@ epichloe_models[[1]] <- brm(cv_effect|mi(cv_effect_sd) ~ max_age_99 + (1|gr(epic
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1768,9 +1823,9 @@ epichloe_models[[2]] <- brm(cv_effect|mi(cv_effect_sd) ~ R0 + (1|gr(epichloe_lab
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1783,9 +1838,9 @@ epichloe_models[[3]] <- brm(cv_effect|mi(cv_effect_sd) ~ longev + (1|gr(epichloe
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"), 
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1811,9 +1866,9 @@ epichloe_models[[4]] <- brm(cv_effect|mi(cv_effect_sd) ~ gen_time + (1|gr(epichl
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1825,9 +1880,9 @@ epichloe_models[[5]] <- brm(cv_effect|mi(cv_effect_sd) ~ seed_size + (1|gr(epich
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1840,9 +1895,9 @@ epichloe_models[[6]] <- brm(cv_effect|mi(cv_effect_sd) ~ k_entropy + (1|gr(epich
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1854,9 +1909,9 @@ epichloe_models[[7]] <- brm(cv_effect|mi(cv_effect_sd) ~ d_entropy + (1|gr(epich
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1870,9 +1925,9 @@ epichloe_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr
                          data2 = list(A = Ae),
                          prior = c(
                            prior(normal(0, .1), "b"),
-                           prior(normal(0, .5), "Intercept"),
+                           prior(normal(0, .1), "Intercept"),
                            prior(normal(0,.1), class = "sd", lb = 0),
-                           prior(normal(.04,.01), class = "sigma", lb = 0)),
+                           prior(normal(.05,.01), class = "sigma", lb = 0)),
                          control = list(adapt_delta = 0.999,
                                         max_treedepth = 20),
                          iter = mcmc_pars$iter,
@@ -1881,8 +1936,8 @@ epichloe_models[[8]] <- brm(cv_effect|mi(cv_effect_sd) ~ imperfect_trans + (1|gr
 
 
 
-saveRDS(epichloe_models, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_lh_models.rds")
-epichloe_models <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_lh_models.rds")
+saveRDS(epichloe_models, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_lh_models_quadXorigin.rds")
+epichloe_models <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_lh_models_quadXorigin.rds")
 
 
 
