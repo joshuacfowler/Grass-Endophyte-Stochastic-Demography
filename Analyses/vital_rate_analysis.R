@@ -1087,7 +1087,7 @@ for(i in 1:n_post_draws){
 # ppc_dens_overlay(spike_data_list$y, y_spike_sim)
 # ppc_dens_overlay(spike_data_list$y, y_spike_sim) + xlim(0,250)
 
-spike_densplot <- ppc_dens_overlay(spike_data_list$y, y_spike_sim) + xlim(0,30) + theme_classic() + labs(title = "Panicles", x = "No. of Panicles", y = "Density")
+spike_densplot <- ppc_dens_overlay(spike_data_list$y, y_spike_sim) + xlim(0,100) + theme_classic() + labs(title = "Panicles", x = "No. of Panicles", y = "Density")
 spike_densplot
 ggsave(spike_densplot, filename = "spike_densplot.png", width = 4, height = 4)
 
@@ -1132,7 +1132,7 @@ saveRDS(y_spike_sim, file = "yrep_spikeletNBmodel_quadXorigin.rds")
 
 # y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel.rds")
 # y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad.rds")
-y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad_origin.rds")
+y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quadXorigin.rds")
 
 
 ppc_dens_overlay(spike_data_list$y, y_spike_sim)
@@ -1296,5 +1296,28 @@ surv_int <- surv_par$beta0[,1] + beta_endo
 
 
 
+##################################################################################################
+############## Comparing linear and quadXorigin models with Leave-one-out comparison
+##################################################################################################
 
+library(loo)
+
+surv_fit_linear <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
+surv_fit_quadXorigin <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds")
+
+loo1 <- loo(surv_fit_linear, pars = "p", save_psis = TRUE)
+loo2 <- loo(surv_fit_quadXorigin, pars = "p", save_psis = TRUE)
+loo3 <- loo(surv_fit, pars = "p", save_psis = TRUE)
+
+
+flow_fit_linear <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+# flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad.rds")
+# flow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
+flow_fit_quadXorigin <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quadXorigin.rds")
+
+
+loo1 <- loo(flow_fit_linear, pars = "p", save_psis = TRUE)
+loo2 <- loo(flow_fit_quadXorigin, pars = "p", save_psis = TRUE)
 
