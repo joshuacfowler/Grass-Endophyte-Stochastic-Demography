@@ -62,13 +62,23 @@ source("Analyses/MPM_functions.R")
 ####### Read in Stan vital rate model outputs ------------------
 #############################################################################################
 
+# surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
+# surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+# grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
+# grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
+# flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
+# fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
+# spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+# seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
+# stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
+
 surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
-surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling.rds"))
+surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds"))
 grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
-grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG.rds"))
-flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
-fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
-spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
+grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG_quadXorigin.rds"))
+flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw_quadXorigin.rds"))
+fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG_quadXorigin.rds"))
+spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb_quadXorigin.rds"))
 seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
 stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
 
@@ -82,21 +92,21 @@ stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds"))
 # seedmean_fit <- readRDS(url("https://www.dropbox.com/s/3ma5yc8iusu8bh0/endo_spp_seed_mean.rds?dl=1"))
 # stos_fit <- readRDS(url("https://www.dropbox.com/s/nf50hd76iw3hucw/endo_spp_s_to_s.rds?dl=1"))
 
-surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,sigma_year,
                                                       tau_year, tau_plot))
 surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,sigma_year,
                                                                     tau_year, tau_plot))
-grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,sigma_year,
                                                        tau_year, tau_plot,
                                                        sigma))
 grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,sigma_year,
                                                                      tau_year, tau_plot,
                                                                      sigma))
-flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,sigma_year,
                                                       tau_year, tau_plot))
-fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,sigma_year,
                                                        tau_year, tau_plot))
-spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,sigma_year,
                                                          tau_year, tau_plot,
                                                          phi))
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
@@ -135,7 +145,7 @@ for(d in 1:n_draws){
     U.VminusMminusF.VminusMminus_list <- U.VplusMplusRVplusVplus_list <- U.VplusMminusF.VminusMminus_list <- U.VplusMplusF.VminusMminus_list <- U.VplusMplusF.VplusMminus_list <- U.VplusMminusF.VplusMminus_list <- U.VplusMminusF.VminusMplus_list <- U.VplusMplusF.VminusMplus_list  <- U.VplusMminusF.VplusMplus_list <- U.VminusMplusF.VminusMminus_list <- U.VminusMplusF.VplusMminus_list <- U.VminusMplusF.VplusMplus_list <- U.VminusMminusF.VplusMplus_list <- U.VminusMminusF.VplusMminus_list <- U.VminusMminusF.VminusMplus_list <- U.VminusMplusF.VminusMplus_list <- list()
     # 1: sample observed years
     for(y in 1:years_obs){ ## 13 transitions matrices (2008-09 through 2020-21)
-      U.VminusMminusF.VminusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VminusMminusF.VminusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                 LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                 endo_mean_U=0,
                                                 endo_var_U=0,
@@ -155,8 +165,9 @@ for(d in 1:n_draws){
                                                 spike_par=spike_par,
                                                 seed_par=seed_par,
                                                 recruit_par=recruit_par),
+                                                quadratic = 1,
                                     extension = 100)$MPMmat
-      U.VplusMplusRVplusVplus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMplusRVplusVplus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                endo_mean_U=1,
                                                endo_var_U=1,
@@ -175,9 +186,9 @@ for(d in 1:n_draws){
                                                fert_par=fert_par,
                                                spike_par=spike_par,
                                                seed_par=seed_par,
-                                               recruit_par=recruit_par),
+                                               recruit_par=recruit_par),quadratic = 1,
                                    extension = 100)$MPMmat
-      U.VplusMminusF.VminusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMminusF.VminusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                                      LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                      endo_mean_U=0,
                                                                      endo_var_U=1,
@@ -196,9 +207,9 @@ for(d in 1:n_draws){
                                                                  fert_par=fert_par,
                                                                  spike_par=spike_par,
                                                                  seed_par=seed_par,
-                                                                 recruit_par=recruit_par),
+                                                                 recruit_par=recruit_par),quadratic = 1,
                                                      extension = 100)$MPMmat
-      U.VplusMplusF.VminusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMplusF.VminusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                                     LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                     endo_mean_U=1,
                                                                     endo_var_U=1,
@@ -217,9 +228,9 @@ for(d in 1:n_draws){
                                                                      fert_par=fert_par,
                                                                      spike_par=spike_par,
                                                                      seed_par=seed_par,
-                                                                     recruit_par=recruit_par),
+                                                                     recruit_par=recruit_par),quadratic = 1,
                                                          extension = 100)$MPMmat
-      U.VplusMplusF.VplusMminus_list[[y]]  <- bigmatrix(make_params(species=s,
+      U.VplusMplusF.VplusMminus_list[[y]]  <- bigmatrix(make_params_quadXorigin(species=s,
                                                               LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                               endo_mean_U=1,
                                                               endo_var_U=1,
@@ -238,9 +249,9 @@ for(d in 1:n_draws){
                                                               fert_par=fert_par,
                                                               spike_par=spike_par,
                                                               seed_par=seed_par,
-                                                              recruit_par=recruit_par),
+                                                              recruit_par=recruit_par),quadratic = 1,
                                                   extension = 100)$MPMmat
-      U.VplusMminusF.VplusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMminusF.VplusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                                LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                endo_mean_U=0,
                                                                endo_var_U=1,
@@ -259,9 +270,9 @@ for(d in 1:n_draws){
                                                                fert_par=fert_par,
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
-                                                               recruit_par=recruit_par),
+                                                               recruit_par=recruit_par),quadratic = 1,
                                                    extension = 100)$MPMmat
-      U.VplusMminusF.VminusMplus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMminusF.VminusMplus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                               LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                               endo_mean_U=0,
                                                               endo_var_U=1,
@@ -280,9 +291,9 @@ for(d in 1:n_draws){
                                                               fert_par=fert_par,
                                                               spike_par=spike_par,
                                                               seed_par=seed_par,
-                                                              recruit_par=recruit_par),
+                                                              recruit_par=recruit_par),quadratic = 1,
                                                   extension = 100)$MPMmat
-      U.VplusMplusF.VminusMplus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMplusF.VminusMplus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                              LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                              endo_mean_U=1,
                                                              endo_var_U=1,
@@ -301,9 +312,9 @@ for(d in 1:n_draws){
                                                              fert_par=fert_par,
                                                              spike_par=spike_par,
                                                              seed_par=seed_par,
-                                                             recruit_par=recruit_par),
+                                                             recruit_par=recruit_par),quadratic = 1,
                                                  extension = 100)$MPMmat
-      U.VplusMminusF.VplusMplus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VplusMminusF.VplusMplus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                              LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                              endo_mean_U=0,
                                                              endo_var_U=1,
@@ -322,9 +333,9 @@ for(d in 1:n_draws){
                                                              fert_par=fert_par,
                                                              spike_par=spike_par,
                                                              seed_par=seed_par,
-                                                             recruit_par=recruit_par),
+                                                             recruit_par=recruit_par),quadratic = 1,
                                                  extension = 100)$MPMmat
-      U.VminusMplusF.VminusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VminusMplusF.VminusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                              LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                              endo_mean_U=1,
                                                              endo_var_U=0,
@@ -343,9 +354,9 @@ for(d in 1:n_draws){
                                                              fert_par=fert_par,
                                                              spike_par=spike_par,
                                                              seed_par=seed_par,
-                                                             recruit_par=recruit_par),
+                                                             recruit_par=recruit_par),quadratic = 1,
                                                  extension = 100)$MPMmat
-      U.VminusMplusF.VplusMminus_list[[y]] <- bigmatrix(make_params(species=s,
+      U.VminusMplusF.VplusMminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                                LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                endo_mean_U=1,
                                                                endo_var_U=0,
@@ -364,9 +375,9 @@ for(d in 1:n_draws){
                                                                fert_par=fert_par,
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
-                                                               recruit_par=recruit_par),
+                                                               recruit_par=recruit_par),quadratic = 1,
                                                    extension = 100)$MPMmat
-      U.VminusMplusF.VplusMplus_list[[y]] <-  bigmatrix(make_params(species=s,
+      U.VminusMplusF.VplusMplus_list[[y]] <-  bigmatrix(make_params_quadXorigin(species=s,
                                                            LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                            endo_mean_U=1,
                                                            endo_var_U=0,
@@ -385,9 +396,9 @@ for(d in 1:n_draws){
                                                            fert_par=fert_par,
                                                            spike_par=spike_par,
                                                            seed_par=seed_par,
-                                                           recruit_par=recruit_par),
+                                                           recruit_par=recruit_par),quadratic = 1,
                                                extension = 100)$MPMmat
-      U.VminusMminusF.VplusMplus_list[[y]] <-  bigmatrix(make_params(species=s,
+      U.VminusMminusF.VplusMplus_list[[y]] <-  bigmatrix(make_params_quadXorigin(species=s,
                                                                 LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                 endo_mean_U=0,
                                                                 endo_var_U=0,
@@ -406,9 +417,9 @@ for(d in 1:n_draws){
                                                                 fert_par=fert_par,
                                                                 spike_par=spike_par,
                                                                 seed_par=seed_par,
-                                                                recruit_par=recruit_par),
+                                                                recruit_par=recruit_par),quadratic = 1,
                                                     extension = 100)$MPMmat
-      U.VminusMminusF.VplusMminus_list[[y]] <-  bigmatrix(make_params(species=s,
+      U.VminusMminusF.VplusMminus_list[[y]] <-  bigmatrix(make_params_quadXorigin(species=s,
                                                                  LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                  endo_mean_U=0,
                                                                  endo_var_U=0,
@@ -427,9 +438,9 @@ for(d in 1:n_draws){
                                                                  fert_par=fert_par,
                                                                  spike_par=spike_par,
                                                                  seed_par=seed_par,
-                                                                 recruit_par=recruit_par),
+                                                                 recruit_par=recruit_par),quadratic = 1,
                                                      extension = 100)$MPMmat
-      U.VminusMminusF.VminusMplus_list[[y]] <-  bigmatrix(make_params(species=s,
+      U.VminusMminusF.VminusMplus_list[[y]] <-  bigmatrix(make_params_quadXorigin(species=s,
                                                                 LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                 endo_mean_U=0,
                                                                 endo_var_U=0,
@@ -448,9 +459,9 @@ for(d in 1:n_draws){
                                                                 fert_par=fert_par,
                                                                 spike_par=spike_par,
                                                                 seed_par=seed_par,
-                                                                recruit_par=recruit_par),
+                                                                recruit_par=recruit_par),quadratic = 1,
                                                     extension = 100)$MPMmat
-      U.VminusMplusF.VminusMplus_list[[y]] <-  bigmatrix(make_params(species=s,
+      U.VminusMplusF.VminusMplus_list[[y]] <-  bigmatrix(make_params_quadXorigin(species=s,
                                                                LTRE = T, # This turns on the mean and variance terms specific to survival vs reproduction
                                                                endo_mean_U=1,
                                                                endo_var_U=0,
@@ -469,7 +480,7 @@ for(d in 1:n_draws){
                                                                fert_par=fert_par,
                                                                spike_par=spike_par,
                                                                seed_par=seed_par,
-                                                               recruit_par=recruit_par),
+                                                               recruit_par=recruit_par),quadratic = 1,
                                                    extension = 100)$MPMmat
       
     }#y loop
@@ -574,13 +585,13 @@ for(d in 1:n_draws){
 }
 
 # # Saving all of the simulations
-saveRDS(VRdecomp_lambdaS_obs, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs.rds"))
-saveRDS(VRdecomp_lambdaS_obs_extreme2_em, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme2_em.rds"))
-saveRDS(VRdecomp_lambdaS_obs_extreme6_em, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme6_em.rds"))
+saveRDS(VRdecomp_lambdaS_obs, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_quadXorigin.rds"))
+saveRDS(VRdecomp_lambdaS_obs_extreme2_em, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme2_em_quadXorigin.rds"))
+saveRDS(VRdecomp_lambdaS_obs_extreme6_em, file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme6_em_quadXorigin.rds"))
 
-VRdecomp_lambdaS_obs <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs.rds"))
-VRdecomp_lambdaS_obs_extreme2_em <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme2_em.rds"))
-VRdecomp_lambdaS_obs_extreme6_em <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme6_em.rds"))
+VRdecomp_lambdaS_obs <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_quadXorigin.rds"))
+VRdecomp_lambdaS_obs_extreme2_em <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme2_em_quadXorigin.rds"))
+VRdecomp_lambdaS_obs_extreme6_em <- readRDS( file = paste0(path,"/Model_Runs/MPM_output/VRdecomp_lambdaS_obs_extreme6_em_quadXorigin.rds"))
 
 
 
@@ -720,5 +731,5 @@ VRdecomp_contributions_obs_plot <- ggplot(data = VRdecomp_lambdaS_obs_diff_df) +
         legend.text=element_text(size=rel(1)),
         legend.key.size = unit(1.1,"cm"))
 # VRdecomp_contributions_obs_plot
-ggsave(VRdecomp_contributions_obs_plot, filename = "VRdecomp_contributions_obs_plot.png", width = 16, height = 10)
+ggsave(VRdecomp_contributions_obs_plot, filename = "VRdecomp_contributions_obs_plot_quadXorigin.png", width = 17, height = 10)
 
