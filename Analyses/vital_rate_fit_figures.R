@@ -260,15 +260,15 @@ source("Analyses/MPM_functions.R")
 #############################################################################################
 
 # The stan objects for each vital rate
-# surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
-# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
-# grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
-# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
-# flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
-# fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG.rds")
-# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
-# seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
-# stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
+surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
+surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling.rds")
+grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
+grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG.rds")
+flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw.rds")
+fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG.rds")
+spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb.rds")
+seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
+stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds")
 
 # surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
 # surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad.rds")
@@ -281,15 +281,15 @@ source("Analyses/MPM_functions.R")
 # stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
 
 
-surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
-surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
-grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
-grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad_origin.rds")
-flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
-fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG_quad_origin.rds")
-spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds")
-seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
-stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
+# surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_surv.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_surv_woseedling_quad_origin.rds")
+# grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds")
+# grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_grow_PIG_quad_origin.rds")
+# flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_flw_quad_origin.rds")
+# fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_fert_PIG_quad_origin.rds")
+# spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_spike_year_plot_nb_quad_origin.rds")
+# seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds")
+# stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_s_to_s.rds") 
 
 # Pulling out the actual parameters
 surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaorigin,
@@ -314,13 +314,13 @@ recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,
                                                           tau_year, tau_plot, sigma_year, sigma0, sigmaendo))
 
 # Saved y_rep values from the script "vital_rate_analysis.R", "seed_means.R" and "seed_to_seedling.R"
-y_s_sim <- readRDS(file = "yrep_survivalmodel_quad_origin.rds")
+y_s_sim <- readRDS(file = "yrep_survivalmodel.rds")
 y_seed_s_sim <- readRDS(file = "yrep_seedlingsurvivalmodel.rds")
-y_f_sim <- readRDS(file = "yrep_floweringmodel_quad_origin.rds")
-y_g_sim <- readRDS(file = "yrep_growthPIGmodel_quad_origin.rds")
+y_f_sim <- readRDS(file = "yrep_floweringmodel.rds")
+y_g_sim <- readRDS(file = "yrep_growthPIGmodel.rds")
 y_seed_g_sim <- readRDS(file = "yrep_seedlinggrowthPIGmodel.rds")
-y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel_quad_origin.rds")
-y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel_quad_origin.rds")
+y_fert_sim <- readRDS(file = "yrep_fertilityPIGmodel.rds")
+y_spike_sim <- readRDS(file = "yrep_spikeletNBmodel.rds")
 y_seedmean_sim <- readRDS(file = "yrep_seedmeanmodel.rds")
 y_recruit_sim <- readRDS(file = "yrep_stosmodel.rds")
 
@@ -786,80 +786,468 @@ size_moments_ppc <- function(data,y_name,sim, n_bins, title = NA){
   return(size_ppc_plot)
 }
 
-filterspecies_size_moments_ppc <- function(data, species = NA, sim,n_bins, y_name, title = NA){
-  require(tidyverse); require(bayesplot); require(patchwork)
-  filtered_data <- data[data$species == species,]
-    
-  # sim_list <- as.list(data.frame(t(sim)))
-  # filtered_sim_list <- lapply(sim_list, function(x) x[data$species == species])
-  # 
-  # filtered_sim <- matrix(unlist(filtered_sim_list), ncol = length(filtered_data$y_name))
-  # min_x <- min(filtered_sim)
-  
 
+
+size_moments_ppc_by_species <- function(data,y_name,sim, n_bins, Species = NA, title = NA){
+  require(tidyverse)
+  require(patchwork)
+  data$y_name <- data[[y_name]]
+  bins <- data %>%
+    ungroup() %>%
+    arrange(logsize_t) %>%
+    mutate(size_bin = cut_number(logsize_t, n_bins)) %>%
+    group_by(species, size_bin)  %>%
+    dplyr::summarize(mean_t1 = mean(y_name),
+                     sd_t1 = sd(y_name),
+                     skew_t1 = skewness(y_name),
+                     kurt_t1 = Lkurtosis(y_name),
+                     bin_mean = mean(logsize_t),
+                     bin_n = n()) 
+  sim_moments <- bind_cols(species = data$species, logsize_t = data$logsize_t, as_tibble(t(sim))) %>%
+    arrange(logsize_t) %>%
+    mutate(size_bin = cut_number(logsize_t, n_bins)) %>%
+    pivot_longer(., cols = starts_with("V"), names_to = "post_draw", values_to = "sim") %>%
+    group_by(species, size_bin, post_draw) %>%
+    summarize( Mean = mean((sim)),
+               SD = sd((sim)),
+               Skew = skewness((sim)),
+               Kurtosis = Lkurtosis((sim)),
+               bin_mean = mean(logsize_t),
+               bin_n = n()) 
+  sim_medians <- sim_moments %>%
+    group_by(species, size_bin, bin_mean) %>%
+    summarize(median_mean_sim = median(Mean),
+              median_sd_sim = median(SD),
+              median_skew_sim = median(Skew),
+              median_kurt_sim = median(Kurtosis)) 
+  bins <- bins %>% filter(species == Species)
+  sim_moments <- sim_moments %>% filter(species == Species)
+  sim_medians <- sim_medians %>% filter(species == Species)
   
-  # size_ppc_plot <- size_moments_ppc(data = filtered_data,
-  #                                      y_name = y_name,
-  #                                      sim = filtered_sim_list, 
-  #                                      n_bins = n_bins, 
-  #                                      title = title)
-  return(filtered_data)
+  meanplot <-  ggplot(data = bins)+
+    geom_point(data = sim_moments, aes(x = bin_mean, y = Mean), color = "gray72") +
+    geom_point(data = sim_medians, aes(x = bin_mean, y = median_mean_sim),shape = 1, color = "black") +
+    geom_point(aes(x = bin_mean, y = mean_t1), shape = 1, color = "firebrick2") + xlab("log(size_t)") + theme_classic()
+  sdplot <-  ggplot(data = bins)+
+    geom_point(data = sim_moments, aes(x = bin_mean, y = SD), color = "gray72") +
+    geom_point(data = sim_medians, aes(x = bin_mean, y = median_sd_sim),shape = 1, color = "black") +
+    geom_point(aes(x = bin_mean, y = sd_t1), shape = 1, color = "firebrick2") + xlab("log(size_t)") + theme_classic()
+  skewplot <-  ggplot(data = bins)+
+    geom_point(data = sim_moments, aes(x = bin_mean, y = Skew), color = "gray72") +
+    geom_point(data = sim_medians, aes(x = bin_mean, y = median_skew_sim),shape = 1, color = "black") +
+    geom_point(aes(x = bin_mean, y = skew_t1), shape = 1, color = "firebrick2") + xlab("log(size_t)") + theme_classic()
+  kurtplot <- ggplot(data = bins)+
+    geom_point(data = sim_moments, aes(x = bin_mean, y = Kurtosis), color = "gray72") +
+    geom_point(data = sim_medians, aes(x = bin_mean, y = median_kurt_sim),shape = 1, color = "black") +
+    geom_point(aes(x = bin_mean, y = kurt_t1), shape = 1, color = "firebrick2") + xlab("log(size_t)") + theme_classic()
+  size_ppc_plot <- meanplot+ sdplot+skewplot+ kurtplot+plot_annotation(title = title, subtitle = Species)
+  return(size_ppc_plot)
+  # return(list(meanplot = meanplot, sdplot = sdplot, skewplot = skewplot, kurtplot = kurtplot, size_ppc_plot))
 }
 
-PIG_growth_size_ppc <- filterspecies_size_moments_ppc(data = LTREB_data_forgrow,
-                                        y_name = "size_t1",
-                                        sim = y_g_sim, 
-                                        n_bins = 2, 
-                                        species = "ELRI",
-                                        title = "Adult Growth")
+
+
+##### Growth ####
+# all together
 
 PIG_growth_size_ppc <- size_moments_ppc(data = LTREB_data_forgrow,
                                         y_name = "size_t1",
                                         sim = y_g_sim, 
-                                        n_bins = 6, 
+                                        n_bins = 5, 
                                         title = "Adult Growth")
 # PIG_growth_size_ppc
 # ggsave(PIG_growth_size_ppc, filename = "PIG_growth_size_pcc.png", width = 4, height = 4)
 
-surv_size_ppc <- size_moments_ppc(data = LTREB_data_forsurv,
-                                 y_name = "surv_t1",
-                                 sim = y_s_sim, 
-                                 n_bins = 4, 
-                                 title = "Adult Survival")
-# surv_size_ppc
-# ggsave(surv_size_ppc, filename = "flw_size_pcc.png", width = 4, height = 4)
+# by species
+AGPE_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "AGPE")
+# AGPE_growth_size_ppc
+ggsave(AGPE_growth_size_ppc, filename = "AGPE_growth_size_pcc.png", width = 4, height = 4)
 
+ELRI_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "ELRI")
+# ELRI_growth_size_ppc
+ggsave(ELRI_growth_size_ppc, filename = "ELRI_growth_size_pcc.png", width = 4, height = 4)
+
+ELVI_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "ELVI")
+# ELVI_growth_size_ppc
+ggsave(ELVI_growth_size_ppc, filename = "ELVI_growth_size_pcc.png", width = 4, height = 4)
+
+FESU_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "FESU")
+# FESU_growth_size_ppc
+ggsave(FESU_growth_size_ppc, filename = "FESU_growth_size_pcc.png", width = 4, height = 4)
+
+LOAR_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "LOAR")
+# LOAR_growth_size_ppc
+ggsave(LOAR_growth_size_ppc, filename = "LOAR_growth_size_pcc.png", width = 4, height = 4)
+
+POAL_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "POAL")
+# POAL_growth_size_ppc
+ggsave(POAL_growth_size_ppc, filename = "POAL_growth_size_pcc.png", width = 4, height = 4)
+
+POSY_growth_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forgrow,
+                                                    y_name = "size_t1",
+                                                    sim = y_g_sim,
+                                                    n_bins = 5,
+                                                    title = "Adult Growth",
+                                                    Species = "POSY")
+# POSY_growth_size_ppc
+ggsave(POSY_growth_size_ppc, filename = "POSY_growth_size_pcc.png", width = 4, height = 4)
+
+
+
+
+
+##### adult survival ####
+# all together
+
+surv_size_ppc <- size_moments_ppc(data = LTREB_data_forsurv,
+                                        y_name = "surv_t1",
+                                        sim = y_s_sim, 
+                                        n_bins = 5, 
+                                        title = "Adult Survival")
+# surv_size_ppc
+# ggsave(surv_size_ppc, filename = "surv_size_pcc.png", width = 4, height = 4)
+
+# by species
+AGPE_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "AGPE")
+# AGPE_surv_size_ppc
+ggsave(AGPE_surv_size_ppc, filename = "AGPE_surv_size_pcc.png", width = 4, height = 4)
+
+ELRI_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "ELRI")
+# ELRI_surv_size_ppc
+ggsave(ELRI_surv_size_ppc, filename = "ELRI_surv_size_pcc.png", width = 4, height = 4)
+
+ELVI_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "ELVI")
+# ELVI_surv_size_ppc
+ggsave(ELVI_surv_size_ppc, filename = "ELVI_surv_size_pcc.png", width = 4, height = 4)
+
+FESU_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "FESU")
+# FESU_surv_size_ppc
+ggsave(FESU_surv_size_ppc, filename = "FESU_surv_size_pcc.png", width = 4, height = 4)
+
+LOAR_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "LOAR")
+# LOAR_surv_size_ppc
+ggsave(LOAR_surv_size_ppc, filename = "LOAR_surv_size_pcc.png", width = 4, height = 4)
+
+POAL_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "POAL")
+# POAL_surv_size_ppc
+ggsave(POAL_surv_size_ppc, filename = "POAL_surv_size_pcc.png", width = 4, height = 4)
+
+POSY_surv_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forsurv,
+                                                    y_name = "surv_t1",
+                                                    sim = y_s_sim,
+                                                    n_bins = 4,
+                                                    title = "Adult Survival",
+                                                    Species = "POSY")
+# POSY_surv_size_ppc
+ggsave(POSY_surv_size_ppc, filename = "POSY_surv_size_pcc.png", width = 4, height = 4)
+
+
+
+
+##### Flowering####
+# all together
 
 flw_size_ppc <- size_moments_ppc(data = LTREB_data_forflw,
-                                       y_name = "FLW_STAT_T1",
-                                       sim = y_f_sim, 
-                                       n_bins = 2, 
-                                       title = "Flowering Probability")
-# flw_size_ppc
-# ggsave(flw_size_ppc, filename = "flw_size_pcc.png", width = 4, height = 4)
+                                  y_name = "FLW_STAT_T1",
+                                  sim = y_f_sim, 
+                                  n_bins = 5, 
+                                  title = "Flowering")
+# surv_size_ppc
+# ggsave(surv_size_ppc, filename = "surv_size_pcc.png", width = 4, height = 4)
 
-PIG_fert_size_ppc <- size_moments_ppc(data = LTREB_data_forfert,
-                                        y_name = "FLW_COUNT_T1",
-                                        sim = y_fert_sim, 
-                                        n_bins = 5, 
-                                        title = "Inflorescence Production")
-# PIG_fert_size_ppc
-# ggsave(PIG_fert_size_ppc, filename = "PIG_fert_size_pcc.png", width = 4, height = 4)
+# by species
+AGPE_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "AGPE")
+# AGPE_flw_size_ppc
+ggsave(AGPE_flw_size_ppc, filename = "AGPE_flw_size_pcc.png", width = 4, height = 4)
+
+ELRI_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "ELRI")
+# ELRI_flw_size_ppc
+ggsave(ELRI_flw_size_ppc, filename = "ELRI_flw_size_pcc.png", width = 4, height = 4)
+
+ELVI_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "ELVI")
+# ELVI_flw_size_ppc
+ggsave(ELVI_flw_size_ppc, filename = "ELVI_flw_size_pcc.png", width = 4, height = 4)
+
+FESU_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "FESU")
+# FESU_flw_size_ppc
+ggsave(FESU_flw_size_ppc, filename = "FESU_flw_size_pcc.png", width = 4, height = 4)
+
+LOAR_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "LOAR")
+# LOAR_flw_size_ppc
+ggsave(LOAR_flw_size_ppc, filename = "LOAR_flw_size_pcc.png", width = 4, height = 4)
+
+POAL_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "POAL")
+# POAL_flw_size_ppc
+ggsave(POAL_flw_size_ppc, filename = "POAL_flw_size_pcc.png", width = 4, height = 4)
+
+POSY_flw_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forflw,
+                                                  y_name = "FLW_STAT_T1",
+                                                  sim = y_f_sim,
+                                                  n_bins = 2,
+                                                  title = "Flowering",
+                                                  Species = "POSY")
+# POSY_flw_size_ppc
+ggsave(POSY_flw_size_ppc, filename = "POSY_flw_size_pcc.png", width = 4, height = 4)
 
 
 
-PIG_spike_size_ppc <- size_moments_ppc(data = LTREB_data_forspike,
-                                       y_name = "spike_count_t1",
-                                       sim = y_spike_sim, 
-                                       n_bins = 5, 
-                                       title = "Spikelets/Infl.")
-# PIG_spike_size_ppc
-# ggsave(PIG_spike_size_ppc, filename = "PIG_spike_size_pcc.png", width = 4, height = 4)
+
+
+
+##### Inflorescence production ####
+# all together
+
+fert_size_ppc <- size_moments_ppc(data = LTREB_data_forfert,
+                                 y_name = "FLW_COUNT_T1",
+                                 sim = y_fert_sim, 
+                                 n_bins = 5, 
+                                 title = "Infl. Production")
+fert_size_ppc
+# ggsave(fert_size_ppc, filename = "fert_size_pcc.png", width = 4, height = 4)
+
+# by species
+AGPE_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "AGPE")
+# AGPE_fert_size_ppc
+ggsave(AGPE_fert_size_ppc, filename = "AGPE_fert_size_pcc.png", width = 4, height = 4)
+
+ELRI_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "ELRI")
+# ELRI_fert_size_ppc
+ggsave(ELRI_fert_size_ppc, filename = "ELRI_fert_size_pcc.png", width = 4, height = 4)
+
+ELVI_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "ELVI")
+# ELVI_fert_size_ppc
+ggsave(ELVI_fert_size_ppc, filename = "ELVI_fert_size_pcc.png", width = 4, height = 4)
+
+FESU_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "FESU")
+# FESU_fert_size_ppc
+ggsave(FESU_fert_size_ppc, filename = "FESU_fert_size_pcc.png", width = 4, height = 4)
+
+LOAR_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "LOAR")
+# LOAR_fert_size_ppc
+ggsave(LOAR_fert_size_ppc, filename = "LOAR_fert_size_pcc.png", width = 4, height = 4)
+
+POAL_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "POAL")
+# POAL_fert_size_ppc
+ggsave(POAL_fert_size_ppc, filename = "POAL_fert_size_pcc.png", width = 4, height = 4)
+
+POSY_fert_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forfert,
+                                                 y_name = "FLW_COUNT_T1",
+                                                 sim = y_fert_sim,
+                                                 n_bins = 5,
+                                                 title = "Infl. Production",
+                                                 Species = "POSY")
+# POSY_fert_size_ppc
+ggsave(POSY_fert_size_ppc, filename = "POSY_fert_size_pcc.png", width = 4, height = 4)
 
 
 
 
 
+##### Inflorescence production ####
+# all together
+
+spike_size_ppc <- size_moments_ppc(data = LTREB_data_forspike,
+                                  y_name = "spike_count_t1",
+                                  sim = y_spike_sim, 
+                                  n_bins = 5, 
+                                  title = "Spikelets/Infl.")
+spike_size_ppc
+# ggsave(fert_size_ppc, filename = "fert_size_pcc.png", width = 4, height = 4)
+
+# by species
+AGPE_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "AGPE")
+# AGPE_spike_size_ppc
+ggsave(AGPE_spike_size_ppc, filename = "AGPE_spike_size_pcc.png", width = 4, height = 4)
+
+ELRI_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "ELRI")
+# ELRI_spike_size_ppc
+ggsave(ELRI_spike_size_ppc, filename = "ELRI_spike_size_pcc.png", width = 4, height = 4)
+
+ELVI_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "ELVI")
+# ELVI_spike_size_ppc
+ggsave(ELVI_spike_size_ppc, filename = "ELVI_spike_size_pcc.png", width = 4, height = 4)
+
+FESU_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "FESU")
+# FESU_spike_size_ppc
+ggsave(FESU_spike_size_ppc, filename = "FESU_spike_size_pcc.png", width = 4, height = 4)
+
+LOAR_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "LOAR")
+# LOAR_spike_size_ppc
+ggsave(LOAR_spike_size_ppc, filename = "LOAR_spike_size_pcc.png", width = 4, height = 4)
+
+POAL_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "POAL")
+# POAL_spike_size_ppc
+ggsave(POAL_spike_size_ppc, filename = "POAL_spike_size_pcc.png", width = 4, height = 4)
+
+POSY_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
+                                                  y_name = "spike_count_t1",
+                                                  sim = y_spike_sim,
+                                                  n_bins = 5,
+                                                  title = "Spikelets/Infl.",
+                                                  Species = "POSY")
+# POSY_spike_size_ppc
+ggsave(POSY_spike_size_ppc, filename = "POSY_spike_size_pcc.png", width = 4, height = 4)
+
+
+
+
+
+
+
+
+
+
+# a plot putting all the cross species plots together
 
 size_ppc_layout <- "
 AB
