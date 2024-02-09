@@ -70,7 +70,19 @@ flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw.rds"))
 fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG.rds"))
 spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb.rds"))
 seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
+stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds"))
+
+
+surv_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_surv.rds"))
+surv_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_surv_woseedling_quadXorigin.rds"))
+grow_fit_seedling <- read_rds(paste0(path,"/Model_Runs/endo_seedling_grow_PIG_10000iterations.rds"))
+grow_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_grow_PIG_quadXorigin.rds"))
+flw_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_flw_quadXorigin.rds"))
+fert_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_fert_PIG_quadXorigin.rds"))
+spike_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_spike_year_plot_nb_quadXorigin.rds"))
+seedmean_fit <- read_rds(paste0(path,"/Model_Runs/seed_mean.rds"))
 stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds")) 
+
 
 # surv_fit_seedling <- readRDS(url("https://www.dropbox.com/s/vf1mju5u4c4fs3t/endo_seedling_surv.rds?dl=1"))
 # surv_fit <- readRDS(url("https://www.dropbox.com/s/00bor35inv5dypd/endo_spp_surv_woseedling.rds?dl=1"))
@@ -82,25 +94,48 @@ stos_fit <- read_rds(paste0(path,"/Model_Runs/endo_spp_s_to_s.rds"))
 # seedmean_fit <- readRDS(url("https://www.dropbox.com/s/3ma5yc8iusu8bh0/endo_spp_seed_mean.rds?dl=1"))
 # stos_fit <- readRDS(url("https://www.dropbox.com/s/nf50hd76iw3hucw/endo_spp_s_to_s.rds?dl=1"))
 
-surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
-                                                                   tau_year, tau_plot))
+# surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+#                                                                    tau_year, tau_plot))
+# surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,sigma_year,
+#                                                            tau_year, tau_plot))
+# grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+#                                                                     tau_year, tau_plot,
+#                                                        sigma))
+# grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,sigma_year,
+#                                                        tau_year, tau_plot,
+#                                                        sigma))
+# flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+#                                                        tau_year, tau_plot))
+# fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+#                                                       tau_year, tau_plot))
+# spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+#                                                                          tau_year, tau_plot,
+#                                                          phi))
+# seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
+# recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,sigma_year,tau_year, tau_plot))
+
+
+
+surv_par <- rstan::extract(surv_fit, pars =quote_bare(beta0,betasize,betaorigin,betaendo,sigma_year,
+                                                      tau_year, tau_plot))
 surv_sdlg_par <- rstan::extract(surv_fit_seedling, pars =quote_bare(beta0,betaendo,sigma_year,
-                                                           tau_year, tau_plot))
-grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
-                                                                    tau_year, tau_plot,
-                                                       sigma))
-grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,sigma_year,
+                                                                    tau_year, tau_plot))
+grow_par <- rstan::extract(grow_fit, pars = quote_bare(beta0,betasize,betaorigin,betaendo,sigma_year,
                                                        tau_year, tau_plot,
                                                        sigma))
-flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
-                                                       tau_year, tau_plot))
-fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
+grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betaendo,sigma_year,
+                                                                     tau_year, tau_plot,
+                                                                     sigma))
+flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betaorigin,betaendo,sigma_year,
                                                       tau_year, tau_plot))
-spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin,sigma_year,
-                                                                         tau_year, tau_plot,
+fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betaorigin,betaendo,sigma_year,
+                                                       tau_year, tau_plot))
+spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betaorigin,betaendo,sigma_year,
+                                                         tau_year, tau_plot,
                                                          phi))
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
 recruit_par <- rstan::extract(stos_fit, pars = quote_bare(beta0,betaendo,sigma_year,tau_year, tau_plot))
+
 
 
 # endophyte effects on lambda mean and variance ---------------------------
@@ -472,28 +507,28 @@ lambdaS_obs<-array(NA,dim=c(4,n_spp+1,n_draws))
 lambdaS_obs_extreme2<-lambdaS_obs_extreme4<-lambdaS_obs_extreme6<-array(NA,dim=c(4,n_spp+1,n_draws))
 lambdaS_obs_extreme2_em<-lambdaS_obs_extreme4_em<-lambdaS_obs_extreme6_em<-array(NA,dim=c(4,n_spp+1,n_draws))
 
-lambdaS_samp<-array(NA,dim=c(4,n_spp+1,n_draws))
-lambdaS_samp_extreme10<-lambdaS_samp_extreme20<-lambdaS_samp_extreme30<-array(NA,dim=c(4,n_spp+1,n_draws))
-lambdaS_samp_extreme10_em<-lambdaS_samp_extreme20_em<-lambdaS_samp_extreme30_em<-array(NA,dim=c(4,n_spp+1,n_draws))
+# lambdaS_samp<-array(NA,dim=c(4,n_spp+1,n_draws))
+# lambdaS_samp_extreme10<-lambdaS_samp_extreme20<-lambdaS_samp_extreme30<-array(NA,dim=c(4,n_spp+1,n_draws))
+# lambdaS_samp_extreme10_em<-lambdaS_samp_extreme20_em<-lambdaS_samp_extreme30_em<-array(NA,dim=c(4,n_spp+1,n_draws))
 
 save_lambda_obs <- array(NA,dim=c(years_obs,4,7,n_draws))
 save_lambda_samp <- array(NA,dim=c(n_years_samp,4,7,n_draws))
 save_lambda_obs_extreme2 <- save_lambda_obs_extreme2_em <- array(NA,dim=c(2,4,7,n_draws))
 save_lambda_obs_extreme4 <- save_lambda_obs_extreme4_em <- array(NA,dim=c(4,4,7,n_draws))
 save_lambda_obs_extreme6 <- save_lambda_obs_extreme6_em <- array(NA,dim=c(6,4,7,n_draws))
-save_lambda_samp_extreme10 <- save_lambda_samp_extreme10_em <- array(NA,dim=c(10,4,7,n_draws))
-save_lambda_samp_extreme20 <- save_lambda_samp_extreme20_em <- array(NA,dim=c(20,4,7,n_draws))
-save_lambda_samp_extreme30 <- save_lambda_samp_extreme30_em <- array(NA,dim=c(30,4,7,n_draws))
+# save_lambda_samp_extreme10 <- save_lambda_samp_extreme10_em <- array(NA,dim=c(10,4,7,n_draws))
+# save_lambda_samp_extreme20 <- save_lambda_samp_extreme20_em <- array(NA,dim=c(20,4,7,n_draws))
+# save_lambda_samp_extreme30 <- save_lambda_samp_extreme30_em <- array(NA,dim=c(30,4,7,n_draws))
 
 for(d in 1:n_draws){
 ## list of transition years that we observed
 A_t_obs <- A_t_samp <-list()
   for(s in 1:n_spp){
     eminus_list <- eplus_list <- eplus_mean_only_list <- eplus_var_only_list <- list()
-    eminus_list_samp <- eplus_list_samp <- eplus_mean_only_list_samp <- eplus_var_only_list_samp <- list()
+    # eminus_list_samp <- eplus_list_samp <- eplus_mean_only_list_samp <- eplus_var_only_list_samp <- list()
     # 1: sample observed years
     for(y in 1:years_obs){ ## 13 transitions matrices (2008-09 through 2020-21)
-      eminus_list[[y]] <- bigmatrix(make_params(species=s,
+      eminus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                 endo_mean=0,
                                                 endo_var=0,
                                                 original = 1, # should be =1 to represent recruit
@@ -510,8 +545,9 @@ A_t_obs <- A_t_samp <-list()
                                                 spike_par=spike_par,
                                                 seed_par=seed_par,
                                                 recruit_par=recruit_par),
+                                    quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                     extension = 100)$MPMmat
-      eplus_list[[y]] <- bigmatrix(make_params(species=s,
+      eplus_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                endo_mean=1,
                                                endo_var=1,
                                                original = 1, # should be =1 to represent recruit
@@ -528,8 +564,9 @@ A_t_obs <- A_t_samp <-list()
                                                spike_par=spike_par,
                                                seed_par=seed_par,
                                                recruit_par=recruit_par),
+                                   quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                    extension = 100)$MPMmat
-      eplus_mean_only_list[[y]] <- bigmatrix(make_params(species=s,
+      eplus_mean_only_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                           endo_mean=1,
                                                           endo_var=0,
                                                           original = 1, # should be =1 to represent recruit
@@ -546,8 +583,9 @@ A_t_obs <- A_t_samp <-list()
                                                           spike_par=spike_par,
                                                           seed_par=seed_par,
                                                           recruit_par=recruit_par),
+                                             quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                               extension = 100)$MPMmat
-      eplus_var_only_list[[y]] <- bigmatrix(make_params(species=s,
+      eplus_var_only_list[[y]] <- bigmatrix(make_params_quadXorigin(species=s,
                                                          endo_mean=0,
                                                          endo_var=1,
                                                          original = 1, # should be =1 to represent recruit
@@ -564,133 +602,138 @@ A_t_obs <- A_t_samp <-list()
                                                          spike_par=spike_par,
                                                          seed_par=seed_par,
                                                          recruit_par=recruit_par),
+                                            quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
                                              extension = 100)$MPMmat
     }#y loop
     # 2: Sample many hypothetical years from fitted year variances
-    for(yi in 1:n_years_samp){
-      eminus_list_samp[[yi]] <- bigmatrix(make_params(species=s,
-                                                endo_mean=0,
-                                                endo_var=0,
-                                                original = 1, # should be =1 to represent recruit
-                                                draw=post_draws[d],
-                                                max_size=max_size,
-                                                rfx=T,
-                                                samp=T,
-                                                # year=y+1,
-                                                surv_par=surv_par,
-                                                surv_sdlg_par = surv_sdlg_par,
-                                                grow_par=grow_par,
-                                                grow_sdlg_par = grow_sdlg_par,
-                                                flow_par=flow_par,
-                                                fert_par=fert_par,
-                                                spike_par=spike_par,
-                                                seed_par=seed_par,
-                                                recruit_par=recruit_par),
-                                    extension = 100)$MPMmat
-      eplus_list_samp[[yi]] <- bigmatrix(make_params(species=s,
-                                               endo_mean=1,
-                                               endo_var=1,
-                                               original = 1, # should be =1 to represent recruit
-                                               draw=post_draws[d],
-                                               max_size=max_size,
-                                               rfx=T,
-                                               samp=T,
-                                               # year=y+1,
-                                               surv_par=surv_par,
-                                               surv_sdlg_par = surv_sdlg_par,
-                                               grow_par=grow_par,
-                                               grow_sdlg_par = grow_sdlg_par,
-                                               flow_par=flow_par,
-                                               fert_par=fert_par,
-                                               spike_par=spike_par,
-                                               seed_par=seed_par,
-                                               recruit_par=recruit_par),
-                                   extension = 100)$MPMmat
-      eplus_mean_only_list_samp[[yi]] <- bigmatrix(make_params(species=s,
-                                                         endo_mean=1,
-                                                         endo_var=0,
-                                                         original = 1, # should be =1 to represent recruit
-                                                         draw=post_draws[d],
-                                                         max_size=max_size,
-                                                         rfx=T,
-                                                         samp=T,
-                                                         # year=y+1,
-                                                         surv_par=surv_par,
-                                                         surv_sdlg_par = surv_sdlg_par,
-                                                         grow_par=grow_par,
-                                                         grow_sdlg_par = grow_sdlg_par,
-                                                         flow_par=flow_par,
-                                                         fert_par=fert_par,
-                                                         spike_par=spike_par,
-                                                         seed_par=seed_par,
-                                                         recruit_par=recruit_par),
-                                             extension = 100)$MPMmat
-      eplus_var_only_list_samp[[yi]] <- bigmatrix(make_params(species=s,
-                                                        endo_mean=0,
-                                                        endo_var=1,
-                                                        original = 1, # should be =1 to represent recruit
-                                                        draw=post_draws[d],
-                                                        max_size=max_size,
-                                                        rfx=T,
-                                                        samp=T,
-                                                        # year=y+1,
-                                                        surv_par=surv_par,
-                                                        surv_sdlg_par = surv_sdlg_par,
-                                                        grow_par=grow_par,
-                                                        grow_sdlg_par = grow_sdlg_par,
-                                                        flow_par=flow_par,
-                                                        fert_par=fert_par,
-                                                        spike_par=spike_par,
-                                                        seed_par=seed_par,
-                                                        recruit_par=recruit_par),
-                                            extension = 100)$MPMmat
-    }#yi loop
+    # for(yi in 1:n_years_samp){
+    #   eminus_list_samp[[yi]] <- bigmatrix(make_params_quadXorigin(species=s,
+    #                                             endo_mean=0,
+    #                                             endo_var=0,
+    #                                             original = 1, # should be =1 to represent recruit
+    #                                             draw=post_draws[d],
+    #                                             max_size=max_size,
+    #                                             rfx=T,
+    #                                             samp=T,
+    #                                             # year=y+1,
+    #                                             surv_par=surv_par,
+    #                                             surv_sdlg_par = surv_sdlg_par,
+    #                                             grow_par=grow_par,
+    #                                             grow_sdlg_par = grow_sdlg_par,
+    #                                             flow_par=flow_par,
+    #                                             fert_par=fert_par,
+    #                                             spike_par=spike_par,
+    #                                             seed_par=seed_par,
+    #                                             recruit_par=recruit_par),
+    #                                       quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
+    #                                 extension = 100)$MPMmat
+    #   eplus_list_samp[[yi]] <- bigmatrix(make_params_quadXorigin(species=s,
+    #                                            endo_mean=1,
+    #                                            endo_var=1,
+    #                                            original = 1, # should be =1 to represent recruit
+    #                                            draw=post_draws[d],
+    #                                            max_size=max_size,
+    #                                            rfx=T,
+    #                                            samp=T,
+    #                                            # year=y+1,
+    #                                            surv_par=surv_par,
+    #                                            surv_sdlg_par = surv_sdlg_par,
+    #                                            grow_par=grow_par,
+    #                                            grow_sdlg_par = grow_sdlg_par,
+    #                                            flow_par=flow_par,
+    #                                            fert_par=fert_par,
+    #                                            spike_par=spike_par,
+    #                                            seed_par=seed_par,
+    #                                            recruit_par=recruit_par),    
+    #                                      quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
+    #                                extension = 100)$MPMmat
+    #   eplus_mean_only_list_samp[[yi]] <- bigmatrix(make_params_quadXorigin(species=s,
+    #                                                      endo_mean=1,
+    #                                                      endo_var=0,
+    #                                                      original = 1, # should be =1 to represent recruit
+    #                                                      draw=post_draws[d],
+    #                                                      max_size=max_size,
+    #                                                      rfx=T,
+    #                                                      samp=T,
+    #                                                      # year=y+1,
+    #                                                      surv_par=surv_par,
+    #                                                      surv_sdlg_par = surv_sdlg_par,
+    #                                                      grow_par=grow_par,
+    #                                                      grow_sdlg_par = grow_sdlg_par,
+    #                                                      flow_par=flow_par,
+    #                                                      fert_par=fert_par,
+    #                                                      spike_par=spike_par,
+    #                                                      seed_par=seed_par,
+    #                                                      recruit_par=recruit_par),
+    #                                                quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
+    #                                          extension = 100)$MPMmat
+    #   eplus_var_only_list_samp[[yi]] <- bigmatrix(make_params_quadXorigin(species=s,
+    #                                                     endo_mean=0,
+    #                                                     endo_var=1,
+    #                                                     original = 1, # should be =1 to represent recruit
+    #                                                     draw=post_draws[d],
+    #                                                     max_size=max_size,
+    #                                                     rfx=T,
+    #                                                     samp=T,
+    #                                                     # year=y+1,
+    #                                                     surv_par=surv_par,
+    #                                                     surv_sdlg_par = surv_sdlg_par,
+    #                                                     grow_par=grow_par,
+    #                                                     grow_sdlg_par = grow_sdlg_par,
+    #                                                     flow_par=flow_par,
+    #                                                     fert_par=fert_par,
+    #                                                     spike_par=spike_par,
+    #                                                     seed_par=seed_par,
+    #                                                     recruit_par=recruit_par),
+    #                                               quadratic = 1, # set this to one when using the vital rate models fit with a quadratic size-structure parameter
+    #                                         extension = 100)$MPMmat
+    # }#yi loop
     ## store matrix lists in a list
     A_t_obs[[s]]<-list(eminus=eminus_list,
                    eplus_mean_only=eplus_mean_only_list,
                    eplus_var_only=eplus_var_only_list,
                    eplus=eplus_list)
-    A_t_samp[[s]]<-list(eminus=eminus_list_samp,
-                       eplus_mean_only=eplus_mean_only_list_samp,
-                       eplus_var_only=eplus_var_only_list_samp,
-                       eplus=eplus_list_samp)
+    # A_t_samp[[s]]<-list(eminus=eminus_list_samp,
+    #                    eplus_mean_only=eplus_mean_only_list_samp,
+    #                    eplus_var_only=eplus_var_only_list_samp,
+    #                    eplus=eplus_list_samp)
 
     ## get lambda by year for E+ and E-
     lambda_t<-matrix(NA,2,years_obs)
-    lambda_t_samp <- matrix(NA,2,n_years_samp)
+    # lambda_t_samp <- matrix(NA,2,n_years_samp)
     
     for(i in 1:years_obs){
       lambda_t[1,i]<-lambda(A_t_obs[[s]][[1]][[i]])
       lambda_t[2,i]<-lambda(A_t_obs[[s]][[4]][[i]])
     }
-    for(i in 1:n_years_samp){
-      lambda_t_samp[1,i]<-lambda(A_t_samp[[s]][[1]][[i]])
-      lambda_t_samp[2,i]<-lambda(A_t_samp[[s]][[4]][[i]])
-    }
+    # for(i in 1:n_years_samp){
+    #   lambda_t_samp[1,i]<-lambda(A_t_samp[[s]][[1]][[i]])
+    #   lambda_t_samp[2,i]<-lambda(A_t_samp[[s]][[4]][[i]])
+    # }
     
-    dist <- dist_samp <- c()
-    for(i in 1:years_obs){
-      dist[i] <- euclidean(c(lambda_t[1,i],lambda_t[2,i]),
-                           c(mean(lambda_t[1,]),mean(lambda_t[2,])))
-    }
-    for(i in 1:n_years_samp){
-      dist_samp[i] <- euclidean(c(lambda_t_samp[1,i],lambda_t_samp[2,i]),
-                           c(mean(lambda_t_samp[1,]),mean(lambda_t_samp[2,])))
-    }
+    # dist <- dist_samp <- c()
+    # for(i in 1:years_obs){
+    #   dist[i] <- euclidean(c(lambda_t[1,i],lambda_t[2,i]),
+    #                        c(mean(lambda_t[1,]),mean(lambda_t[2,])))
+    # }
+    # for(i in 1:n_years_samp){
+    #   dist_samp[i] <- euclidean(c(lambda_t_samp[1,i],lambda_t_samp[2,i]),
+    #                        c(mean(lambda_t_samp[1,]),mean(lambda_t_samp[2,])))
+    # }
     toptwo <- dist%in%rev(sort(dist))[1:2]
     topfour <- dist%in%rev(sort(dist))[1:4]
     topsix <- dist%in%rev(sort(dist))[1:6]
-    top10_samp <- dist_samp%in%rev(sort(dist_samp))[1:10]
-    top20_samp <- dist_samp%in%rev(sort(dist_samp))[1:20]
-    top30_samp <- dist_samp%in%rev(sort(dist_samp))[1:30]
-    
+    # top10_samp <- dist_samp%in%rev(sort(dist_samp))[1:10]
+    # top20_samp <- dist_samp%in%rev(sort(dist_samp))[1:20]
+    # top30_samp <- dist_samp%in%rev(sort(dist_samp))[1:30]
+    # 
     ## alternative version that selects extreme years based on E- only
     toptwo_em <- lambda_t[1,]%in%sort(lambda_t[1,])[c(1,years_obs)]
     topfour_em <- lambda_t[1,]%in%sort(lambda_t[1,])[c(1:2,(years_obs-1):years_obs)]
     topsix_em <- lambda_t[1,]%in%sort(lambda_t[1,])[c(1:3,(years_obs-2):years_obs)]
-    top10_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:5,(n_years_samp-4):n_years_samp)]
-    top20_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:10,(n_years_samp-9):n_years_samp)]
-    top30_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:15,(n_years_samp-14):n_years_samp)]
+    # top10_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:5,(n_years_samp-4):n_years_samp)]
+    # top20_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:10,(n_years_samp-9):n_years_samp)]
+    # top30_samp_em <- lambda_t_samp[1,]%in%sort(lambda_t_samp[1,])[c(1:15,(n_years_samp-14):n_years_samp)]
     
     for(e in 1:4){
       lambdaS_obs[e,s,d]<-lambdaSim(mat_list = A_t_obs[[s]][[e]],max_yrs = 500)$lambdaS
@@ -709,21 +752,21 @@ A_t_obs <- A_t_samp <-list()
       save_lambda_obs_extreme4_em[,e,s,d] <- sapply(A_t_obs[[s]][[e]][topfour_em], FUN = lambda)
       save_lambda_obs_extreme6_em[,e,s,d] <- sapply(A_t_obs[[s]][[e]][topsix_em], FUN = lambda)
       
-      lambdaS_samp[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme10[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top10_samp],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme20[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top20_samp],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme30[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top30_samp],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme10_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top10_samp_em],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme20_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top20_samp_em],max_yrs = 500)$lambdaS
-      lambdaS_samp_extreme30_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top30_samp_em],max_yrs = 500)$lambdaS
-      
-      save_lambda_samp[,e,s,d] <- sapply(A_t_samp[[s]][[e]], FUN = lambda)
-      save_lambda_samp_extreme10[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top10_samp], FUN = lambda)
-      save_lambda_samp_extreme20[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top20_samp], FUN = lambda)
-      save_lambda_samp_extreme30[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top30_samp], FUN = lambda)
-      save_lambda_samp_extreme10_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top10_samp_em], FUN = lambda)
-      save_lambda_samp_extreme20_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top20_samp_em], FUN = lambda)
-      save_lambda_samp_extreme30_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top30_samp_em], FUN = lambda)
+      # lambdaS_samp[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme10[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top10_samp],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme20[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top20_samp],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme30[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top30_samp],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme10_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top10_samp_em],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme20_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top20_samp_em],max_yrs = 500)$lambdaS
+      # lambdaS_samp_extreme30_em[e,s,d]<-lambdaSim(mat_list = A_t_samp[[s]][[e]][top30_samp_em],max_yrs = 500)$lambdaS
+      # 
+      # save_lambda_samp[,e,s,d] <- sapply(A_t_samp[[s]][[e]], FUN = lambda)
+      # save_lambda_samp_extreme10[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top10_samp], FUN = lambda)
+      # save_lambda_samp_extreme20[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top20_samp], FUN = lambda)
+      # save_lambda_samp_extreme30[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top30_samp], FUN = lambda)
+      # save_lambda_samp_extreme10_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top10_samp_em], FUN = lambda)
+      # save_lambda_samp_extreme20_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top20_samp_em], FUN = lambda)
+      # save_lambda_samp_extreme30_em[,e,s,d] <- sapply(A_t_samp[[s]][[e]][top30_samp_em], FUN = lambda)
     }
     
   }#s loop
@@ -759,36 +802,36 @@ lambdaS_obs_extreme6_em[2,8,d] <- mean(lambdaS_obs_extreme6_em[2,1:7,d]) # speci
 lambdaS_obs_extreme6_em[3,8,d] <- mean(lambdaS_obs_extreme6_em[3,1:7,d]) # species mean eplus var only
 lambdaS_obs_extreme6_em[4,8,d] <- mean(lambdaS_obs_extreme6_em[4,1:7,d]) # species mean eplus
 
-lambdaS_samp[1,8,d] <- mean(lambdaS_samp[1,1:7,d]) # species mean eminus
-lambdaS_samp[2,8,d] <- mean(lambdaS_samp[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp[3,8,d] <- mean(lambdaS_samp[3,1:7,d]) # species mean eplus var only
-lambdaS_samp[4,8,d] <- mean(lambdaS_samp[4,1:7,d]) # species mean eplus
-
-lambdaS_samp_extreme10[1,8,d] <- mean(lambdaS_samp_extreme10[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme10[2,8,d] <- mean(lambdaS_samp_extreme10[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme10[3,8,d] <- mean(lambdaS_samp_extreme10[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme10[4,8,d] <- mean(lambdaS_samp_extreme10[4,1:7,d]) # species mean eplus
-lambdaS_samp_extreme20[1,8,d] <- mean(lambdaS_samp_extreme20[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme20[2,8,d] <- mean(lambdaS_samp_extreme20[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme20[3,8,d] <- mean(lambdaS_samp_extreme20[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme20[4,8,d] <- mean(lambdaS_samp_extreme20[4,1:7,d]) # species mean eplus
-lambdaS_samp_extreme30[1,8,d] <- mean(lambdaS_samp_extreme30[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme30[2,8,d] <- mean(lambdaS_samp_extreme30[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme30[3,8,d] <- mean(lambdaS_samp_extreme30[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme30[4,8,d] <- mean(lambdaS_samp_extreme30[4,1:7,d]) # species mean eplus
-
-lambdaS_samp_extreme10_em[1,8,d] <- mean(lambdaS_samp_extreme10_em[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme10_em[2,8,d] <- mean(lambdaS_samp_extreme10_em[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme10_em[3,8,d] <- mean(lambdaS_samp_extreme10_em[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme10_em[4,8,d] <- mean(lambdaS_samp_extreme10_em[4,1:7,d]) # species mean eplus
-lambdaS_samp_extreme20_em[1,8,d] <- mean(lambdaS_samp_extreme20_em[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme20_em[2,8,d] <- mean(lambdaS_samp_extreme20_em[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme20_em[3,8,d] <- mean(lambdaS_samp_extreme20_em[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme20_em[4,8,d] <- mean(lambdaS_samp_extreme20_em[4,1:7,d]) # species mean eplus
-lambdaS_samp_extreme30_em[1,8,d] <- mean(lambdaS_samp_extreme30_em[1,1:7,d]) # species mean eminus
-lambdaS_samp_extreme30_em[2,8,d] <- mean(lambdaS_samp_extreme30_em[2,1:7,d]) # species mean eplus mean only
-lambdaS_samp_extreme30_em[3,8,d] <- mean(lambdaS_samp_extreme30_em[3,1:7,d]) # species mean eplus var only
-lambdaS_samp_extreme30_em[4,8,d] <- mean(lambdaS_samp_extreme30_em[4,1:7,d]) # species mean eplus
+# lambdaS_samp[1,8,d] <- mean(lambdaS_samp[1,1:7,d]) # species mean eminus
+# lambdaS_samp[2,8,d] <- mean(lambdaS_samp[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp[3,8,d] <- mean(lambdaS_samp[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp[4,8,d] <- mean(lambdaS_samp[4,1:7,d]) # species mean eplus
+# 
+# lambdaS_samp_extreme10[1,8,d] <- mean(lambdaS_samp_extreme10[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme10[2,8,d] <- mean(lambdaS_samp_extreme10[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme10[3,8,d] <- mean(lambdaS_samp_extreme10[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme10[4,8,d] <- mean(lambdaS_samp_extreme10[4,1:7,d]) # species mean eplus
+# lambdaS_samp_extreme20[1,8,d] <- mean(lambdaS_samp_extreme20[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme20[2,8,d] <- mean(lambdaS_samp_extreme20[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme20[3,8,d] <- mean(lambdaS_samp_extreme20[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme20[4,8,d] <- mean(lambdaS_samp_extreme20[4,1:7,d]) # species mean eplus
+# lambdaS_samp_extreme30[1,8,d] <- mean(lambdaS_samp_extreme30[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme30[2,8,d] <- mean(lambdaS_samp_extreme30[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme30[3,8,d] <- mean(lambdaS_samp_extreme30[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme30[4,8,d] <- mean(lambdaS_samp_extreme30[4,1:7,d]) # species mean eplus
+# 
+# lambdaS_samp_extreme10_em[1,8,d] <- mean(lambdaS_samp_extreme10_em[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme10_em[2,8,d] <- mean(lambdaS_samp_extreme10_em[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme10_em[3,8,d] <- mean(lambdaS_samp_extreme10_em[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme10_em[4,8,d] <- mean(lambdaS_samp_extreme10_em[4,1:7,d]) # species mean eplus
+# lambdaS_samp_extreme20_em[1,8,d] <- mean(lambdaS_samp_extreme20_em[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme20_em[2,8,d] <- mean(lambdaS_samp_extreme20_em[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme20_em[3,8,d] <- mean(lambdaS_samp_extreme20_em[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme20_em[4,8,d] <- mean(lambdaS_samp_extreme20_em[4,1:7,d]) # species mean eplus
+# lambdaS_samp_extreme30_em[1,8,d] <- mean(lambdaS_samp_extreme30_em[1,1:7,d]) # species mean eminus
+# lambdaS_samp_extreme30_em[2,8,d] <- mean(lambdaS_samp_extreme30_em[2,1:7,d]) # species mean eplus mean only
+# lambdaS_samp_extreme30_em[3,8,d] <- mean(lambdaS_samp_extreme30_em[3,1:7,d]) # species mean eplus var only
+# lambdaS_samp_extreme30_em[4,8,d] <- mean(lambdaS_samp_extreme30_em[4,1:7,d]) # species mean eplus
 }#end d loop
 
 # # Saving all of the simulations
@@ -808,21 +851,22 @@ saveRDS(save_lambda_obs_extreme2_em, file = paste0(path,"/Model_Runs/MPM_output/
 saveRDS(save_lambda_obs_extreme4_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_obs_extreme4_em.rds"))
 saveRDS(save_lambda_obs_extreme6_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_obs_extreme6_em.rds"))
 
-saveRDS(lambdaS_samp, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp.rds"))
-saveRDS(lambdaS_samp_extreme10, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10.rds"))
-saveRDS(lambdaS_samp_extreme20, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20.rds"))
-saveRDS(lambdaS_samp_extreme30, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30.rds"))
-saveRDS(lambdaS_samp_extreme10_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10_em.rds"))
-saveRDS(lambdaS_samp_extreme20_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20_em.rds"))
-saveRDS(lambdaS_samp_extreme30_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30_em.rds"))
+# saveRDS(lambdaS_samp, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp.rds"))
+# saveRDS(lambdaS_samp_extreme10, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10.rds"))
+# saveRDS(lambdaS_samp_extreme20, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20.rds"))
+# saveRDS(lambdaS_samp_extreme30, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30.rds"))
+# saveRDS(lambdaS_samp_extreme10_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10_em.rds"))
+# saveRDS(lambdaS_samp_extreme20_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20_em.rds"))
+# saveRDS(lambdaS_samp_extreme30_em, file = paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30_em.rds"))
+# 
+# saveRDS(save_lambda_samp, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp.rds"))
+# saveRDS(save_lambda_samp_extreme10, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10.rds"))
+# saveRDS(save_lambda_samp_extreme20, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20.rds"))
+# saveRDS(save_lambda_samp_extreme30, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30.rds"))
+# saveRDS(save_lambda_samp_extreme10_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10_em.rds"))
+# saveRDS(save_lambda_samp_extreme20_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20_em.rds"))
+# saveRDS(save_lambda_samp_extreme30_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30_em.rds"))
 
-saveRDS(save_lambda_samp, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp.rds"))
-saveRDS(save_lambda_samp_extreme10, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10.rds"))
-saveRDS(save_lambda_samp_extreme20, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20.rds"))
-saveRDS(save_lambda_samp_extreme30, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30.rds"))
-saveRDS(save_lambda_samp_extreme10_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10_em.rds"))
-saveRDS(save_lambda_samp_extreme20_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20_em.rds"))
-saveRDS(save_lambda_samp_extreme30_em, file = paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30_em.rds"))
 # read in the saved outputs
 lambdaS_obs <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_obs.rds"))
 lambdaS_obs_extreme2 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_obs_extreme2.rds"))
@@ -839,22 +883,22 @@ save_lambda_obs_extreme6 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_la
 save_lambda_obs_extreme2_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_obs_extreme2_em.rds"))
 save_lambda_obs_extreme4_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_obs_extreme4_em.rds"))
 save_lambda_obs_extreme6_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_obs_extreme6_em.rds"))
-
-lambdaS_samp <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp.rds"))
-lambdaS_samp_extreme10 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10.rds"))
-lambdaS_samp_extreme20 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20.rds"))
-lambdaS_samp_extreme30 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30.rds"))
-lambdaS_samp_extreme10_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10_em.rds"))
-lambdaS_samp_extreme20_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20_em.rds"))
-lambdaS_samp_extreme30_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30_em.rds"))
-
-save_lambda_samp <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp.rds"))
-save_lambda_samp_extreme10 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10.rds"))
-save_lambda_samp_extreme20 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20.rds"))
-save_lambda_samp_extreme30 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30.rds"))
-save_lambda_samp_extreme10_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10_em.rds"))
-save_lambda_samp_extreme20_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20_em.rds"))
-save_lambda_samp_extreme30_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30_em.rds"))
+# 
+# lambdaS_samp <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp.rds"))
+# lambdaS_samp_extreme10 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10.rds"))
+# lambdaS_samp_extreme20 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20.rds"))
+# lambdaS_samp_extreme30 <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30.rds"))
+# lambdaS_samp_extreme10_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme10_em.rds"))
+# lambdaS_samp_extreme20_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme20_em.rds"))
+# lambdaS_samp_extreme30_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/lambdaS_samp_extreme30_em.rds"))
+# 
+# save_lambda_samp <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp.rds"))
+# save_lambda_samp_extreme10 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10.rds"))
+# save_lambda_samp_extreme20 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20.rds"))
+# save_lambda_samp_extreme30 <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30.rds"))
+# save_lambda_samp_extreme10_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme10_em.rds"))
+# save_lambda_samp_extreme20_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme20_em.rds"))
+# save_lambda_samp_extreme30_em <- read_rds(paste0(path,"/Model_Runs/MPM_output/save_lambda_samp_extreme30_em.rds"))
 
 ## look at mean and variance of lambda in observed and extreme samples
 cv<-function(x){sd(x)/mean(x)}
