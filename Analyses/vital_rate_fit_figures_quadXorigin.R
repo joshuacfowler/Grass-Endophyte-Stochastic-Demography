@@ -1092,7 +1092,7 @@ fert_size_ppc <- size_moments_ppc(data = LTREB_data_forfert,
                                   sim = y_fert_sim, 
                                   n_bins = 5, 
                                   title = "Infl. Production")
-fert_size_ppc
+# fert_size_ppc
 # ggsave(fert_size_ppc, filename = "fert_size_ppc_quadXorigin.png", width = 4, height = 4)
 
 # by species
@@ -1171,7 +1171,7 @@ spike_size_ppc <- size_moments_ppc(data = LTREB_data_forspike,
                                    sim = y_spike_sim, 
                                    n_bins = 5, 
                                    title = "Spikelets/Infl.")
-spike_size_ppc
+# spike_size_ppc
 # ggsave(fert_size_ppc, filename = "fert_size_ppc_quadXorigin.png", width = 4, height = 4)
 
 # by species
@@ -1239,8 +1239,18 @@ POSY_spike_size_ppc <- size_moments_ppc_by_species(data = LTREB_data_forspike,
 ggsave(POSY_spike_size_ppc, filename = "POSY_spike_size_ppc_quadXorigin.png", width = 4, height = 4)
 
 
+size_ppc_layout <- "
+AB
+CD
+EH
+H#
+"
 
 
+size_ppc_plot <- wrap_plots(A = wrap_elements(AGPE_spike_size_ppc), B =  wrap_elements(ELRI_spike_size_ppc),
+                            C = wrap_elements(ELVI_spike_size_ppc), D = wrap_elements(FESU_spike_size_ppc),
+                            E = wrap_elements(LOAR_spike_size_ppc), G = wrap_elements(POAL_spike_size_ppc), 
+                            H = wrap_elements(POSY_spike_size_ppc), I = plot_spacer(), design = size_ppc_layout) + plot_annotation(title = "Size specific vital rate moments")
 
 
 
@@ -1493,15 +1503,16 @@ ggsave(endo_sigmayear_histograms, filename = "endo_sigmayear_histograms_quadXori
 
 
 ######## Plots of all posteriors from vital rate models #########
-parameter_key <- c("beta0[1,1]" = expression(paste(beta[0][h][O],"- AGPE; Orig.")), "beta0[2,1]" = expression(paste(beta[0][h][O],"- ELRI; Rec.")), "beta0[3,1]" = expression(paste(beta[0][h][O],"- ELRI; Orig.")), "beta0[4,1]" = expression(paste(beta[0][h][O],"- FESU; Orig.")), "beta0[5,1]" = expression(paste(beta[0][h][O],"- LOAR; Orig.")), "beta0[6,1]" = expression(paste(beta[0][h][O],"- POAL: Orig.")), "beta0[7,1]" = expression(paste(beta[0][h],"- POSY; Orig.")),
-                   "beta0[1,2]" = expression(paste(beta[0][h][O],"- AGPE; Rec.")), "beta0[2,2]" = expression(paste(beta[0][h][O],"- ELRI; Rec.")), "beta0[3,2]" = expression(paste(beta[0][h][O],"- ELRI; Rec.")), "beta0[4,2]" = expression(paste(beta[0][h][O],"- FESU; Rec.")), "beta0[5,2]" = expression(paste(beta[0][h][O],"- LOAR; Rec.")), "beta0[6,2]" = expression(paste(beta[0][h][O],"- POAL: Rec.")), "beta0[7,2]" = expression(paste(beta[0][h],"- POSY; Orig.")),
+parameter_key <- c("beta0[1,1]" = expression(paste(beta[0][h][o],"- AGPE; Orig.")), "beta0[2,1]" = expression(paste(beta[0][h][o],"- ELRI; Rec.")), "beta0[3,1]" = expression(paste(beta[0][h][o],"- ELRI; Orig.")), "beta0[4,1]" = expression(paste(beta[0][h][o],"- FESU; Orig.")), "beta0[5,1]" = expression(paste(beta[0][h][o],"- LOAR; Orig.")), "beta0[6,1]" = expression(paste(beta[0][h][o],"- POAL: Orig.")), "beta0[7,1]" = expression(paste(beta[0][h],"- POSY; Orig.")),
+                   "beta0[1,2]" = expression(paste(beta[0][h][o],"- AGPE; Rec.")), "beta0[2,2]" = expression(paste(beta[0][h][o],"- ELRI; Rec.")), "beta0[3,2]" = expression(paste(beta[0][h][o],"- ELRI; Rec.")), "beta0[4,2]" = expression(paste(beta[0][h][o],"- FESU; Rec.")), "beta0[5,2]" = expression(paste(beta[0][h][o],"- LOAR; Rec.")), "beta0[6,2]" = expression(paste(beta[0][h][o],"- POAL: Rec.")), "beta0[7,2]" = expression(paste(beta[0][h],"- POSY; Orig.")),
                                       
-                   "betaendo[1]" = expression(paste(beta[2][h],"- AGPE Endo")), "betaendo[2]" = expression(paste(beta[2][h], "- ELRI Endo")), "betaendo[3]" = expression(paste(beta[2][h], "- ELVI Endo")), "betaendo[4]" = expression(paste( beta[2][h], "- FESU Endo")), "betaendo[5]" = expression(paste( beta[2][h], "- LOAR Endo")), "betaendo[6]" = expression(paste( beta[2][h], "- POAL Endo")), "betaendo[7]" = expression(paste( beta[2][h], "- POSY Endo")),
-                   "betasize[1,1]" = expression(paste(beta[3][h],"- AGPE Size; Orig.")), "betasize[2,1]" = expression(paste(beta[3][h], "- ELRI Size; Orig.")), "betasize[3,1]" = expression(paste(beta[3][h], "- ELVI Size; Orig.")), "betasize[4,1]" = expression(paste( beta[3][h], "- FESU Size; Orig.")), "betasize[5,1]" = expression(paste( beta[3][h], "- LOAR Size; Orig.")), "betasize[6,1]" = expression(paste( beta[3][h], "- POAL Size; Orig.")), "betasize[7,1]" = expression(paste( beta[3][h], "- POSY Size; Orig.")),
-                   "betasize[1,2]" = expression(paste(beta[3][h],"- AGPE Size; Rec.")), "betasize[2,2]" = expression(paste(beta[3][h], "- ELRI Size; Rec.")), "betasize[3,2]" = expression(paste(beta[3][h], "- ELVI Size; Rec.")), "betasize[4,2]" = expression(paste( beta[3][h], "- FESU Size; Rec.")), "betasize[5,2]" = expression(paste( beta[3][h], "- LOAR Size; Rec.")), "betasize[6,2]" = expression(paste( beta[3][h], "- POAL Size; Rec.")), "betasize[7,2]" = expression(paste( beta[3][h], "- POSY Size; Rec.")),
+                   "betaendo[1]" = expression(paste(beta[1][h],"- AGPE Endo")), "betaendo[2]" = expression(paste(beta[1][h], "- ELRI Endo")), "betaendo[3]" = expression(paste(beta[1][h], "- ELVI Endo")), "betaendo[4]" = expression(paste( beta[1][h], "- FESU Endo")), "betaendo[5]" = expression(paste( beta[1][h], "- LOAR Endo")), "betaendo[6]" = expression(paste( beta[1][h], "- POAL Endo")), "betaendo[7]" = expression(paste( beta[1][h], "- POSY Endo")),
                    
-                   "betasize_2[1,1]" = expression(paste(beta[3][h],"- AGPE Quadratic; Orig.")), "betasize_2[2,1]" = expression(paste(beta[3][h], "- ELRI Quadratic; Orig.")), "betasize_2[3,1]" = expression(paste(beta[3][h], "- ELVI Quadratic; Orig.")), "betasize_2[4,1]" = expression(paste( beta[3][h], "- FESU Quadratic; Orig.")), "betasize_2[5,1]" = expression(paste( beta[3][h], "- LOAR Quadratic; Orig.")), "betasize_2[6,1]" = expression(paste( beta[3][h], "- POAL Quadratic; Orig.")), "betasize_2[7,1]" = expression(paste( beta[3][h], "- POSY Quadratic; Orig.")),
-                   "betasize_2[1,2]" = expression(paste(beta[3][h],"- AGPE Quadratic; Rec.")), "betasize_2[2,2]" = expression(paste(beta[3][h], "- ELRI Quadratic; Rec.")), "betasize_2[3,2]" = expression(paste(beta[3][h], "- ELVI Quadratic; Rec.")), "betasize_2[4,2]" = expression(paste( beta[3][h], "- FESU Quadratic; Rec.")), "betasize_2[5,2]" = expression(paste( beta[3][h], "- LOAR Quadratic; Rec.")), "betasize_2[6,2]" = expression(paste( beta[3][h], "- POAL Quadratic; Rec.")), "betasize_2[7,2]" = expression(paste( beta[3][h], "- POSY Quadratic; Rec.")),
+                   "betasize[1,1]" = expression(paste(beta[2][h][o],"- AGPE Size; Orig.")), "betasize[2,1]" = expression(paste(beta[2][h][o], "- ELRI Size; Orig.")), "betasize[3,1]" = expression(paste(beta[2][h][o], "- ELVI Size; Orig.")), "betasize[4,1]" = expression(paste( beta[2][h][o], "- FESU Size; Orig.")), "betasize[5,1]" = expression(paste( beta[2][h][o], "- LOAR Size; Orig.")), "betasize[6,1]" = expression(paste( beta[2][h][o], "- POAL Size; Orig.")), "betasize[7,1]" = expression(paste( beta[2][h][o], "- POSY Size; Orig.")),
+                   "betasize[1,2]" = expression(paste(beta[2][h][o],"- AGPE Size; Rec.")), "betasize[2,2]" = expression(paste(beta[2][h][o], "- ELRI Size; Rec.")), "betasize[3,2]" = expression(paste(beta[2][h][o], "- ELVI Size; Rec.")), "betasize[4,2]" = expression(paste( beta[2][h][o], "- FESU Size; Rec.")), "betasize[5,2]" = expression(paste( beta[2][h][o], "- LOAR Size; Rec.")), "betasize[6,2]" = expression(paste( beta[2][h][o], "- POAL Size; Rec.")), "betasize[7,2]" = expression(paste( beta[2][h][o], "- POSY Size; Rec.")),
+                   
+                   "betasize_2[1,1]" = expression(paste(beta[3][h][o],"- AGPE Quadratic; Orig.")), "betasize_2[2,1]" = expression(paste(beta[3][h][o], "- ELRI Quadratic; Orig.")), "betasize_2[3,1]" = expression(paste(beta[3][h][o], "- ELVI Quadratic; Orig.")), "betasize_2[4,1]" = expression(paste( beta[3][h][o], "- FESU Quadratic; Orig.")), "betasize_2[5,1]" = expression(paste( beta[3][h][o], "- LOAR Quadratic; Orig.")), "betasize_2[6,1]" = expression(paste( beta[3][h][o], "- POAL Quadratic; Orig.")), "betasize_2[7,1]" = expression(paste( beta[3][h][o], "- POSY Quadratic; Orig.")),
+                   "betasize_2[1,2]" = expression(paste(beta[3][h][o],"- AGPE Quadratic; Rec.")), "betasize_2[2,2]" = expression(paste(beta[3][h][o], "- ELRI Quadratic; Rec.")), "betasize_2[3,2]" = expression(paste(beta[3][h][o], "- ELVI Quadratic; Rec.")), "betasize_2[4,2]" = expression(paste( beta[3][h][o], "- FESU Quadratic; Rec.")), "betasize_2[5,2]" = expression(paste( beta[3][h][o], "- LOAR Quadratic; Rec.")), "betasize_2[6,2]" = expression(paste( beta[3][h][o], "- POAL Quadratic; Rec.")), "betasize_2[7,2]" = expression(paste( beta[3][h][o], "- POSY Quadratic; Rec.")),
                    
                    "sigma_plot" = expression(paste(sigma[rho], "- Plot SD")),
                    "sigma_year[1,1]" = expression(paste(sigma[tau], "- AGPE S- Year SD")), "sigma_year[1,2]" = expression(paste(sigma[tau], "- AGPE S+ Year SD")),
@@ -1609,6 +1620,7 @@ stos_endomean_posteriors <- mcmc_areas(stos_fit, prob = 0.8, regex_pars = c("bet
 
 ## Plots for all vital rates, all species by size with data #####
 max_size <- LTREB_full %>% 
+  dplyr::filter(origin_01 == 1) %>% 
   dplyr::select(species,species_index, size_t) %>% 
   filter(!is.na(size_t)) %>% 
   group_by(species, species_index) %>% 
@@ -2466,6 +2478,18 @@ ggsave(POAL_fertplot, filename = "POAL_fertplot.png", height = 4, width = 8)
 
 
 ######## Remaking the size plots specific to recruit plants to demonstrate that this is contributing to some of the apparent bad fit in certain vital rates.#####
+max_size <- LTREB_full %>% 
+  dplyr::filter(origin_01 == 1) %>%
+  dplyr::select(species,species_index, size_t) %>% 
+  filter(!is.na(size_t)) %>% 
+  group_by(species, species_index) %>% 
+  summarise(actual_max_size = max(size_t),
+            max_size = quantile(size_t,probs=0.975))
+x_seq_length <- 100
+x_seq <- array(dim= c(x_seq_length,7))
+for(s in 1:7){
+  x_seq[,s] <-  seq(from = 1, to = filter(max_size, species_index == s)$actual_max_size, length.out = 100)
+}
 
 recruit_surv_iter <- recruit_grow_iter <- recruit_flw_iter <- recruit_fert_iter <- recruit_spike_iter <-array(dim = c(length(x_seq[,1]),2,7, n_post_draws))
 recruit_surv_mean <- recruit_grow_mean <- recruit_flw_mean <- recruit_fert_mean <- recruit_spike_mean<-array(dim = c(length(x_seq[,1]),2,7,3))
