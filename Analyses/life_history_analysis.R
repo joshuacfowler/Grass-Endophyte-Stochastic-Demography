@@ -497,7 +497,7 @@ for(s in 1:8){
 POAL_posterior <- lambda_cv[6,2,]-lambda_cv[6,1,]
 POAL_posterior <- POAL_posterior[POAL_posterior>=-5]
 
-hist(POAL_posterior)
+# hist(POAL_posterior)
 lambda_cv_diff[6,8] <- sd(POAL_posterior)
 
 #seed length measurements taken from Rudgers et al. 2009. from Flora of North America
@@ -2200,6 +2200,8 @@ saveRDS(pagels_lambda, "~/Dropbox/EndodemogData/Model_Runs/MPM_output/epichloe_p
 
 
 pagels_lambda[[1]]
+pagels_lambda[[2]]
+pagels_lambda[[7]]
 
 
 ########################################################################
