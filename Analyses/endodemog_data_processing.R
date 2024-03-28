@@ -14,11 +14,12 @@ library(SPEI)
 ##############################################################################
 ####### Reading in endo_demog_long ------------------------------
 ##############################################################################
-
+## tom path for shared dropbox
+setwd("C:/Users/tm9")
 
 # This is the main compiled data sheet that we will merge with the flowering and seed data
 LTREB_endodemog <- 
-  read.csv(file = "~/Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_long.csv")
+  read.csv(file = "Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_long.csv")
 
 
 ## Clean up the main data frame for NA's, other small data entry errors, and change standardize the coding for variables.
@@ -91,44 +92,44 @@ LTREB_data <- LTREB_endodemog %>%
 ###### Reading in raw excel files which have the detailed Reproduction data.---------------------------
 ########################################################################################################################
 # read in raw data from POAL
-POAL_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POALnew complete with 2016 data.xlsx", sheet = "POAL", .name_repair = "universal")
-POAL_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POALnew complete with 2016 data.xlsx", sheet = "POAL (NEW) recruits", .name_repair = "universal")
-POAL_data_old <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POALold complete with 2016 data.xlsx", sheet = "POAL (OLD)", .name_repair = "universal")
-POAL_data_old_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POALold complete with 2016 data.xlsx", sheet = "POAL (OLD) recruits", .name_repair = "universal")
+POAL_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POALnew complete with 2016 data.xlsx", sheet = "POAL", .name_repair = "universal")
+POAL_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POALnew complete with 2016 data.xlsx", sheet = "POAL (NEW) recruits", .name_repair = "universal")
+POAL_data_old <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POALold complete with 2016 data.xlsx", sheet = "POAL (OLD)", .name_repair = "universal")
+POAL_data_old_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POALold complete with 2016 data.xlsx", sheet = "POAL (OLD) recruits", .name_repair = "universal")
 
 # read in data from POSY
-POSY_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POSYnew complete with 2016 data.xlsx", sheet = "POSY", .name_repair = "universal")
-POSY_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POSYnew complete with 2016 data.xlsx", sheet = "POSY (NEW) recruits", .name_repair = "universal")
-POSY_data_old <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POSYold complete with 2016 data.xlsx", sheet = "POSY(Old)", .name_repair = "universal")
-POSY_data_old_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/POSYold complete with 2016 data.xlsx", sheet = "POSY(Old)recruits", .name_repair = "universal")
+POSY_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POSYnew complete with 2016 data.xlsx", sheet = "POSY", .name_repair = "universal")
+POSY_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POSYnew complete with 2016 data.xlsx", sheet = "POSY (NEW) recruits", .name_repair = "universal")
+POSY_data_old <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POSYold complete with 2016 data.xlsx", sheet = "POSY(Old)", .name_repair = "universal")
+POSY_data_old_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/POSYold complete with 2016 data.xlsx", sheet = "POSY(Old)recruits", .name_repair = "universal")
 
 # read in data from LOAR
-LOAR_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR", .name_repair = "universal")
-LOAR_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR recruits", .name_repair = "universal")
-LOAR_data_seed2008 <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR seeds 2008", skip=1, .name_repair = "universal")
-LOAR_data_seed2009 <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR seeds 2009", .name_repair = "universal")
+LOAR_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR", .name_repair = "universal")
+LOAR_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR recruits", .name_repair = "universal")
+LOAR_data_seed2008 <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR seeds 2008", skip=1, .name_repair = "universal")
+LOAR_data_seed2009 <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/LOAR_for_demog_long.xlsx", sheet = "LOAR seeds 2009", .name_repair = "universal")
 
 # Read in data from FESU
-FESU_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/FESU Datasheet complete 7 13 16.xlsx", sheet = "FESU", .name_repair = "universal")
-FESU_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/FESU Datasheet complete 7 13 16.xlsx", sheet = "FESU recruits", .name_repair = "universal")
+FESU_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/FESU Datasheet complete 7 13 16.xlsx", sheet = "FESU", .name_repair = "universal")
+FESU_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/FESU Datasheet complete 7 13 16.xlsx", sheet = "FESU recruits", .name_repair = "universal")
 
 # Read in data from ELVI
-ELVI_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI(IN) originals up to 2016.xlsx", sheet = "ELVI", .name_repair = "universal")
-ELVI_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI (IN) FINAL 3 10 16 updated and checked.xlsx", sheet = "ELVI recruits", .name_repair = "universal")
-ELVI_data_seed <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI (IN) FINAL 3 10 16 updated and checked.xlsx", sheet = "ELVISeeds", .name_repair = "universal")
+ELVI_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI(IN) originals up to 2016.xlsx", sheet = "ELVI", .name_repair = "universal")
+ELVI_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI (IN) FINAL 3 10 16 updated and checked.xlsx", sheet = "ELVI recruits", .name_repair = "universal")
+ELVI_data_seed <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELVI (IN) FINAL 3 10 16 updated and checked.xlsx", sheet = "ELVISeeds", .name_repair = "universal")
 ELVI_data_r <- ELVI_data_r %>% 
   mutate(tag = paste(Plot, RecruitNo, sep = "_")) 
   
 
 # Read in data from ELRI
-ELRI_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI", .name_repair = "universal")
-ELRI_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI recruits", .name_repair = "universal")
-ELRI_data_seed2009 <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI infl 09", .name_repair = "universal")
+ELRI_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI", .name_repair = "universal")
+ELRI_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI recruits", .name_repair = "universal")
+ELRI_data_seed2009 <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/ELRI data up to 2016.xlsx", sheet = "ELRI infl 09", .name_repair = "universal")
 ELRI_data_r <- ELRI_data_r %>% 
   mutate(tag = paste(PLOT, RecruitNo, sep = "_")) 
 # Read in data from AGPE
-AGPE_data <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/AGPE2016_final.xlsx", sheet = "AGPE", .name_repair = "universal")
-AGPE_data_r <- read_xlsx("/Users/joshuacfowler/Dropbox/EndodemogData/rawdatafilesbyspecies/AGPE2016_final.xlsx", sheet = "AGPE recruits", .name_repair = "universal")
+AGPE_data <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/AGPE2016_final.xlsx", sheet = "AGPE", .name_repair = "universal")
+AGPE_data_r <- read_xlsx("Dropbox/EndodemogData/rawdatafilesbyspecies/AGPE2016_final.xlsx", sheet = "AGPE recruits", .name_repair = "universal")
 
 # A list of the columns that are redundant for now, or will be used in our seed estimates
  # pmain <- POAL_data %>%  
@@ -1645,11 +1646,6 @@ LTREB_repro1 <- LTREB_repro %>%
   distinct()
 write_csv(LTREB_repro1,"~/Dropbox/EndodemogData/Fulldataplusmetadata/LTREB_repro1.csv")
 
-## Tom is reading in the repro data from here
-# LTREB_repro1 <- read_csv(paste0(tompath,"Fulldataplusmetadata/LTREB_repro1.csv"))
-
-
-
 # spreading out the spikelet info by tiller to create single row per year per individual.
 LTREB_repro_wide <- LTREB_repro1 %>%
   dplyr::select(plot_fixed, pos, tag, endo_01, birth, year, species, flw, spikelets_fixed, tillerid_fixed) %>% 
@@ -1737,13 +1733,13 @@ group_by(id) %>%
 ####### Here we will merge in 2019 and 2020 data ------------------------------
 ##############################################################################
 # 2019 census data
-AGPE_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "AGPE")
-ELRI_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "ELRI")
-ELVI_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "ELVI")
-FESU_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "FESU")
-LOAR_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "LOAR")
-POAL_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "POAL")
-POSY_2019_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "POSY")
+AGPE_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "AGPE")
+ELRI_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "ELRI")
+ELVI_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "ELVI")
+FESU_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "FESU")
+LOAR_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "LOAR")
+POAL_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "POAL")
+POSY_2019_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2019/LTREB_data_2019.xlsx", sheet = "POSY")
 # # Now we can merge all the different species together.
 LTREB_update_data <- AGPE_2019_data %>% 
   merge(AGPE_2019_data, by = c("species", "origin", "plot", "pos","id",  "birth_year", "observation_year", "species", "distance_A", "distance_B", "survival", "size_tillers", "flowering_tillers", "spikelets_A", "spikelets_B", "spikelets_C", "notes"), all = TRUE) %>%
@@ -1755,12 +1751,12 @@ LTREB_update_data <- AGPE_2019_data %>%
   merge(POSY_2019_data, by = c("species", "origin", "plot", "pos","id",  "birth_year", "observation_year", "species", "distance_A", "distance_B", "survival", "size_tillers", "flowering_tillers", "spikelets_A", "spikelets_B", "spikelets_C", "notes"), all = TRUE)
 
 # 2020 census data
-AGPE_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "AGPE")
-ELRI_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "ELRI")
-ELVI_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "ELVI")
-FESU_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "FESU")
-POAL_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "POAL")
-POSY_2020_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "POSY")
+AGPE_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "AGPE")
+ELRI_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "ELRI")
+ELVI_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "ELVI")
+FESU_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "FESU")
+POAL_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "POAL")
+POSY_2020_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2020/LTREB_data_2020.xlsx", sheet = "POSY")
 # # Now we can merge all the different species together.
 LTREB_update_data <- LTREB_update_data %>%
   merge(AGPE_2020_data, by = c("species", "origin", "plot", "pos","id",  "birth_year", "observation_year", "species", "distance_A", "distance_B", "survival", "size_tillers", "flowering_tillers", "spikelets_A", "spikelets_B", "spikelets_C", "notes"), all = TRUE) %>%
@@ -1771,12 +1767,12 @@ LTREB_update_data <- LTREB_update_data %>%
   merge(POSY_2020_data, by = c("species", "origin", "plot", "pos","id",  "birth_year", "observation_year", "species", "distance_A", "distance_B", "survival", "size_tillers", "flowering_tillers", "spikelets_A", "spikelets_B", "spikelets_C", "notes"), all = TRUE)
 
 # 2021 census data
-AGPE_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "AGPE")
-ELRI_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "ELRI")
-ELVI_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "ELVI")
-FESU_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "FESU")
-POAL_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "POAL")
-POSY_2021_data <- read_xlsx("~/Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "POSY")
+AGPE_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "AGPE")
+ELRI_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "ELRI")
+ELVI_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "ELVI")
+FESU_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "FESU")
+POAL_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "POAL")
+POSY_2021_data <- read_xlsx("Dropbox/EndodemogData/Field Data/2021/LTREB_data_2021.xlsx", sheet = "POSY")
 # # Now we can merge all the different species together.
 LTREB_update_data <- LTREB_update_data %>%
   merge(AGPE_2021_data, by = c("species", "origin", "plot", "pos","id",  "birth_year", "observation_year", "species", "distance_A", "distance_B", "survival", "size_tillers", "flowering_tillers", "spikelets_A", "spikelets_B", "spikelets_C", "notes"), all = TRUE) %>% 
@@ -1904,7 +1900,7 @@ dim(LTREB_full_update_lag)
 ####### Merging in the endophyte checks ------------------------------
 ##############################################################################
 
-LTREB_endo_check <- read_csv(file = "~/Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_status.csv") %>%  
+LTREB_endo_check <- read_csv(file = "Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_status.csv") %>%  
   dplyr::select(-recno,-check, -...11) %>% 
   rename("origin_from_check" = "origin", "endo_status_from_check" = "status", "plot_endo_for_check" = "endo") %>% 
   mutate(origin_01 = as.integer(case_when(origin_from_check == "O" ~ 0, 
@@ -1965,7 +1961,7 @@ LTREB_endophyte_plot_numbers <- LTREB_full_2 %>%
 ####### Merging in the location data ------------------------------
 ##############################################################################
 
-LTREB_distances <- read_csv(file = "~/Dropbox/EndodemogData/Fulldataplusmetadata/endo_distance_tubeid.csv",
+LTREB_distances <- read_csv(file = "Dropbox/EndodemogData/Fulldataplusmetadata/endo_distance_tubeid.csv",
                             col_types = cols( species = col_character(),
                             origin = col_character(),
                             plot = col_integer(),
@@ -2185,7 +2181,7 @@ LTREB_full <- LTREB_full_climate %>%
                             TRUE ~ dist_b.y)) %>% 
   mutate(spei1 = as.numeric(spei1), spei3 = as.numeric(spei3), spei12 = as.numeric(spei12), spei24 = as.numeric(spei24)) %>% # I don't know why but this was giving an error when trying to write the file cause it was saving the column as a list
   dplyr::select(-duplicate, -origin_from_check, -origin_from_distance, -date_status, -date_dist, -contains(".x"), -contains(".y")) # I'm removing some of the extraneous variable. We also have distance data in the new field data that needs to be merged in.
-# write_csv(LTREB_full,file = "~/Dropbox/EndodemogData/Fulldataplusmetadata/LTREB_full.csv")
+# write_csv(LTREB_full,file = "Dropbox/EndodemogData/Fulldataplusmetadata/LTREB_full.csv")
 
 ## Tom is loading this in, bypassing above code
 # tompath <- "C:/Users/tm9/Dropbox/EndodemogData/"
