@@ -331,6 +331,9 @@ y_recruit_sim <- readRDS(file = "yrep_stosmodel.rds")
 endophyte_color_scheme <- c("#fdedd3","#f3c8a8", "#5a727b", "#4986c7", "#181914",  "#163381")
 color_scheme_set(endophyte_color_scheme)
 color_scheme_view()
+
+twotone_endophyte_color_scheme <- c("#FDC800", "#0082EA")
+
 # And creating a color palette for each year
 yearcount = length(unique(LTREB_full$year_t))
 yearcolors<- colorRampPalette(brewer.pal(8,"Dark2"))(yearcount)
@@ -1364,7 +1367,7 @@ surv_sigmayear_df <- as_tibble(surv_sigmayear_cube)  %>%
 
 surv_sigmayear_hist <- ggplot(data = surv_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Survival", x = "Interannual SD")+
   theme_minimal()+
@@ -1381,7 +1384,7 @@ seedsurv_sigmayear_df <- as_tibble(seedsurv_sigmayear_cube)  %>%
 
 seedsurv_sigmayear_hist <- ggplot(data = seedsurv_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Seedling Survival", x = "Interannual SD")+
   theme_minimal()+
@@ -1398,7 +1401,7 @@ grow_sigmayear_df <- as_tibble(grow_sigmayear_cube)  %>%
 
 grow_sigmayear_hist <- ggplot(data = grow_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Growth", x = "Interannual SD")+
   theme_minimal()+
@@ -1415,7 +1418,7 @@ seedgrow_sigmayear_df <- as_tibble(seedgrow_sigmayear_cube)  %>%
 
 seedgrow_sigmayear_hist <- ggplot(data = seedgrow_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Seeding Growth", x = "Interannual SD")+
   theme_minimal()+
@@ -1432,7 +1435,7 @@ flow_sigmayear_df <- as_tibble(flow_sigmayear_cube)  %>%
 
 flow_sigmayear_hist <- ggplot(data = flow_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Flowering", x = "Interannual SD")+
   theme_minimal()+
@@ -1449,7 +1452,7 @@ fert_sigmayear_df <- as_tibble(fert_sigmayear_cube)  %>%
 
 fert_sigmayear_hist <- ggplot(data = fert_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "# of Flw Tillers", x = "Interannual SD")+
   theme_minimal()+
@@ -1466,7 +1469,7 @@ spike_sigmayear_df <- as_tibble(spike_sigmayear_cube)  %>%
 
 spike_sigmayear_hist <- ggplot(data = spike_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Spikelets", x = "Interannual SD")+
   theme_minimal()+
@@ -1483,7 +1486,7 @@ recruit_sigmayear_df <- as_tibble(recruit_sigmayear_cube)  %>%
 
 recruit_sigmayear_hist <- ggplot(data = recruit_sigmayear_df)+
   geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
-  scale_fill_manual(values = c( endophyte_color_scheme[2], endophyte_color_scheme[4]))+
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
   facet_wrap(~Species, scales = "free", ncol = 4)+
   labs(title = "Recruitment", x = "Interannual SD")+
   theme_minimal()+
@@ -1498,6 +1501,34 @@ endo_sigmayear_histograms <- surv_sigmayear_hist + seedsurv_sigmayear_hist + gro
   plot_annotation(title = "Endophyte effect on interannual SD across vital rates by species")
 
 ggsave(endo_sigmayear_histograms, filename = "endo_sigmayear_histograms_quadXorigin.png", width = 20, height = 15)
+
+
+####### Making pop out histogram panels for figure 2 (C and D)
+
+FESUsurv_sigmayear_hist <- ggplot(data = filter(surv_sigmayear_df, Species == "F. subverticillata"))+
+  geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
+  facet_wrap(~Species, scales = "free", ncol = 4)+
+  labs(x = "Interannual SD", y = "Count", fill = "Symbiont Status")+
+  theme_minimal()+
+  theme(strip.text = element_text(face = "italic"),
+        axis.text = element_text(size = rel(1.5)),
+        axis.title.y = element_text(size = rel(1.5)))
+# FESUsurv_sigmayear_hist
+ggsave(FESUsurv_sigmayear_hist, filename = "FESUsurv_sigmayear_hist_quadXorigin.png", width = 6, height = 4)
+
+
+POALfert_sigmayear_hist <- ggplot(data = filter(fert_sigmayear_df, Species == "P. alsodes"))+
+  geom_histogram(aes(x = sigma_year, fill = Endo), alpha = .9, bins = 250, position = "identity") +
+  scale_fill_manual(values = c( twotone_endophyte_color_scheme[1], twotone_endophyte_color_scheme[2]))+
+  facet_wrap(~Species, scales = "free", ncol = 4)+
+  labs(x = "Interannual SD", y = "Count", fill = "Symbiont Status")+
+  theme_minimal()+
+  theme(strip.text = element_text(face = "italic"),
+        axis.text = element_text(size = rel(1.5)),
+        axis.title.y = element_text(size = rel(1.5)))
+# POALfert_sigmayear_hist
+ggsave(POALfert_sigmayear_hist, filename = "POALfert_sigmayear_hist_quadXorigin.png", width = 6, height = 4)
 
 
 
@@ -2362,10 +2393,10 @@ ggsave(spike_yearplot, filename = "spike_yearplot_quadXorigin.png",width = 16, h
 
 # plot of just AGPE growth and FESU survival
 AGPEgrow_meanplot <- ggplot()+
-  geom_point(data = filter(grow_sizebin, Species == "A. perennans"), aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = Species), alpha = .9) +
-  geom_ribbon(data = filter(grow_mean_df, Species == "A. perennans"), aes(x = log_x_seq, ymin = twenty, ymax = eighty, alpha = Endo, fill = Species))+
-  geom_line(data = filter(grow_mean_df, Species == "A. perennans"), aes(x = log_x_seq, y = mean, linetype = Endo, col = Species)) +
-  scale_color_manual(values = species_colors)+  scale_fill_manual(values = species_colors)+
+  geom_point(data = filter(grow_sizebin, Species == "A. perennans"), aes(x = mean_size, y = mean_vr, size = samplesize, fill = Endo), shape  = 21, alpha = .8) +
+  geom_ribbon(data = filter(grow_mean_df, Species == "A. perennans"), aes(x = log_x_seq, ymin = twenty, ymax = eighty, fill = Endo), alpha = .3)+
+  geom_line(data = filter(grow_mean_df, Species == "A. perennans"), aes(x = log_x_seq, y = mean, linetype = Endo, col = Endo)) +
+  scale_color_manual(values = twotone_endophyte_color_scheme)+  scale_fill_manual(values = twotone_endophyte_color_scheme)+
   scale_shape_manual(values = c(1,19)) + scale_linetype_manual(values = c(2,1)) + scale_alpha_manual(values = c(.3,.5))+
   theme_classic() + 
   theme(axis.title = element_text(size = 16),
@@ -2374,10 +2405,10 @@ AGPEgrow_meanplot <- ggplot()+
         legend.text = element_text(size = 9),
         strip.background = element_blank(), 
         strip.text.x = element_blank()) + 
-  guides(fill = "none", col = "none",lwd = guide_legend(order = 1))+
-  labs(y = "# of tillers in year t+1", x = "log(# of tillers in year t)", size = "Sample Size")
+  guides(lwd = guide_legend(order = 1))+
+  labs(y = "# of tillers in year t+1", x = "log(# of tillers in year t)", size = "Sample Size",  fill = "Symbiont Status", color = "Symbiont Status", linetype = "Symbiont Status")
 AGPEgrow_meanplot
-ggsave(AGPEgrow_meanplot, filename = "AGPEgrow_meanplot_quadXorigin.png", width = 4, height = 4)
+ggsave(AGPEgrow_meanplot, filename = "AGPEgrow_meanplot_quadXorigin.png", width = 4.5, height = 4)
   
 AGPEgrow_yearplot <- ggplot()+
   geom_point(data = filter(grow_yearsizebin, Species == "A. perennans"), aes(x = mean_size, y = mean_vr, size = samplesize, col = as.factor(Year), shape = Endo), alpha = .5) +
@@ -2390,10 +2421,10 @@ AGPEgrow_yearplot <- ggplot()+
 AGPEgrow_yearplot
 
 FESUsurv_meanplot <- ggplot()+
-  geom_point(data = filter(surv_sizebin, Species == "F. subverticillata"), aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = Species), alpha = .9) +
-  geom_ribbon(data = filter(surv_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, ymin = twenty, ymax = eighty, alpha = Endo, fill = Species))+
-  geom_line(data = filter(surv_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, y = mean, linetype = Endo, col = Species)) +
-  scale_color_manual(values = species_colors[4])+  scale_fill_manual(values = species_colors[4])+
+  geom_point(data = filter(surv_sizebin, Species == "F. subverticillata"), aes(x = mean_size, y = mean_vr, size = samplesize, fill = Endo), shape  = 21, alpha = .8) +
+  geom_ribbon(data = filter(surv_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, ymin = twenty, ymax = eighty, fill = Endo), alpha = .3)+
+  geom_line(data = filter(surv_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, y = mean, linetype = Endo, col = Endo)) +
+  scale_color_manual(values = twotone_endophyte_color_scheme)+  scale_fill_manual(values = twotone_endophyte_color_scheme)+
   scale_shape_manual(values = c(1,19)) + scale_linetype_manual(values = c(2,1)) + scale_alpha_manual(values = c(.3,.5))+
   theme_classic() + 
   theme(axis.title = element_text(size = 16),
@@ -2402,29 +2433,29 @@ FESUsurv_meanplot <- ggplot()+
         legend.text = element_text(size = 9),
         strip.background = element_blank(), 
         strip.text.x = element_blank()) + 
-  guides(fill = "none", col = "none",lwd = guide_legend(order = 1))+
-  labs( y = "Survival Probability", x = "log(# of tillers in year t)", size = "Sample Size")
+  guides(lwd = guide_legend(order = 1))+
+  labs( y = "Survival Probability", x = "log(# of tillers in year t)", size = "Sample Size", fill = "Symbiont Status", color = "Symbiont Status", linetype = "Symbiont Status")
 FESUsurv_meanplot
-ggsave(FESUsurv_meanplot, filename = "FESUsurv_meanplot_quadXorigin.png", width = 4, height = 4)
+ggsave(FESUsurv_meanplot, filename = "FESUsurv_meanplot_quadXorigin.png", width = 4.5, height = 4)
 
 FESUsurv_yearplot <- ggplot()+
-  geom_point(data = filter(surv_yearsizebin, Species == "F. subverticillata"), aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo, col = as.numeric(Year)), alpha = .9) +
-  geom_line(data = filter(survyear_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, y = mean, linetype = Endo, col = as.numeric(Year), group = Year)) +
+  geom_point(data = filter(surv_yearsizebin, Species == "F. subverticillata"), aes(x = mean_size, y = mean_vr, size = samplesize, fill = Endo),shape = 21, alpha = .8) +
+  geom_line(data = filter(survyear_mean_df, Species == "F. subverticillata"), aes(x = log_x_seq, y = mean, col = Endo, group = Year)) +
   scale_shape_manual(values = c(1,19))+ 
-  scale_color_gradient2(low = "grey10", mid = "grey90", high = species_colors[4], n.breaks = 14, midpoint =2015,  guide = "legend")+
+  scale_fill_manual(values = twotone_endophyte_color_scheme)+   scale_color_manual(values = twotone_endophyte_color_scheme)+
   scale_linetype_manual(values = c(2,1))+
   facet_wrap(~Species + Endo, scales = "free", ncol = 2) + 
   theme_classic() + 
-  theme(axis.title = element_text(size = 16),
-        axis.text = element_text(size = 12),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 12),
+  theme(axis.title = element_text(size = 25),
+        axis.text = element_text(size = 20),
+        legend.title = element_text(size = 25),
+        legend.text = element_text(size = 20),
         strip.background = element_blank(), 
         strip.text.x = element_blank()) + 
   guides(fill = "none",lwd = guide_legend(order = 1))+
-  labs( y = "Survival Probability", x = "log(# of tillers in year t)", col = "Year", fill = "Year", size = "Sample Size")
+  labs( y = "Survival Probability", x = "log(# of tillers in year t)", linetype = "Symbiont Status", fill = "Year", size = "Sample Size")
 FESUsurv_yearplot
-ggsave(FESUsurv_yearplot, filename = "FESUsurv_yearplot_quadXorigin.png", width = 8, height = 7)
+ggsave(FESUsurv_yearplot, filename = "FESUsurv_yearplot_quadXorigin.png", width = 10, height = 7)
 
 POALfert_meanplot <- ggplot()+
   geom_point(data = filter(fert_sizebin, Species == "P. alsodes"), aes(x = mean_size, y = mean_vr, size = samplesize, shape = Endo), alpha = .5) +
