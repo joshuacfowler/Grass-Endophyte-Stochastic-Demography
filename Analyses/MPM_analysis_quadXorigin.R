@@ -31,7 +31,8 @@ quote_bare <- function( ... ){
 ####### Read in Data and creating size bins------------------
 #############################################################################################
 
-source("Analyses/endodemog_data_processing.R")
+# source("Analyses/endodemog_data_processing.R")
+LTREB_full <-  read_csv(paste0(joshpath,"Fulldataplusmetadata/LTREB_full.csv"))
 
 max_size <- LTREB_full %>% 
   dplyr::select(species,species_index, size_t) %>% 
