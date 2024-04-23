@@ -62,26 +62,55 @@ source("Analyses/MPM_functions.R")
 ####### Read in Stan vital rate model outputs ------------------
 #############################################################################################
 
+# spei12_surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_seedling_surv_spei12.rds")
+# spei3_surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_seedling_surv_spei3.rds")
+# 
+# spei12_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear.rds")
+# spei3_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear.rds")
+# 
+# spei12_grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_seedling_grow_spei12_10000iterations.rds")
+# spei3_grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_seedling_grow_spei3_10000iterations.rds")
+# 
+# spei12_grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei12.rds")
+# spei3_grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3.rds")
+# 
+# spei12_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei12.rds")
+# spei3_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei3.rds")
+# 
+# spei12_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei12.rds")
+# spei3_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei3.rds")
+# 
+# spei12_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei12.rds")
+# spei3_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei3.rds")
+# 
+# seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds") # doesn't include spei predictor
+# 
+# spei12_stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_s_to_s_spei12.rds") 
+# spei3_stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_s_to_s_spei3.rds") 
+# 
+# 
+
+# versions of models include linear and quadratic size effects and more flexible origin/recruit intercepts
 spei12_surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_seedling_surv_spei12.rds")
 spei3_surv_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_seedling_surv_spei3.rds")
 
-spei12_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear.rds")
-spei3_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear.rds")
+spei12_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear_quadXorigin.rds")
+spei3_surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear_quadXorigin.rds")
 
 spei12_grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_seedling_grow_spei12_10000iterations.rds")
 spei3_grow_fit_seedling <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_seedling_grow_spei3_10000iterations.rds")
 
-spei12_grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei12.rds")
-spei3_grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3.rds")
+spei12_grow_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei12_quadXorigin.rds")
+spei3_grow_fit <- readRDS("~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3_quadXorigin.rds")
 
-spei12_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei12.rds")
-spei3_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei3.rds")
+spei12_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei12_quadXorigin.rds")
+spei3_flw_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei3_quadXorigin.rds")
 
-spei12_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei12.rds")
-spei3_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei3.rds")
+spei12_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei12_quadXorigin.rds")
+spei3_fert_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei3_quadXorigin.rds")
 
-spei12_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei12.rds")
-spei3_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei3.rds")
+spei12_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei12_quadXorigin.rds")
+spei3_spike_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei3_quadXorigin.rds")
 
 seedmean_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/endo_spp_seed_mean.rds") # doesn't include spei predictor
 
@@ -89,34 +118,33 @@ spei12_stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp
 spei3_stos_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_s_to_s_spei3.rds") 
 
 
-
 # Pulling out the actual parameters
 #survival
-spei12_surv_par <- rstan::extract(spei12_surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,betaspei_endo,tau_year, tau_plot, sigma_year))
-spei3_surv_par <- rstan::extract(spei3_surv_fit, pars =quote_bare(beta0,betasize,betaendo,betaorigin,betaspei_endo,tau_year, tau_plot, sigma_year))
+spei12_surv_par <- rstan::extract(spei12_surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaspei_endo,tau_year, tau_plot, sigma_year))
+spei3_surv_par <- rstan::extract(spei3_surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaspei_endo,tau_year, tau_plot, sigma_year))
 # seedling survival
 spei12_surv_sdlg_par <- rstan::extract(spei12_surv_fit_seedling, pars =quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
 spei3_surv_sdlg_par <- rstan::extract(spei3_surv_fit_seedling, pars =quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
 
 # growth
-spei12_grow_par <- rstan::extract(spei12_grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
-spei3_grow_par <- rstan::extract(spei3_grow_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+spei12_grow_par <- rstan::extract(spei12_grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+spei3_grow_par <- rstan::extract(spei3_grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
 
 # seedling growth
 spei12_grow_sdlg_par <- rstan::extract(spei12_grow_fit_seedling, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
 spei3_grow_sdlg_par <- rstan::extract(spei3_grow_fit_seedling, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
 
 #flowering
-spei12_flow_par <- rstan::extract(spei12_flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
-spei3_flow_par <- rstan::extract(spei3_flw_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei12_flow_par <- rstan::extract(spei12_flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_flow_par <- rstan::extract(spei3_flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
 
 # number of flower tillers
-spei12_fert_par <- rstan::extract(spei12_fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
-spei3_fert_par <- rstan::extract(spei3_fert_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei12_fert_par <- rstan::extract(spei12_fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_fert_par <- rstan::extract(spei3_fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
 
 # spikelets/infl
-spei12_spike_par <- rstan::extract(spei12_spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
-spei3_spike_par <- rstan::extract(spei3_spike_fit, pars = quote_bare(beta0,betasize,betaendo,betaorigin, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei12_spike_par <- rstan::extract(spei12_spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_spike_par <- rstan::extract(spei3_spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
 
 # seed mean/spikelet
 seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
@@ -149,8 +177,9 @@ for(i in 1:n_draws){
     for(s in 1:n_spp){
       for(c in 1:spei_steps){
         # 1. fit MPM with 12 Month SPEI effect, without random effects
-        lambda_spei12[c,s,e,i] <- lambda(bigmatrix(make_params(species=s,
+        lambda_spei12[c,s,e,i] <- lambda(bigmatrix(make_params_quadXorigin(species=s,
                                                                  endo_mean=(e-1),
+                                                                 endo_var=(e-1),
                                                                  original = 1, # should be =1 to represent recruit
                                                                  draw=post_draws[i],
                                                                  max_size=max_size,
@@ -166,10 +195,12 @@ for(i in 1:n_draws){
                                                                  seed_par=seed_par,
                                                                  recruit_par=spei12_recruit_par),
                                                      spei = spei12_range[s,c],
+                                                     quadratic = 1,
                                                      extension = 100)$MPMmat) # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
         # 1. fit MPM with 12 Month SPEI effect, without random effects
-        lambda_spei3[c,s,e,i] <- lambda(bigmatrix(make_params(species=s,
+        lambda_spei3[c,s,e,i] <- lambda(bigmatrix(make_params_quadXorigin(species=s,
                                                                endo_mean=(e-1),
+                                                               endo_var=(e-1),
                                                                original = 1, # should be =1 to represent recruit
                                                                draw=post_draws[i],
                                                                max_size=max_size,
@@ -185,6 +216,7 @@ for(i in 1:n_draws){
                                                                seed_par=seed_par,
                                                                recruit_par=spei3_recruit_par),
                                                    spei = spei3_range[s,c],
+                                                   quadratic = 1,
                                                    extension = 100)$MPMmat) # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
         
       } # endo of spei loop
@@ -265,10 +297,10 @@ lambda_spei3_mean <- lambda_spei3_df %>%
 
 
 # reading in lambda_mean and lambda_var with 500 post draws from dropbox, derived from MPM_analysis script
-lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean.rds")
+lambda_mean <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_mean_quadXorigin.rds")
 
-lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold.rds")
-lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var.rds")
+lambda_hold <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_hold_quadXorigin.rds")
+lambda_var <- read_rds(file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/lambda_var_quadXorigin.rds")
 
 # Mean endophyte difference and quantiles
 lambda_means <- matrix(NA,8,2)
@@ -332,7 +364,7 @@ spei12_lambda_plot <- ggplot(data = lambda_spei12_df)+
   theme_classic()+ theme(strip.background = element_blank(),
                          strip.text = element_text(face = "italic")) + 
   labs(x = "12-month SPEI", y = expression("Pop. Growth Rate " (lambda)))
-# spei12_lambda_plot
+spei12_lambda_plot
 ggsave(spei12_lambda_plot, filename = "spei12_lamda_plot.png", width = 6, height = 6 )
 
 spei3_lambda_plot <- ggplot(data = lambda_spei3_df)+
@@ -362,7 +394,7 @@ lambda_spei3_slopes_diff <- lambda_spei3_slopes %>%
   ungroup() %>% 
   dplyr::select(Species, Endo, slope) %>% 
   pivot_wider(names_prefix = expr("slope"), names_from = Endo, values_from = slope) %>% 
-  mutate(slope_ratio = abs(`slopeE-`/`slopeE+`)) 
+  mutate(slope_ratio = abs(`slopeS-`/`slopeS+`))  # interpretation:  ratio>1 means that S- is more sensitive than S+, in line with expectation of drought contributing to buffering
 lambda_spei3_slopes_diff$sd_effect <- lambda_sd_diff[1:7,1]
 lambda_spei3_slopes_diff$cv_effect <- lambda_cv_diff[1:7,1]
 lambda_spei3_slopes_diff$mean_effect <- lambda_mean_diff[1:7,1]
@@ -386,7 +418,7 @@ lambda_spei12_slopes_diff <- lambda_spei12_slopes %>%
   ungroup() %>% 
   dplyr::select(Species, Endo, slope) %>% 
   pivot_wider(names_prefix = expr("slope"), names_from = Endo, values_from = slope) %>% 
-  mutate(slope_ratio = abs(`slopeE-`/`slopeE+`))
+  mutate(slope_ratio = abs(`slopeS-`/`slopeS+`))
 lambda_spei12_slopes_diff$sd_effect <- lambda_sd_diff[1:7,1]
 lambda_spei12_slopes_diff$cv_effect <- lambda_cv_diff[1:7,1]
 lambda_spei12_slopes_diff$mean_effect <- lambda_mean_diff[1:7,1]
@@ -398,3 +430,137 @@ ggplot(data = lambda_spei12_slopes_diff)+
   geom_point(aes(x = cv_effect, y = slope_ratio))
 ggplot(data = lambda_spei12_slopes_diff)+
   geom_point(aes(x = mean_effect, y = slope_ratio))
+
+
+######################################################################
+########## Calculating some posterior certainties for manuscript #####
+######################################################################
+
+
+spei12_surv_par <- rstan::extract(spei12_surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaspei_endo,tau_year, tau_plot, sigma_year))
+spei3_surv_par <- rstan::extract(spei3_surv_fit, pars =quote_bare(beta0,betasize,betasize_2,betaendo,betaspei_endo,tau_year, tau_plot, sigma_year))
+# seedling survival
+spei12_surv_sdlg_par <- rstan::extract(spei12_surv_fit_seedling, pars =quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_surv_sdlg_par <- rstan::extract(spei3_surv_fit_seedling, pars =quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+
+# growth
+spei12_grow_par <- rstan::extract(spei12_grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+spei3_grow_par <- rstan::extract(spei3_grow_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+
+# seedling growth
+spei12_grow_sdlg_par <- rstan::extract(spei12_grow_fit_seedling, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+spei3_grow_sdlg_par <- rstan::extract(spei3_grow_fit_seedling, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma, sigma_year))
+
+#flowering
+spei12_flow_par <- rstan::extract(spei12_flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_flow_par <- rstan::extract(spei3_flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+
+# number of flower tillers
+spei12_fert_par <- rstan::extract(spei12_fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_fert_par <- rstan::extract(spei3_fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+
+# spikelets/infl
+spei12_spike_par <- rstan::extract(spei12_spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_spike_par <- rstan::extract(spei3_spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+
+# seed mean/spikelet
+seed_par <- rstan::extract(seedmean_fit, pars = quote_bare(beta0,betaendo)) #no plot or year effect
+# seedling recruitment
+spei12_recruit_par <- rstan::extract(spei12_stos_fit, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+spei3_recruit_par <- rstan::extract(spei3_stos_fit, pars = quote_bare(beta0,betaendo, betaspei_endo, tau_year, tau_plot, sigma_year))
+
+
+
+
+
+
+# Histograms of the slope estimates
+surv_post3 <- as.array(spei3_surv_par$betaspei_endo)
+surv_post12 <- as.array(spei12_surv_par$betaspei_endo)
+
+surv_sdlg_post3 <- as.array(spei3_surv_sdlg_par$betaspei_endo)
+surv_sdlg_post12 <- as.array(spei12_surv_sdlg_par$betaspei_endo)
+
+flow_post3 <- as.array(spei3_flow_par$betaspei_endo)
+flow_post12 <- as.array(spei12_flow_par$betaspei_endo)
+
+grow_post3 <- as.array(spei3_grow_par$betaspei_endo)
+grow_post12 <- as.array(spei12_grow_par$betaspei_endo)
+
+grow_sdlg_post3 <- as.array(spei3_grow_sdlg_par$betaspei_endo)
+grow_sdlg_post12 <- as.array(spei12_grow_sdlg_par$betaspei_endo)
+
+fert_post3 <- as.array(spei3_fert_par$betaspei_endo)
+fert_post12 <- as.array(spei12_fert_par$betaspei_endo)
+
+spike_post3 <- as.array(spei3_spike_par$betaspei_endo)
+spike_post12 <- as.array(spei12_spike_par$betaspei_endo)
+
+recruit_post3 <- as.array(spei3_recruit_par$betaspei_endo)
+recruit_post12 <- as.array(spei12_recruit_par$betaspei_endo)
+
+
+dimnames(surv_post3) <- dimnames(surv_post12) <- dimnames(surv_sdlg_post3) <- dimnames(flow_post3) <- dimnames(flow_post12) <- dimnames(fert_post3) <- dimnames(fert_post12) <- dimnames(grow_post3) <- dimnames(grow_post12) <- dimnames(spike_post3) <- dimnames(spike_post12) <- dimnames(recruit_post3) <- dimnames(recruit_post12) <- list(Iteration= paste0("i",1:7500), species = paste0("s",1:(n_spp)), Endo = paste0("e",1:2))
+dimnames(surv_sdlg_post12) <- dimnames(grow_sdlg_post3) <- dimnames(grow_sdlg_post12) <- list(Iteration= paste0("i",1:15000), species = paste0("s",1:(n_spp)), Endo = paste0("e",1:2))
+  
+surv_post3_df <- as_tibble(cubelyr::as.tbl_cube(surv_post3)) %>% 
+  rename(value = surv_post3) %>% mutate(spei = "spei3",vital_rate = "Survival")
+surv_post12_df <- as_tibble(cubelyr::as.tbl_cube(surv_post12)) %>% 
+  rename(value = surv_post12) %>% mutate(spei = "spei12",vital_rate = "Survival")
+
+surv_sdlg_post3_df <- as_tibble(cubelyr::as.tbl_cube(surv_sdlg_post3)) %>% 
+  rename(value = surv_sdlg_post3) %>% mutate(spei = "spei3",vital_rate = "Seedling Survival")
+surv_sdlg_post12_df <- as_tibble(cubelyr::as.tbl_cube(surv_sdlg_post12)) %>% 
+  rename(value = surv_sdlg_post12) %>% mutate(spei = "spei12",vital_rate = "Seedling Survival")
+
+flow_post3_df <- as_tibble(cubelyr::as.tbl_cube(flow_post3)) %>% 
+  rename(value = flow_post3) %>% mutate(spei = "spei3",vital_rate = "Flowering")
+flow_post12_df <- as_tibble(cubelyr::as.tbl_cube(flow_post12)) %>% 
+  rename(value = flow_post12) %>% mutate(spei = "spei12",vital_rate = "Flowering")
+
+fert_post3_df <- as_tibble(cubelyr::as.tbl_cube(fert_post3)) %>% 
+  rename(value = fert_post3) %>% mutate(spei = "spei3",vital_rate = "Fertility")
+fert_post12_df <- as_tibble(cubelyr::as.tbl_cube(fert_post12)) %>% 
+  rename(value = fert_post12) %>% mutate(spei = "spei12",vital_rate = "Fertility")
+
+grow_post3_df <- as_tibble(cubelyr::as.tbl_cube(grow_post3)) %>% 
+  rename(value = grow_post3) %>% mutate(spei = "spei3",vital_rate = "Growth")
+grow_post12_df <- as_tibble(cubelyr::as.tbl_cube(grow_post12)) %>% 
+  rename(value = grow_post12) %>% mutate(spei = "spei12",vital_rate = "Growth")
+
+grow_sdlg_post3_df <- as_tibble(cubelyr::as.tbl_cube(grow_sdlg_post3)) %>% 
+  rename(value = grow_sdlg_post3) %>% mutate(spei = "spei3",vital_rate = "Seedling Growth")
+grow_sdlg_post12_df <- as_tibble(cubelyr::as.tbl_cube(grow_sdlg_post12)) %>% 
+  rename(value = grow_sdlg_post12) %>% mutate(spei = "spei12",vital_rate = "Seedling Growth")
+
+spike_post3_df <- as_tibble(cubelyr::as.tbl_cube(spike_post3)) %>% 
+  rename(value = spike_post3) %>% mutate(spei = "spei3",vital_rate = "Spike")
+spike_post12_df <- as_tibble(cubelyr::as.tbl_cube(spike_post12)) %>% 
+  rename(value = spike_post12) %>% mutate(spei = "spei12",vital_rate = "Spike")
+
+recruit_post3_df <- as_tibble(cubelyr::as.tbl_cube(recruit_post3)) %>% 
+  rename(value = recruit_post3) %>% mutate(spei = "spei3",vital_rate = "Recruit")
+recruit_post12_df <- as_tibble(cubelyr::as.tbl_cube(recruit_post12)) %>% 
+  rename(value = recruit_post12) %>% mutate(spei = "spei12",vital_rate = "Recruit")
+
+
+spei_posterior <- rbind(surv_post3_df, surv_post12_df,
+                        surv_sdlg_post3_df, surv_sdlg_post12_df,
+                        flow_post3_df, flow_post12_df,
+                        fert_post3_df, fert_post12_df,
+                        grow_post3_df, grow_post12_df,
+                        grow_sdlg_post3_df, grow_sdlg_post12_df,
+                        spike_post3_df, spike_post12_df,
+                        recruit_post3_df, recruit_post12_df) %>% 
+  mutate(if_positive = case_when(value>0 ~ TRUE, value<0 ~ FALSE))
+
+
+# calculating the probability of positive slopes for the MS
+spei_post_summary <- spei_posterior %>% 
+  group_by(vital_rate, species, Endo, spei) %>% 
+  summarize(iterations = n(),
+            mean = mean(value),
+            if_positive = sum(value>0)/iterations)
+
+
+
