@@ -26,9 +26,6 @@ This repository is set up with three folders:
 holds scripts to cobble data and run analyses
 File Name  | Description
 ------------- | -------------
-
-
-
 2022-07-13_README_for_year_random_effects_in_MPM.txt | notes about meeting between Josh and Tom clarifying how we are lining up the year random effects of the vital rate models within the population model. summary is that surv/growth occur in year t->t1, and reproduction occurs in year t1, but this reproduction informs new recruits in the following year.
 LTREB_endodemog_2021_Plant_locations_and_maps | script to compile maps of surviving plants in the plots during census based on XY coordinates
 LTREB_endodemog_2022_Plant_locations_and_maps | script to compile maps of surviving plants in the plots during census based on XY coordinates
