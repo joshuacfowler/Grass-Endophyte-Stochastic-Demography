@@ -1,0 +1,11 @@
+joshuacfowler@Joshuas-MacBook-Pro-61 ~/Documents/R_Projects/Grass-Endophyte-Stochastic-Demography/Manuscript/submission_to_EcolLetters/Revision$ cd ~/Documents/R_Projects/Grass-Endophyte-Stochastic-Demography/Manuscript/submission_to_EcolLetters        
+
+joshuacfowler@Joshuas-MacBook-Pro-61 ~/Documents/R_Projects/Grass-Endophyte-Stochastic-Demography/Manuscript/submission_to_EcolLetters$ latexdiff endo_st
+
+
+
+Then have to add to the document preamble to help it compile
+
+\providecommand{\DIFadd}[1]{{\protect\color{blue}#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\protect\scriptsize\sout{#1}}}
+
