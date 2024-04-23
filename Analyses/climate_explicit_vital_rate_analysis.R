@@ -26,7 +26,8 @@ Lkurtosis=function(x) log(kurtosis(x));
 #############################################################################################
 
 #  data are prepared in the endodemog_data_processing.R file, 
-source("Analyses/endodemog_data_processing.R")
+# source("Analyses/endodemog_data_processing.R")
+LTREB_full <- read_csv("~/Dropbox/EndodemogData/Fulldataplusmetadata/LTREB_full.csv")
 
 
 #############################################################################################
@@ -40,6 +41,7 @@ LTREB_data_forsurv <- LTREB_full %>%
   filter(!is.na(logsize_t)) %>% 
   filter(!is.na(endo_01)) %>%   # There are a few LOAR that don't have a plot level endo assigned
   filter(origin_01 == 1 & year_t != birth | origin_01 == 0) %>%    # filtering out first year germinants (including those that are bigger than 1 tiller)
+  mutate(origin_index = origin_01+1) %>% 
   filter(!is.na(spei12)) # I think I can try to get more recent climate data, but there are NA's for the 2020 and 2019 AGPE data right now
 dim(LTREB_data_forsurv)
 
@@ -140,17 +142,20 @@ LTREB_seedlingsurv_means <- LTREB_surv_seedling %>%
 LTREB_data_forflw <- LTREB_full %>%
   filter(!is.na(FLW_STAT_T1)) %>%
   filter(!is.na(logsize_t1)) %>%
-  filter(!is.na(endo_01))
+  filter(!is.na(endo_01)) %>% 
+  mutate(origin_index = origin_01+1)
+
 # dim(LTREB_data_forflw)
 
 
-# LTREB_flw_means <- LTREB_data_forflw %>% 
-#   group_by(species, endo_01, year_t1) %>% 
-#   summarize(mean_flw = mean(FLW_STAT_T),
-#             spei12 = mean(as.numeric(spei12)),
-#             annual_precip = mean(as.numeric(annual_precip)),
-#             annual_temp = mean(as.numeric(annual_temp)),
-#             count = n())
+LTREB_flw_means <- LTREB_data_forflw %>%
+  group_by(species, endo_01, year_t1) %>%
+  summarize(mean_flw = mean(FLW_STAT_T),
+            spei12 = mean(as.numeric(spei12)),
+            annual_precip = mean(as.numeric(annual_precip)),
+            annual_temp = mean(as.numeric(annual_temp)),
+            endo  = as.character(endo_01),
+            count = n())
 
 # ggplot(data = LTREB_flw_means)+
 #   geom_point(aes(x = year_t1, y = mean_flw, color = as.factor(endo_01), size = count))+ facet_wrap(~species)
@@ -185,7 +190,9 @@ LTREB_data_forgrow <- LTREB_full %>%
   filter(!is.na(logsize_t)) %>%
   filter(!is.na(size_t1)) %>%
   filter(!is.na(endo_01)) %>%
-  filter(origin_01 == 1 & year_t != birth | origin_01 == 0)  # filtering out first year germinants (including those that are bigger than 1 tiller)
+  filter(origin_01 == 1 & year_t != birth | origin_01 == 0) %>%  # filtering out first year germinants (including those that are bigger than 1 tiller)
+  mutate(origin_index = origin_01+1)
+
 dim(LTREB_data_forgrow)
 
 # 
@@ -202,7 +209,9 @@ LTREB_grow_seedling <- LTREB_full %>%
 LTREB_data_forfert <- LTREB_full %>%
   filter(!is.na(FLW_COUNT_T1)) %>%
   filter(FLW_COUNT_T1 > 0) %>%
-  filter(!is.na(logsize_t1))
+  filter(!is.na(logsize_t1)) %>% 
+  mutate(origin_index = origin_01+1)
+
 # dim(LTREB_data_forfert)
 
 
@@ -210,7 +219,7 @@ LTREB_data_forspike <- LTREB_full %>%
   dplyr::select(-FLW_COUNT_T, -FLW_STAT_T, -SPIKE_A_T, -SPIKE_B_T, -SPIKE_C_T, -SPIKE_D_T, -SPIKE_AGPE_MEAN_T, -census_month, -year, -spei1,-spei24, -annual_temp, -annual_precip, -endo_status_from_check, -plot_endo_for_check, -endo_mismatch, -dist_a, -dist_b) %>% 
   filter(!is.na(FLW_STAT_T1)) %>% 
   filter(FLW_STAT_T1>0) %>% 
-  melt(id.var = c("plot_fixed" ,   "plot_index",         "pos"         ,           "id",
+  reshape2::melt(id.var = c("plot_fixed" ,   "plot_index",         "pos"         ,           "id",
                   "species"       ,         "species_index"  ,        "endo_01",
                   "endo_index"  ,           "origin_01"       ,       "birth" , "spei12", "spei3",
                   "year_t1"         ,       "year_t1_index"       ,   "surv_t1" ,
@@ -221,7 +230,9 @@ LTREB_data_forspike <- LTREB_full %>%
        value.name = "spike_count_t1") %>% 
   rename(spikelet_id = variable) %>% 
   filter(!is.na(spike_count_t1), spike_count_t1 > 0) %>% 
-  mutate(spike_count_t1 = as.integer(spike_count_t1))
+  mutate(spike_count_t1 = as.integer(spike_count_t1)) %>% 
+  mutate(origin_index = origin_01+1)
+
 # 
 # # ggplot(LTREB_data_forspike)+
 #   geom_histogram(aes(x=spike_count_t))+
@@ -236,6 +247,7 @@ LTREB_data_forspike <- LTREB_full %>%
 surv_data_list <- list(y = LTREB_data_forsurv$surv_t1,
                        logsize = LTREB_data_forsurv$logsize_t,
                        origin_01 = LTREB_data_forsurv$origin_01,
+                       origin_index= LTREB_data_forsurv$origin_index,
                        endo_01 = as.integer(LTREB_data_forsurv$endo_01),
                        endo_index = as.integer(LTREB_data_forsurv$endo_index),
                        spp = as.integer(LTREB_data_forsurv$species_index),
@@ -245,7 +257,8 @@ surv_data_list <- list(y = LTREB_data_forsurv$surv_t1,
                        nSpp = length(unique(LTREB_data_forsurv$species_index)),
                        nYear = max(unique(LTREB_data_forsurv$year_t_index)),
                        nPlot = length(unique(LTREB_data_forsurv$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forsurv$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forsurv$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forsurv$origin_01)))
 surv_spei12_data_list <- append(surv_data_list, list(spei = as.numeric(LTREB_data_forsurv$spei12),
                                                      spei_nl = as.numeric(LTREB_data_forsurv$spei12^2)))
 surv_spei3_data_list <- append(surv_data_list, list(spei = as.numeric(LTREB_data_forsurv$spei3),
@@ -278,6 +291,7 @@ str(seed_surv_data_list);str(seed_surv_spei12_data_list);str(seed_surv_spei3_dat
 flw_data_list <- list(y = LTREB_data_forflw$FLW_STAT_T1,
                       logsize = LTREB_data_forflw$logsize_t1,
                       origin_01 = LTREB_data_forflw$origin_01,
+                      origin_index= LTREB_data_forflw$origin_index,
                       endo_01 = as.integer(LTREB_data_forflw$endo_01),
                       endo_index = as.integer(LTREB_data_forflw$endo_index),
                       spp = as.integer(LTREB_data_forflw$species_index),
@@ -287,7 +301,8 @@ flw_data_list <- list(y = LTREB_data_forflw$FLW_STAT_T1,
                       nSpp = length(unique(LTREB_data_forflw$species_index)),
                       nYear = max(unique(LTREB_data_forflw$year_t_index)),
                       nPlot = length(unique(LTREB_data_forflw$plot_index)),
-                      nEndo =   length(unique(LTREB_data_forflw$endo_01)))
+                      nEndo =   length(unique(LTREB_data_forflw$endo_01)),
+                      nOrigin =   length(unique(LTREB_data_forflw$origin_01)))
 flw_spei12_data_list <- append(flw_data_list, list(spei = as.numeric(LTREB_data_forflw$spei12),
                                                    spei_nl = as.numeric(LTREB_data_forflw$spei12^2)))
 flw_spei3_data_list <- append(flw_data_list, list(spei = as.numeric(LTREB_data_forflw$spei3),
@@ -299,6 +314,7 @@ str(flw_data_list);str(flw_spei12_data_list);str(flw_spei3_data_list)
 grow_data_list <- list(y = as.integer(LTREB_data_forgrow$size_t1),
                        logsize = LTREB_data_forgrow$logsize_t,
                        origin_01 = as.integer(LTREB_data_forgrow$origin_01),
+                       origin_index= LTREB_data_forgrow$origin_index,
                        endo_01 = as.integer(LTREB_data_forgrow$endo_01),
                        endo_index = as.integer(LTREB_data_forgrow$endo_index),
                        spp = as.integer(LTREB_data_forgrow$species_index),
@@ -308,7 +324,8 @@ grow_data_list <- list(y = as.integer(LTREB_data_forgrow$size_t1),
                        nSpp = length(unique(LTREB_data_forgrow$species_index)),
                        nYear = max(unique(LTREB_data_forgrow$year_t_index)),
                        nPlot = length(unique(LTREB_data_forgrow$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forgrow$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forgrow$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forgrow$origin_01)))
 grow_spei12_data_list <- append(grow_data_list, list(spei = as.numeric(LTREB_data_forgrow$spei12),
                                                      spei_nl = as.numeric(LTREB_data_forgrow$spei12^2)))
 grow_spei3_data_list <- append(grow_data_list, list(spei = as.numeric(LTREB_data_forgrow$spei3),
@@ -338,6 +355,7 @@ str(seed_grow_data_list);str(seed_grow_spei12_data_list);str(seed_grow_spei3_dat
 fert_data_list <- list(y = as.integer(LTREB_data_forfert$FLW_COUNT_T1),
                        logsize = LTREB_data_forfert$logsize_t1,
                        origin_01 = LTREB_data_forfert$origin_01,
+                       origin_index= LTREB_data_forfert$origin_index,
                        endo_01 = as.integer(LTREB_data_forfert$endo_01),
                        endo_index = as.integer(LTREB_data_forfert$endo_index),
                        spp = as.integer(LTREB_data_forfert$species_index),
@@ -347,7 +365,8 @@ fert_data_list <- list(y = as.integer(LTREB_data_forfert$FLW_COUNT_T1),
                        nSpp = length(unique(LTREB_data_forfert$species_index)),
                        nYear = max(unique(LTREB_data_forfert$year_t_index)),
                        nPlot = max(unique(LTREB_data_forfert$plot_index)),
-                       nEndo =   length(unique(LTREB_data_forfert$endo_01)))
+                       nEndo =   length(unique(LTREB_data_forfert$endo_01)),
+                       nOrigin =   length(unique(LTREB_data_forfert$origin_01)))
 fert_spei12_data_list <- append(fert_data_list, list(spei = as.numeric(LTREB_data_forfert$spei12),
                                                      spei_nl = as.numeric(LTREB_data_forfert$spei12^2)))
 fert_spei3_data_list <- append(fert_data_list, list(spei = as.numeric(LTREB_data_forfert$spei3),
@@ -358,6 +377,7 @@ spike_data_list <- list(nYear = max(unique(LTREB_data_forspike$year_t_index)),
                         nPlot = max(unique(LTREB_data_forspike$plot_index)),
                         nSpp = length(unique(LTREB_data_forspike$species)),
                         nEndo=length(unique(LTREB_data_forspike$endo_01)),
+                        nOrigin =   length(unique(LTREB_data_forspike$origin_01)),
                         N = nrow(LTREB_data_forspike),
                         year_t = as.integer(LTREB_data_forspike$year_t_index),
                         plot = as.integer(LTREB_data_forspike$plot_index),
@@ -365,7 +385,9 @@ spike_data_list <- list(nYear = max(unique(LTREB_data_forspike$year_t_index)),
                         y = LTREB_data_forspike$spike_count_t1,
                         logsize = LTREB_data_forspike$logsize_t1,
                         endo_01 = LTREB_data_forspike$endo_01,
-                        origin_01 = LTREB_data_forspike$origin_01)
+                        origin_01 = LTREB_data_forspike$origin_01,
+                        origin_index= LTREB_data_forspike$origin_index)
+
 spike_spei12_data_list <- append(spike_data_list, list(spei = as.numeric(LTREB_data_forspike$spei12),
                                                        spei_nl = as.numeric(LTREB_data_forspike$spei12^2)))
 spike_spei3_data_list <- append(spike_data_list, list(spei = as.numeric(LTREB_data_forspike$spei3),
@@ -401,6 +423,25 @@ sm_surv_spei3 <- stan(file = "Analyses/climate_endo_spp_surv_flw.stan", data = s
                 chains = mcmc_pars$chains, 
                 thin = mcmc_pars$thin)
 saveRDS(sm_surv_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear.rds")
+
+
+
+# Quad X origin models
+sm_surv_spei12 <- stan(file = "Analyses/climate_endo_spp_surv_flw_quadXorigin.stan", data = surv_spei12_data_list,
+                       iter = mcmc_pars$iter,
+                       warmup = mcmc_pars$warmup,
+                       chains = mcmc_pars$chains, 
+                       thin = mcmc_pars$thin)
+saveRDS(sm_surv_spei12, file = "~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear_quadXorigin.rds")
+# Fitting the model with 3 month spei, no quadratic terms as well to explore how growing season climate affects vital rates
+sm_surv_spei3 <- stan(file = "Analyses/climate_endo_spp_surv_flw_quadXorigin.stan", data = surv_spei3_data_list,
+                      iter = mcmc_pars$iter,
+                      warmup = mcmc_pars$warmup,
+                      chains = mcmc_pars$chains, 
+                      thin = mcmc_pars$thin)
+saveRDS(sm_surv_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear_quadXorigin.rds")
+
+
 
 #Seedlling survival
 # fit with low ESS, so Ran for two times iter 
@@ -520,6 +561,84 @@ sm_flw_spei3 <- stan(file = "Analyses/climate_endo_spp_surv_flw.stan", data = fl
 saveRDS(sm_flw_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei3.rds")
 
 
+# This is looking at the difference between linear and polynomial spei12
+sm_flw_linear <- readRDS(file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei12.rds")
+
+quote_bare <- function( ... ){
+  substitute( alist(...) ) %>% 
+    eval( ) %>% 
+    sapply( deparse )
+}
+flw_parlinear <- rstan::extract(sm_flw_linear, pars =quote_bare(beta0,betaendo,betaspei_endo,
+                                                                            tau_year, tau_plot))
+
+linear_f_eminus <- matrix(NA, 7,100)
+linear_f_eplus <- matrix(NA, 7,100)
+
+
+for(s in 1:7){
+  linear_f_eminus[s,] <- invlogit(mean(flw_parlinear$beta0[,s])+mean(flw_parlinear$betaendo[,s])*0+mean(flw_parlinear$betaspei_endo[,s,1])*seq(-1,2, length.out = 100))#+mean(flw_parlinear$betaspei_nl_endo[,s,1]*(seq(-1,2, length.out = 100)^2)))
+  linear_f_eplus[s,] <- invlogit(mean(flw_parlinear$beta0[,s])+mean(flw_parlinear$betaendo[,s])*1+mean(flw_parlinear$betaspei_endo[,s,2])*seq(-1,2, length.out = 100))#+mean(flw_parlinear$betaspei_nl_endo[,s,2]*(seq(-1,2, length.out = 100)^2)))
+}
+
+
+# plotting the predicted linear and nonlinear fits vs the seedling survival data
+pred <- as_tibble(t(linear_f_eminus)) %>% 
+  rename("lin_Eminus_"= contains("V")) %>% 
+  cbind(spei = seq(-1,2,length.out=100)) %>% 
+  pivot_longer(cols = contains("lin")) %>% 
+  separate(name, c("effect", "endo", "species"))
+
+pred2 <- as_tibble(t(linear_f_eplus)) %>% 
+  rename("lin_Eplus_"= contains("V")) %>% 
+  cbind(spei = seq(-1,2,length.out=100)) %>% 
+  pivot_longer(cols = contains("lin")) %>% 
+  separate(name, c("effect", "endo", "species"))
+
+pred0 <- pred %>% 
+  full_join(pred2) %>% 
+  mutate(species = case_when(species == 1 ~ "AGPE",
+                             species == 2 ~ "ELRI",
+                             species == 3 ~ "ELVI",
+                             species == 4 ~ "FESU",
+                             species == 5 ~ "LOAR",
+                             species == 6 ~ "POAL",
+                             species == 7 ~ "POSY")) %>% 
+  mutate(endo = case_when(endo == "Eminus" ~ "0",
+                          endo == "Eplus" ~ "1"))
+
+flw_climate_plot <- ggplot(data = LTREB_flw_means)+
+  # geom_point(aes(x = spei12, y = mean_flw, color = species, shape = endo, size = count))+
+  geom_line(data = pred0, aes(x = spei, y = value, color = species, lty = endo))+
+  # geom_line(data = filter(pred0,effect == "lin"), aes(x = spei, y = value, color = species, lty = endo))+
+  # facet_wrap(~species)+
+  facet_wrap(~species+effect) +
+  scale_color_manual(values = c("#dbdb42", "#b8e3a0", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84")) +
+  scale_shape_manual(values = c(16,1))+
+  ylab("Mean Flowering Prob.") + xlab("SPEI (12 month)") +
+  theme_classic()
+flw_climate_plot
+ggsave(seedlingsurv_climate_plot, filename = "seedlingsurv_climate_plot.png", width = 8, height = 5)
+
+
+
+# fitting the fowering model with the polynomial SPEI term gives max_treedepth errors
+sm_flw_spei12 <- stan(file = "Analyses/climate_endo_spp_surv_flw_quadXorigin.stan", data = flw_spei12_data_list,
+                      iter = mcmc_pars$iter,
+                      warmup = mcmc_pars$warmup,
+                      chains = mcmc_pars$chains, 
+                      thin = mcmc_pars$thin)
+saveRDS(sm_flw_spei12, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei12_quadXorigin.rds")
+# sm_flw_spei3 had max treedepth warning
+sm_flw_spei3 <- stan(file = "Analyses/climate_endo_spp_surv_flw_quadXorigin.stan", data = flw_spei3_data_list,
+                     iter = mcmc_pars$iter,
+                     warmup = mcmc_pars$warmup,
+                     chains = mcmc_pars$chains, 
+                     thin = mcmc_pars$thin)
+saveRDS(sm_flw_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_flw_spei3_quadXorigin.rds")
+
+
+
 # Running the growth model with the PIG with climate effects
 # fits with no errors including polynomial term
 # running without the polynomial term , no errors
@@ -538,6 +657,26 @@ sm_grow_spei3 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG.stan", dat
                        chains = mcmc_pars$chains, 
                        thin = mcmc_pars$thin)
 saveRDS(sm_grow_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3.rds")
+
+
+sm_grow_spei12 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG_quadXorigin.stan", data = grow_spei12_data_list,
+                       iter = mcmc_pars$iter,
+                       warmup = mcmc_pars$warmup,
+                       chains = mcmc_pars$chains, 
+                       thin = mcmc_pars$thin)
+saveRDS(sm_grow_spei12, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei12_quadXorigin.rds")
+# saveRDS(sm_grow, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_nonlinear.rds")
+
+# 3 month spei fits with no warrnings
+sm_grow_spei3 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG_quadXorigin.stan", data = grow_spei3_data_list,
+                      iter = mcmc_pars$iter,
+                      warmup = mcmc_pars$warmup,
+                      chains = mcmc_pars$chains, 
+                      thin = mcmc_pars$thin)
+saveRDS(sm_grow_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3_quadXorigin.rds")
+
+
+# sm_grow_spei3 <- readRDS(file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_grow_PIG_spei3_quadXorigin.rds")
 
 
 # fitting linear model with 5000 iterations gives low bulk and tail ESS, rerunning with 10000 (this is what we had to do for non-climate model as well)
@@ -576,6 +715,25 @@ sm_fert_spei3 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG.stan", dat
                 thin = mcmc_pars$thin)
 saveRDS(sm_fert_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei3.rds")
 
+
+
+sm_fert_spei12 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG_quadXorigin.stan", data =fert_spei12_data_list,
+                       iter = mcmc_pars$iter,
+                       warmup = mcmc_pars$warmup,
+                       chains = mcmc_pars$chains, 
+                       thin = mcmc_pars$thin)
+saveRDS(sm_fert_spei12, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei12_quadXorigin.rds")
+# saveRDS(sm_fert, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_linear.rds")
+# saveRDS(sm_fert, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_nonlinear.rds")
+
+sm_fert_spei3 <- stan(file = "Analyses/climate_endo_spp_grow_fert_PIG_quadXorigin.stan", data =fert_spei3_data_list,
+                      iter = mcmc_pars$iter,
+                      warmup = mcmc_pars$warmup,
+                      chains = mcmc_pars$chains, 
+                      thin = mcmc_pars$thin)
+saveRDS(sm_fert_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_fert_PIG_spei3_quadXorigin.rds")
+
+
 #fitting the spike data as negative binomial with just linear spei term
 # fitting the spide data with nonlinear term gives tree-depth warnings
 sm_spike_nb_spei12 <- stan(file = "Analyses/climate_endo_spp_spike_nb.stan", data = spike_spei12_data_list,
@@ -594,6 +752,28 @@ sm_spike_nb_spei3 <- stan(file = "Analyses/climate_endo_spp_spike_nb.stan", data
                     chains = mcmc_pars$chains,
                     thin = mcmc_pars$thin)
 saveRDS(sm_spike_nb_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei3.rds")
+
+
+
+
+sm_spike_nb_spei12 <- stan(file = "Analyses/climate_endo_spp_spike_nb_quadXorigin.stan", data = spike_spei12_data_list,
+                           iter = mcmc_pars$iter,
+                           warmup = mcmc_pars$warmup,
+                           chains = mcmc_pars$chains,
+                           thin = mcmc_pars$thin)
+saveRDS(sm_spike_nb_spei12, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei12_quadXorigin.rds")
+
+# saveRDS(sm_spike_nb, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_linear.rds")
+# saveRDS(sm_spike_nb, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_nonlinear.rds")
+# 3 month spei fitss max treedepth warnings
+sm_spike_nb_spei3 <- stan(file = "Analyses/climate_endo_spp_spike_nb_quadXorigin.stan", data = spike_spei3_data_list,
+                          iter = mcmc_pars$iter,
+                          warmup = mcmc_pars$warmup,
+                          chains = mcmc_pars$chains,
+                          thin = mcmc_pars$thin)
+saveRDS(sm_spike_nb_spei3, file = "~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_spike_spei3_quadXorigin.rds")
+
+
 
 #########################################################################################################
 # Linear Model Diagnostics ------------------------------
@@ -654,29 +834,31 @@ size_moments_ppc <- function(data,y_name,sim, n_bins, title = NA){
 
 
 #### survival ppc ####
-surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_surv_woseedling_linear.rds")
-surv_fit_spei12 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear.rds")
-surv_fit_spei3 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear.rds")
+# surv_fit <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_endo_spp_surv_woseedling_linear.rds")
+# surv_fit_spei12 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear.rds")
+# surv_fit_spei3 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear.rds")
 
-predS <- rstan::extract(surv_fit, pars = c("p"))$p # extract the linear predictor
+
+surv_fit_spei12 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei12_endo_spp_surv_woseedling_linear_quadXorigin.rds")
+surv_fit_spei3 <- read_rds("~/Dropbox/EndodemogData/Model_Runs/climate_spei3_endo_spp_surv_woseedling_linear_quadXorigin.rds")
+
+
+
 predS_spei12<- rstan::extract(surv_fit_spei12, pars = c("p"))$p # extract the linear predictor
 predS_spei3<- rstan::extract(surv_fit_spei3, pars = c("p"))$p # extract the linear predictor
 n_post_draws <- 500
-post_draws <- sample.int(dim(predS)[1], n_post_draws) # draw samples from the posterior of the linear predictor
-y_s_sim <- y_s_sim_spei12 <- y_s_sim_spei3 <-  matrix(NA,n_post_draws,length(surv_data_list$y))
+post_draws <- sample.int(dim(predS_spei12)[1], n_post_draws) # draw samples from the posterior of the linear predictor
+y_s_sim_spei12 <- y_s_sim_spei3 <-  matrix(NA,n_post_draws,length(surv_data_list$y))
 for(i in 1:n_post_draws){
-  y_s_sim[i,] <- rbinom(n=length(surv_data_list$y), size=1, prob = invlogit(predS[post_draws[i],]))
   y_s_sim_spei12[i,] <- rbinom(n=length(surv_data_list$y), size=1, prob = invlogit(predS_spei12[post_draws[i],]))
   y_s_sim_spei3[i,] <- rbinom(n=length(surv_data_list$y), size=1, prob = invlogit(predS_spei3[post_draws[i],]))
   
 }
-saveRDS(y_s_sim, file = "yrep_climatesurvivalmodel_linear.rds")
-saveRDS(y_s_sim_spei12, file = "yrep_climatesurvivalmodel_linear_spei12.rds")
-saveRDS(y_s_sim_spei3, file = "yrep_climatesurvivalmodel_linear_spei3.rds")
+saveRDS(y_s_sim_spei12, file = "yrep_climatesurvivalmodel_linear_spei12_quadXorigin.rds")
+saveRDS(y_s_sim_spei3, file = "yrep_climatesurvivalmodel_linear_spei3_quadXorigin.rds")
 
-y_s_sim <- readRDS(file = "yrep_climatesurvivalmodel_linear.rds")
-y_s_sim_spei12 <- readRDS(file = "yrep_climatesurvivalmodel_linear_spei12.rds")
-y_s_sim_spei3 <- readRDS(file = "yrep_climatesurvivalmodel_linear_spei3.rds")
+y_s_sim_spei12 <- readRDS(file = "yrep_climatesurvivalmodel_linear_spei12_quadXorigin.rds")
+y_s_sim_spei3 <- readRDS(file = "yrep_climatesurvivalmodel_linear_spei3_quadXorigin.rds")
 
 # ppc_dens_overlay(surv_data_list$y, y_s_sim)
 surv_densplot_spei12 <- ppc_dens_overlay(surv_spei12_data_list$y, y_s_sim_spei12) + theme_classic() + labs(title = "Adult Survival (12 month SPEI)", x = "Survival status", y = "Density")
