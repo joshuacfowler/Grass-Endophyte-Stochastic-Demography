@@ -440,3 +440,77 @@ endo_effects_summary_forMaya <- endo_effects_summary %>%
 write_csv(endo_effects_summary_forMaya, file = "~/Dropbox/EndodemogData/Model_Runs/MPM_output/endo_effects_to_2018.csv")
 
 
+
+
+
+
+
+################################################################################################
+##### Looking at the proportion of surviving original plants vs recruitment in each plot #######
+################################################################################################
+endo_colors <- c("#dbdb42", "#0c2c84")
+
+LTREB_plot_cleaned <- LTREB_full %>% 
+  filter(!is.na(surv_t1), year_t1<=2018) %>% 
+  mutate(endo_01 = case_when(plot_fixed %in% c(33,34,39,40) ~ 1,
+                             plot_fixed %in% c(32,35) ~ 0, TRUE ~ endo_01)) %>%  # fixing a few plants that were labeled as E+ in E+ plots and vice versa for LOAR
+  mutate(Endo = case_when(endo_01 == 0 ~ "E minus", endo_01 == 1 ~ "E plus",
+                          is.na(endo_01) ~ "E plus"),
+         Origin = case_when(origin_01 == 0 ~ "Original", origin_01 == 1 ~ "Recruit")) 
+
+LTREB_plot_summary <- LTREB_plot_cleaned %>% 
+  group_by(species, Endo, plot_fixed, year_t1) %>% 
+  summarize(num_original = sum(origin_01==0),
+            num_recruit = sum(origin_01==1),
+            num_total = sum(!is.na(origin_01)),
+            prop_original = num_original/num_total,
+            prop_recruit = num_recruit/num_total)
+
+
+originalcount_plot <- ggplot(LTREB_plot_summary)+
+  geom_point(aes(x = year_t1, y = num_original, color = Endo))+
+  scale_color_manual(values = c(endo_colors))+
+  facet_wrap(species ~ plot_fixed) + theme_light()
+# originalcount_plot
+ggsave(originalcount_plot, filename = "GeneticDiversityPlots/originalcount_plot.png", width = 10, height = 12)
+
+
+
+originaltrends_plot <- ggplot(LTREB_plot_summary)+
+  geom_line(aes(x = year_t1, y = num_original, color = Endo, group = plot_fixed))+
+  scale_color_manual(values = c(endo_colors))+
+  facet_wrap(~species) + theme_light()
+# originaltrends_plot
+ggsave(originaltrends_plot, filename = "GeneticDiversityPlots/originaltrends_plot.png", width = 10, height = 12)
+
+
+
+
+recruitcount_plot <- ggplot(LTREB_plot_summary)+
+  geom_point(aes(x = year_t1, y = num_recruit, color = Endo))+
+  scale_color_manual(values = c(endo_colors))+
+  facet_wrap(species ~ plot_fixed) + theme_light()
+# recruitcount_plot
+ggsave(recruitcount_plot, filename = "GeneticDiversityPlots/recruitcount_plot.png", width = 10, height = 12)
+
+
+recruittrends_plot <- ggplot(LTREB_plot_summary)+
+  geom_line(aes(x = year_t1, y = num_recruit, color = Endo, group = plot_fixed))+
+  scale_color_manual(values = c(endo_colors))+
+  facet_wrap(~species) + theme_light()
+# recruittrends_plot
+ggsave(recruittrends_plot, filename = "GeneticDiversityPlots/recruittrends_plot.png", width = 10, height = 12)
+
+
+turnoverprop_plot <- ggplot(LTREB_plot_cleaned)+
+  geom_bar(aes(x = year_t1, fill = Origin), position = "fill")+
+  facet_wrap(species ~ plot_fixed+Endo) + theme_light()
+# turnoverprop_plot
+ggsave(turnoverprop_plot, filename = "GeneticDiversityPlots/turnoverprop_plot.png", width = 10, height = 12)
+
+
+LTREB_plot_summary_2018 <- LTREB_plot_summary %>% 
+  filter(year_t1 == 2018)
+
+
+write_csv(LTREB_plot_summary, "LTREB_plantorigin_summary.csv")
