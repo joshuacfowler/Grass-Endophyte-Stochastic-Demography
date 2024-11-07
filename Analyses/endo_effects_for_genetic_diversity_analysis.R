@@ -459,6 +459,7 @@ LTREB_plot_cleaned <- LTREB_full %>%
          Origin = case_when(origin_01 == 0 ~ "Original", origin_01 == 1 ~ "Recruit")) 
 
 LTREB_plot_summary <- LTREB_plot_cleaned %>% 
+  filter(surv_t1 == 1) %>%
   group_by(species, Endo, plot_fixed, year_t1) %>% 
   summarize(num_original = sum(origin_01==0),
             num_recruit = sum(origin_01==1),
@@ -498,7 +499,7 @@ recruittrends_plot <- ggplot(LTREB_plot_summary)+
   geom_line(aes(x = year_t1, y = num_recruit, color = Endo, group = plot_fixed))+
   scale_color_manual(values = c(endo_colors))+
   facet_wrap(~species) + theme_light()
-# recruittrends_plot
+recruittrends_plot
 ggsave(recruittrends_plot, filename = "GeneticDiversityPlots/recruittrends_plot.png", width = 10, height = 12)
 
 
