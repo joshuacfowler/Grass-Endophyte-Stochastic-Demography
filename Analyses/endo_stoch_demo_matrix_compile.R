@@ -25,7 +25,7 @@ quote_bare <- function( ... ){
 #############################################################################################
 tompath <- "C:/Users/tm9/Dropbox/EndodemogData/"
 joshpath <- "~/Dropbox/EndodemogData/"
-path<-tompath
+path<-joshpath
 
 #source("Analyses/endodemog_data_processing.R")
 #instead of running processing script, read in LTREB_full, which that script creates
@@ -456,6 +456,8 @@ for(e in 1:2){
 }
 
 
+
+
 ## compare predicted fertility (# infs) and observed -- by species, year, and endo
 ## prep the data - pull out recruits only, drop 2007--2008, and drop the birth year (since these are in the recruit bin)
 LTREB_full %>% 
@@ -499,4 +501,58 @@ dev.off()
 
 ## write out matrices
 saveRDS(fert_endo.list, file = paste0(path,"/Model_Runs/MPM_output/GrassEndo_list_of_mean_matrices.rds"))
+
+
+
+
+
+
+
+# Now we can also get the growth/surv matrix
+T_iter.list <- list()
+T_year.list <- list()
+T_spp.list <- list()
+T_endo.list <- list()
+
+for(e in 1:2){
+  for(s in 1:7){
+    for(y in 1:13){
+      for(i in 1){
+        name <- paste0("iter", i)
+        T_iter.list[[name]] <- bigmatrix(make_params_quadXorigin(species=s,
+                                                                 endo_mean=(e-1),
+                                                                 endo_var=(e-1),
+                                                                 original = 1, # should be =1 to represent recruit
+                                                                 max_size=max_size,
+                                                                 rfx=T,
+                                                                 year=y+1,
+                                                                 surv_par_means=surv_par_means,
+                                                                 surv_sdlg_par_means = surv_sdlg_par_means,
+                                                                 grow_par_means=grow_par_means,
+                                                                 grow_sdlg_par_means = grow_sdlg_par_means,
+                                                                 flow_par_means=flow_par_means,
+                                                                 fert_par_means=fert_par_means,
+                                                                 spike_par_means=spike_par_means,
+                                                                 seed_par_means=seed_par_means,
+                                                                 recruit_par_means=recruit_par_means),
+                                         quadratic = 1,
+                                         extension = 100)$Tmat # the extension parameter is used to fit the growth kernel to sizes larger than max size without losing probability density
+      }
+      name <- paste0("y",year_vec[y])
+      T_year.list[[name]] <- T_iter.list
+      
+    }
+    name <- paste0(spp_vec[s])
+    T_spp.list[[name]] <- T_year.list
+    
+  }
+  name <- paste0(endo_vec[e])
+  T_endo.list[[name]] <- T_spp.list
+  
+}
+
+
+
+## write out matrices
+saveRDS(T_endo.list, file = paste0(path,"/Model_Runs/MPM_output/GrassEndo_mean_list_of_Pmatrices.rds"))
 

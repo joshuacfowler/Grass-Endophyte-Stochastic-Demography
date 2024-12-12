@@ -1587,7 +1587,7 @@ endophyte_color_scheme <- c("#fdedd3","#f3c8a8", "#5a727b", "#4986c7", "#181914"
 ma99_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "max_age_99"))+
   geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
   geom_line(aes(y = fit, x = x))+
-  geom_point(data = traits_df, aes(y = cv_effect, x = max_age_99, color = species), size = 3)+
+  geom_point(data = traits_df, aes(y = cv_effect, x = max_age_99, color = species), size = 6)+
   scale_color_manual(values = species_colors)+
   theme_classic()+
   theme(axis.title.x = element_text(size=10),
@@ -1643,7 +1643,7 @@ gt_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "gen_time"))+
 ss_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "seed_size"))+
   geom_ribbon(aes(ymin = lwr, ymax = upr, x = x), alpha = .2)+
   geom_line(aes(y = fit, x = x))+
-  geom_point(data = traits_df, aes(y = cv_effect, x = seed_size, color = species), size = 3)+
+  geom_point(data = traits_df, aes(y = cv_effect, x = seed_size, color = species), size = 6)+
   scale_color_manual(values = species_colors)+
   theme_classic()+
   theme(axis.title.x = element_text(size=10),
@@ -1684,9 +1684,16 @@ it_plant_plot <- ggplot(data = filter(newdata_plant_fit, name == "imperfect_tran
   labs(x = "Imperfect Transmission Rate", y = "", color = "Host Species")
 # it_plant_plot
 
-stoch_demo_fig4 <- ma99_plant_plot + ss_plant_plot +
+stoch_demo_fig4 <- ma99_plant_plot + theme(axis.title = element_text(size = 20),
+                                           axis.title.x = element_text(size = 20),
+                                           axis.text = element_text(size = 15),
+                                           legend.text = element_text(size = 13))+
+   ss_plant_plot +  theme(axis.title = element_text(size = 20),
+                          axis.title.x = element_text(size = 20),
+                          axis.text = element_text(size = 15),
+                          legend.text = element_text(size = 13))+
   plot_layout(nrow = 1, guides = "collect") + plot_annotation(tag_levels = "A") 
-ggsave(stoch_demo_fig4, filename = "StochDemo_fig4new.png", width = 6, height = 2.5)
+ggsave(stoch_demo_fig4, filename = "StochDemo_fig4new.png", width = 12, height = 5)
 
 
 

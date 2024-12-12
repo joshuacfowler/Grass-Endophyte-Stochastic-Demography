@@ -30,6 +30,13 @@ Lkurtosis=function(x) log(kurtosis(x));
 LTREB_full <- read_csv("~/Dropbox/EndodemogData/Fulldataplusmetadata/LTREB_full.csv")
 
 
+plotxyear <- LTREB_full %>% 
+  dplyr::group_by(species, plot_fixed) %>% 
+  dplyr::summarise(birth = min(birth, na.rm = T ),
+            min_year_t1 = min(year_t1),
+            max_year_t1 = max(year_t1)) %>% 
+  filter(species %in% c("POAL", "POSY"))
+write_csv(plotxyear, "POAL_POSY_plotsxyears.csv")
 #############################################################################################
 ####### Preparing data lists for vital rate kernels ------------------
 #############################################################################################

@@ -7,7 +7,7 @@ library(tidyverse)
 library(reshape2)
 library(lubridate)
 library(readxl)
-library(rnoaa)
+#library(rnoaa)
 library(SPEI)
 
 
@@ -15,11 +15,11 @@ library(SPEI)
 ####### Reading in endo_demog_long ------------------------------
 ##############################################################################
 ## tom path for shared dropbox
-setwd("C:/Users/tm9")
+# setwd("C:/Users/tm9")
 
 # This is the main compiled data sheet that we will merge with the flowering and seed data
 LTREB_endodemog <- 
-  read.csv(file = "Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_long.csv")
+  read.csv(file = "~Dropbox/EndodemogData/Fulldataplusmetadata/endo_demog_long.csv")
 
 
 ## Clean up the main data frame for NA's, other small data entry errors, and change standardize the coding for variables.
