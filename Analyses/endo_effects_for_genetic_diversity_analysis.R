@@ -458,14 +458,39 @@ LTREB_plot_cleaned <- LTREB_full %>%
                           is.na(endo_01) ~ "E plus"),
          Origin = case_when(origin_01 == 0 ~ "Original", origin_01 == 1 ~ "Recruit")) 
 
-LTREB_plot_summary <- LTREB_plot_cleaned %>% 
-  filter(surv_t1 == 1) %>%
-  group_by(species, Endo, plot_fixed, year_t1) %>% 
-  summarize(num_original = sum(origin_01==0),
-            num_recruit = sum(origin_01==1),
-            num_total = sum(!is.na(origin_01)),
-            prop_original = num_original/num_total,
-            prop_recruit = num_recruit/num_total)
+LTREB_original_summary <- LTREB_plot_cleaned %>% 
+  filter(surv_t1 == 1 | birth == year_t) %>% 
+  group_by(species, Endo, plot_fixed, year) %>% 
+  summarize(num_original = sum(origin_01==0))
+
+
+LTREB_recruitment_summary <- LTREB_plot_cleaned %>% 
+  filter(origin_01 == 1) %>% 
+  mutate(surv_t = case_when(!is.na(logsize_t) ~ 1, TRUE ~ 0)) %>% 
+  select(species, plot_fixed, id, Origin, Endo, birth, year_t, year_t1, surv_t, surv_t1) %>% 
+  pivot_longer(cols = c(year_t, year_t1), values_to = "year", names_to = "column") %>% 
+  group_by(id) %>% 
+  mutate(finalYear= max(year)) %>% 
+  mutate(surv = case_when(year == finalYear ~ surv_t1, TRUE ~ surv_t)) %>% 
+  ungroup() %>% 
+  filter(column == "year_t1" & year == finalYear | column == "year_t") %>% 
+  filter(year>=birth) %>% 
+  mutate(new_recruit = case_when(birth == year ~ 1, TRUE ~ 0),
+         surv = case_when(new_recruit == 1 & surv == 0 ~ 1, TRUE ~ surv))  %>% 
+  group_by(species, Endo, plot_fixed, year) %>% 
+  summarize(num_newRecruit = sum(new_recruit),
+            num_oldRecruit = sum(new_recruit == 0 & surv == 1),
+            num_totalRecruit = sum(surv==1))
+
+
+
+
+LTREB_plot_summary <- LTREB_original_summary %>% 
+  left_join(LTREB_recruitment_summary) %>% 
+  mutate(num_total = num_original + num_totalRecruit)
+
+
+write_csv(LTREB_plot_summary, "LTREB_plot_summary.csv")
 
 
 originalcount_plot <- ggplot(LTREB_plot_summary)+
