@@ -26,7 +26,6 @@ quote_bare <- function( ... ){
 tompath <- "C:/Users/tm9/Dropbox/EndodemogData/"
 joshpath <- "~/Dropbox/EndodemogData/"
 path<-joshpath
-
 #source("Analyses/endodemog_data_processing.R")
 #instead of running processing script, read in LTREB_full, which that script creates
 LTREB_full <- read.csv(paste0(path,"Fulldataplusmetadata/LTREB_full.csv"))
@@ -90,7 +89,9 @@ grow_sdlg_par <- rstan::extract(grow_fit_seedling, pars = quote_bare(beta0,betae
 flow_par <- rstan::extract(flw_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                       tau_year, tau_plot))
 fert_par <- rstan::extract(fert_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
-                                                       tau_year, tau_plot))
+                                                       tau_year, tau_plot, 
+                                                       theta, # individual-level deviates
+                                                       sigma)) # Inverse Gaussian Shape parameter))
 spike_par <- rstan::extract(spike_fit, pars = quote_bare(beta0,betasize,betasize_2,betaendo,
                                                          tau_year, tau_plot,
                                                          phi))
@@ -253,6 +254,8 @@ grow_sdlg_par_means$beta0<-apply(grow_sdlg_par$beta0,2,mean)
 grow_sdlg_par_means$betaendo<-apply(grow_sdlg_par$betaendo,2,mean)
 grow_sdlg_par_means$tau_year <- apply(grow_sdlg_par$tau_year,c(2,3,4),mean)
 grow_sdlg_par_means$tau_plot <- apply(grow_sdlg_par$tau_plot,c(2),mean)
+grow_sdlg_par_means$sigma <- mean(grow_sdlg_par$sigma)
+
 
 #5-flow_par
 flow_par_means<-list()
@@ -271,6 +274,7 @@ fert_par_means$betasize_2 <- apply(fert_par$betasize_2,c(2,3),mean)
 fert_par_means$betaendo <- apply(fert_par$betaendo,c(2),mean)
 fert_par_means$tau_year <- apply(fert_par$tau_year,c(2,3,4),mean)
 fert_par_means$tau_plot <- apply(fert_par$tau_plot,c(2),mean)
+fert_par_means$sigma <- mean(fert_par$sigma)
 
 #7-spike_par
 spike_par_means<-list()
@@ -299,13 +303,61 @@ recruit_par_means$tau_plot <- apply(recruit_par$tau_plot,c(2),mean)
 fx<-function(x, params,spei=0, quadratic){
   xb<-pmin(x,params$max_size) # any predicted plants larger than max size will set to be max size
   flw <- invlogit(params$flow_int + params$flow_spei*spei + params$flow_slope*log(xb) + params$flow_slope_2*(log(xb)^2)*quadratic)
-  fert <- exp(params$fert_int + params$fert_spei*spei + params$fert_slope*log(xb) + params$fert_slope_2*(log(xb)^2)*quadratic)
+  fert_mean <- exp(params$fert_int + params$fert_spei*spei + params$fert_slope*log(xb) + params$fert_slope_2*(log(xb)^2)*quadratic)
+  
+  fert <- fert_mean/(1-exp(   (-1*params$fert_sigma)* (sqrt(1 + ((2*fert_mean)/params$fert_sigma)   )   -   1)  ))
   # spike <- exp(params$spike_int + params$spike_spei*spei + params$spike_slope*log(xb))
   # seeds_per_spike <- params$seeds_per_spike
   # recruits_per_seed <- invlogit(params$recruits_per_seed + params$recruits_spei*spei)
   seedlings <- flw * fert# * spike * seeds_per_spike * recruits_per_seed
   return(seedlings)
 }
+
+
+#simulation to check expected value of ZT-PIG
+# xb<-pmin(x,params$max_size) 
+# fert_mean = exp(params$fert_int + params$fert_spei*spei + params$fert_slope*log(xb) + params$fert_slope_2*(log(xb)^2)*quadratic)
+# fert_pois <- fert_pig <- fert_ztpig <- c()
+# for(i in 1:length(fert_mean)){
+# fert_pois[i] <- mean(rpois(fert_mean[i], n = 1000000))
+# fert_pig[i]<- mean(rpoisinvgauss(mean=fert_mean[i],shape=(fert_mean[i]*params$fert_sigma),n = 1000000))
+# fert_ztpig[i] <- mean(rpoisinvgauss(mean = fert[i], shape = (fert[i]*params$fert_sigma), n = 1000000))
+# }
+# 
+lambda <- 2; sigma <-  8
+
+# confirming the math with simulation for poisson and zero-truncated poisson
+mean(rpois(n = 100000, lambda = lambda))
+mean(rztpois(n = 100000, lambda = lambda))
+2/(1-exp(-2))
+
+
+# now trying this for the zero truncated PIG
+theta <- mean(rinvgauss(n = 100000, mean = 1, shape = sigma))
+
+mean(rztpois(n = 1000000, lambda = lambda*theta))
+
+lambda_trunc <- lambda/(1-exp(   (-1*sigma)* (sqrt(1 + ((2*lambda)/sigma)   )   -   1)  ))
+
+lambda_trunc
+
+
+# hist(rpoisinvgauss(n = 100000, mean = lambda_trunc, shape = lambda_trunc*sigma))
+# theta <- rinvgauss(n = 1000, mean = 1, sigma)
+# 
+# lambda_sim <- dpois(1:1000, lambda=lambda * theta)
+# lambda_0 <- (1- dpois(0, lambda=lambda * theta))
+# for(i in 1:1000){
+# fert_sim[i] <- sample(x = 1:1000, size = 1, replace = T, prob = lambda_sim/lambda_0)
+# }
+
+
+# another way using the dpoisinvgauss function
+# fert_pig <- dpoisinvgauss(x=x,mean=(fert_mean),shape=((fert_mean)*params$fert_sigma))
+# fert_Zero <- dpoisinvgauss(x=0,mean=(fert_mean),shape=((fert_mean)*params$fert_sigma))
+# 
+# fert_ztpig <- fert_pig/(1-fert_Zero)
+
 
 ## re-write make_params to use posterior mean params
 
@@ -386,6 +438,7 @@ make_params_quadXorigin <- function(species,endo_mean,endo_var,LTRE=F, endo_mean
   params$fert_spei <- spei_fert
   params$fert_slope <- fert_par_means$betasize[species,original+1]
   params$fert_slope_2 <- fert_par_means$betasize_2[species,original+1]
+  params$fert_sigma <- fert_par_means$sigma
   
   
   #spikelets
@@ -454,7 +507,6 @@ for(e in 1:2){
   fert_endo.list[[name]] <- fert_spp.list
   
 }
-
 
 
 
