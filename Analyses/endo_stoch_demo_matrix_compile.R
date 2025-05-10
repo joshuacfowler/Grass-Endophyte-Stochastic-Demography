@@ -333,9 +333,15 @@ mean(rztpois(n = 100000, lambda = lambda))
 
 
 # now trying this for the zero truncated PIG
-theta <- mean(rinvgauss(n = 100000, mean = 1, shape = sigma))
+theta <- mean(rinvgauss(n = 1000, mean = 1, shape = sigma))
 
-mean(rztpois(n = 1000000, lambda = lambda*theta))
+
+  
+  prob <- dpois(1:1000, lambda=lambda * theta)
+  prob_trunc <- (1- dpois(0, lambda=lambda * theta))
+
+fert_sim <- mean(sample(x = 1:1000, size = 1000000, replace = T, prob = prob/prob_trunc))
+fert_sim
 
 lambda_trunc <- lambda/(1-exp(   (-1*sigma)* (sqrt(1 + ((2*lambda)/sigma)   )   -   1)  ))
 
