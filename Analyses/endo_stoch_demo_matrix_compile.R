@@ -340,12 +340,20 @@ theta <- mean(rinvgauss(n = 1000, mean = 1, shape = sigma))
   prob <- dpois(1:1000, lambda=lambda * theta)
   prob_trunc <- (1- dpois(0, lambda=lambda * theta))
 
-fert_sim <- mean(sample(x = 1:1000, size = 1000000, replace = T, prob = prob/prob_trunc))
+fert_sim <- mean(sample(x = 1:1000, size = 10000000, replace = T, prob = prob/prob_trunc))
 fert_sim
 
+# This is a formula providded by ChatGPT
 lambda_trunc <- lambda/(1-exp(   (-1*sigma)* (sqrt(1 + ((2*lambda)/sigma)   )   -   1)  ))
 
 lambda_trunc
+
+
+# This is a second formula provided by Gemini, I think it is more wrong than the chatgpt one.
+lambda_trunc_2 <- lambda/(1-  (sqrt(sigma/(sqrt(sigma^2  +  2*lambda))) * exp( (1/sigma) - ((sqrt(sigma^2  +  2*lambda))/sigma)    )) )
+
+lambda_trunc_2
+         
 
 
 # hist(rpoisinvgauss(n = 100000, mean = lambda_trunc, shape = lambda_trunc*sigma))
